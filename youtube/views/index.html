@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Welcome to NextCounts!</title>
+    <meta name="theme-color" content="rgb(37,102,232)">
+    <meta name="twitter:card" content="summary">
+    <meta property="og:description" content="We recently made some big updates into the website so make sure to check them out!">
+    <meta property="og:type" content="">
+    <meta property="og:image" content="../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <meta property="og:title" content="Welcome to NextCounts!">
+    <meta name="twitter:image" content="../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.3/darkly/bootstrap.min.css">
+    <link rel="manifest" href="../../manifest.json?h=ec5036e9f4a90da8e502255b99066c31">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
+    <link rel="stylesheet" href="../../assets/fonts/fontawesome5-overrides.min.css?h=9db842b3dc3336737559eb4abc0f1b3d">
+    <link rel="stylesheet" href="../../assets/css/styles.min.css?h=4f9869cf486d52003c0a7c438d6e476c">
+    <link rel="stylesheet" href="../../assets/css/soloCounters.min.css?h=e15b2365d83a2230e9d2f2cab16f20e9">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
+</head>
+
+<body>
+    <!-- Start: gradient-navbar -->
+    <nav class="navbar navbar-dark navbar-expand-md d-lg-flex justify-content-lg-center" id="app-navbar-youtube">
+        <div class="container-fluid"><a class="navbar-brand" href="../../"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" id="brand-logo">
+                    <path d="M13 7H21M21 7V15M21 7L13 15L9 11L3 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>NC</a>
+            <h4>YouTube Video Views Count</h4>
+            <div class="text-truncate text-center d-sm-flex justify-content-sm-center"></div>
+        </div>
+    </nav><!-- End: gradient-navbar -->
+    <p><br><br></p>
+    <div class="container">
+        <div class="text-center card-content counterCard" style="padding: 25px;"><img class="shadow userBanner" id="userBanner" style="filter: blur(3px);opacity: 1;" src="../../assets/img/banner%20placeholder.jpg?h=49914cdc4e09350df47b9d51ac7880b1">
+            <div class="text-center userImgDiv"><img class="img-fluid bg-dark border rounded border-secondary shadow userImgWide" id="userImg" src="../../assets/img/tommy.jpg?h=9455c31b6f14b3352d12a40edf4b6c24"></div>
+            <h2 id="username">Loading...</h2>
+            <div id="mainOdometer" class="odometer mainOdometer"></div>
+            <h6>Views</h6>
+            <div id="chart"></div>
+        </div>
+        <p><br></p>
+        <div class="text-center container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="likesOdo" class="odometer smallOdo"></div>
+                        <h4 class="card-title" style="margin: 0px;">Likes&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none">
+                                <path d="M2 10.5C2 9.67157 2.67157 9 3.5 9C4.32843 9 5 9.67157 5 10.5V16.5C5 17.3284 4.32843 18 3.5 18C2.67157 18 2 17.3284 2 16.5V10.5Z" fill="currentColor"></path>
+                                <path d="M6 10.3333V15.7639C6 16.5215 6.428 17.214 7.10557 17.5528L7.15542 17.5777C7.71084 17.8554 8.32329 18 8.94427 18H14.3604C15.3138 18 16.1346 17.3271 16.3216 16.3922L17.5216 10.3922C17.7691 9.15465 16.8225 8 15.5604 8H12V4C12 2.89543 11.1046 2 10 2C9.44772 2 9 2.44772 9 3V3.66667C9 4.53215 8.71929 5.37428 8.2 6.06667L6.8 7.93333C6.28071 8.62572 6 9.46785 6 10.3333Z" fill="currentColor"></path>
+                            </svg></h4>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="dislikesOdo" class="odometer smallOdo"></div>
+                        <h4 class="card-title">Dislikes&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none">
+                                <path d="M18 9.5C18 10.3284 17.3285 11 16.5 11C15.6716 11 15 10.3284 15 9.5V3.5C15 2.67157 15.6716 2 16.5 2C17.3285 2 18 2.67157 18 3.5V9.5Z" fill="currentColor"></path>
+                                <path d="M14 9.66667V4.23607C14 3.47852 13.572 2.786 12.8945 2.44721L12.8446 2.42229C12.2892 2.14458 11.6767 2 11.0558 2L5.63964 2C4.68628 2 3.86545 2.67292 3.67848 3.60777L2.47848 9.60777C2.23097 10.8453 3.17755 12 4.43964 12H8.00004V16C8.00004 17.1046 8.89547 18 10 18C10.5523 18 11 17.5523 11 17V16.3333C11 15.4679 11.2807 14.6257 11.8 13.9333L13.2 12.0667C13.7193 11.3743 14 10.5321 14 9.66667Z" fill="currentColor"></path>
+                            </svg></h4>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="commentsOdo" class="odometer smallOdo"></div>
+                        <h4 class="card-title">Comments&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
+                                <path d="M8 10H8.01M12 10H12.01M16 10H16.01M9 16H5C3.89543 16 3 15.1046 3 14V6C3 4.89543 3.89543 4 5 4H19C20.1046 4 21 4.89543 21 6V14C21 15.1046 20.1046 16 19 16H14L9 21V16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg></h4>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="viewsOdo" class="odometer smallOdo"></div>
+                        <h4 class="card-title">View Count from API&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
+                                <path d="M14.9998 12C14.9998 13.6569 13.6566 15 11.9998 15C10.3429 15 8.99976 13.6569 8.99976 12C8.99976 10.3431 10.3429 9 11.9998 9C13.6566 9 14.9998 10.3431 14.9998 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M2.45801 12C3.73228 7.94288 7.52257 5 12.0002 5C16.4778 5 20.2681 7.94291 21.5424 12C20.2681 16.0571 16.4778 19 12.0002 19C7.52256 19 3.73226 16.0571 2.45801 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p><br></p>
+        <div class="card-deck">
+            <div class="card"><a class="btn btn-primary btn-lg sharp" role="button" data-toggle="modal" data-target="#customize">Customize&nbsp;<i class="fas fa-pen"></i></a></div>
+            <div class="card"><a class="btn btn-success btn-lg sharp" role="button" data-toggle="modal" data-target="#searchUser">Change Video&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none">
+
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4ZM2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8C14 9.29583 13.5892 10.4957 12.8907 11.4765L17.7071 16.2929C18.0976 16.6834 18.0976 17.3166 17.7071 17.7071C17.3166 18.0976 16.6834 18.0976 16.2929 17.7071L11.4765 12.8907C10.4957 13.5892 9.29583 14 8 14C4.68629 14 2 11.3137 2 8Z" fill="currentColor"></path>
+                    </svg></a></div>
+        </div>
+        <p><br><br></p>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="customize">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Customize</h3><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" style="background: #222222;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Odometer Style</h4><select class="custom-select custom-select-lg" id="odometerSelector" style="background: rgb(101,101,101);color: rgb(222,222,222);">
+                                <option value="normal" selected="">Normal Odometer (Default)</option>
+                                <option value="fast">"Fast" Odometer</option>
+                                <option value="ncolored">Normal Colored Odometer</option>
+                                <option value="fcolored">"Fast" &amp; Colored Odometer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p></p>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Other Options</h4>
+                            <div class="custom-control custom-switch"><input class="custom-control-input" type="checkbox" id="disableChart"><label class="custom-control-label" for="disableChart">Turn off chart</label></div>
+                            <div class="custom-control custom-switch"><input class="custom-control-input" type="checkbox" id="hideBanner"><label class="custom-control-label" for="hideBanner">Hide User Banner</label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" id="applyChangesCustomize" type="button" data-dismiss="modal">Apply Changes</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="searchUser">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Video</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" style="background: #222222;">
+                    <div class="input-group">
+                        <div class="input-group-prepend"></div><input class="form-control" type="text" id="searchBar" style="background: #111111;color: #c0c0c0;">
+                        <div class="input-group-append"><button class="btn btn-secondary" id="searchBtn" type="button">Go!</button></div>
+                    </div>
+                    <p></p>
+                    <div class="card">
+                        <div class="card-body text-truncate">
+                            <div class="d-flex justify-content-start" id="searchUserBox" onclick="location.href = `/youtube/views/?v=${document.getElementById(&#39;searchUsername&#39;).title}`;"><img class="border rounded shadow searchWidePfp" id="searchPfp" src="../../assets/img/tommy.jpg?h=9455c31b6f14b3352d12a40edf4b6c24" style="margin-right: 10px;">
+                                <div>
+                                    <h4 id="searchUsername" title="IUcBX_QIzgU">So Dream EXILED Me</h4>
+                                    <h6 class="text-muted mb-2" id="searchBottomtext">Uploader: TommyInnit</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://arc.io/widget.min.js#2GLUPYJx"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="../../assets/js/script.min.js?h=f0e8607206df24f7c03eca928e2d2731"></script>
+    <script src="../../assets/js/youtubejs/yt-views.min.js?h=bac8192d5727e11eff72dd75f8ecb0db"></script>
+</body>
+
+</html>

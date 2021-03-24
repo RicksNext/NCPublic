@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Welcome to NextCounts!</title>
+    <meta name="theme-color" content="rgb(37,102,232)">
+    <meta name="twitter:card" content="summary">
+    <meta property="og:description" content="We recently made some big updates into the website so make sure to check them out!">
+    <meta property="og:type" content="">
+    <meta property="og:image" content="../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <meta property="og:title" content="Welcome to NextCounts!">
+    <meta name="twitter:image" content="../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="icon" type="image/jpeg" sizes="400x400" href="../../assets/img/logo.jpg?h=3fd69e1d519fd5b04ab41699921a9dff">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.3/darkly/bootstrap.min.css">
+    <link rel="manifest" href="../../manifest.json?h=ec5036e9f4a90da8e502255b99066c31">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
+    <link rel="stylesheet" href="../../assets/fonts/fontawesome5-overrides.min.css?h=9db842b3dc3336737559eb4abc0f1b3d">
+    <link rel="stylesheet" href="../../assets/css/styles.min.css?h=4f9869cf486d52003c0a7c438d6e476c">
+    <link rel="stylesheet" href="../../assets/css/soloCounters.min.css?h=e15b2365d83a2230e9d2f2cab16f20e9">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
+</head>
+
+<body>
+    <!-- Start: gradient-navbar -->
+    <nav class="navbar navbar-dark navbar-expand-md" id="app-navbar-soundcloud">
+        <div class="container-fluid"><a class="navbar-brand" href="../../"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" id="brand-logo">
+                    <path d="M13 7H21M21 7V15M21 7L13 15L9 11L3 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>NC</a>
+            <h4>Soundcloud Live Track Plays Count</h4>
+            <div class="text-truncate text-center d-sm-flex justify-content-sm-center"></div>
+        </div>
+    </nav><!-- End: gradient-navbar -->
+    <p><br><br></p>
+    <div class="container">
+        <div class="text-center card-content counterCard" style="padding: 25px;"><img class="shadow userBanner" id="userBanner" style="filter: blur(3px);opacity: 1;" src="../../assets/img/banner%20placeholder.jpg?h=49914cdc4e09350df47b9d51ac7880b1">
+            <div class="text-center userImgDiv"><img class="img-fluid bg-dark border rounded border-secondary shadow userImg" id="userImg" src="../../assets/img/pfp%20placeholder.png?h=480a9e140f7250ad92b620385e2522aa"></div>
+            <h2 id="username">Loading...</h2>
+            <div id="mainOdometer" class="odometer mainOdometer"></div>
+            <h6>Plays</h6>
+            <div id="chart"></div>
+        </div>
+        <p><br></p>
+        <div class="card-deck text-center">
+            <div class="card">
+                <div class="card-body">
+                    <div id="likesOdo" class="odometer smallOdo"></div>
+                    <h4 class="card-title" style="margin: 0px;">Likes&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
+                            <path d="M4.31802 6.31802C2.56066 8.07538 2.56066 10.9246 4.31802 12.682L12.0001 20.364L19.682 12.682C21.4393 10.9246 21.4393 8.07538 19.682 6.31802C17.9246 4.56066 15.0754 4.56066 13.318 6.31802L12.0001 7.63609L10.682 6.31802C8.92462 4.56066 6.07538 4.56066 4.31802 6.31802Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg></h4>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="repostsOdo" class="odometer smallOdo"></div>
+                    <h4 class="card-title" style="margin: 0px;">Reposts&nbsp;<i class="material-icons">repeat</i></h4>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="commentsOdo" class="odometer smallOdo"></div>
+                    <h4 class="card-title">Comments&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
+                            <path d="M8 12H8.01M12 12H12.01M16 12H16.01M21 12C21 16.4183 16.9706 20 12 20C10.4607 20 9.01172 19.6565 7.74467 19.0511L3 20L4.39499 16.28C3.51156 15.0423 3 13.5743 3 12C3 7.58172 7.02944 4 12 4C16.9706 4 21 7.58172 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg></h4>
+                </div>
+            </div>
+        </div>
+        <p><br></p>
+        <div class="card-deck">
+            <div class="card"><a class="btn btn-primary btn-lg sharp" role="button" data-toggle="modal" data-target="#customize">Customize&nbsp;<i class="fas fa-pen"></i></a></div>
+            <div class="card"><a class="btn btn-success btn-lg sharp" role="button" data-toggle="modal" data-target="#searchUser">Change Track&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none">
+
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4ZM2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8C14 9.29583 13.5892 10.4957 12.8907 11.4765L17.7071 16.2929C18.0976 16.6834 18.0976 17.3166 17.7071 17.7071C17.3166 18.0976 16.6834 18.0976 16.2929 17.7071L11.4765 12.8907C10.4957 13.5892 9.29583 14 8 14C4.68629 14 2 11.3137 2 8Z" fill="currentColor"></path>
+                    </svg></a></div>
+        </div>
+        <p><br><br></p>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="customize">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Customize</h3><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" style="background: #222222;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Odometer Style</h4><select class="custom-select custom-select-lg" id="odometerSelector" style="background: rgb(101,101,101);color: rgb(222,222,222);">
+                                <option value="normal" selected="">Normal Odometer (Default)</option>
+                                <option value="fast">"Fast" Odometer</option>
+                                <option value="ncolored">Normal Colored Odometer</option>
+                                <option value="fcolored">"Fast" &amp; Colored Odometer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p></p>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Other Options</h4>
+                            <div class="custom-control custom-switch"><input class="custom-control-input" type="checkbox" id="disableChart"><label class="custom-control-label" for="disableChart">Turn off chart</label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" id="applyChangesCustomize" type="button" data-dismiss="modal">Apply Changes</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="searchUser">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Track</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" style="background: #222222;">
+                    <div class="input-group">
+                        <div class="input-group-prepend"></div><input class="form-control" type="text" id="searchBar" style="color: #c0c0c0;background: #111;">
+                        <div class="input-group-append"><button class="btn btn-secondary" id="searchBtn" type="button">Go!</button></div>
+                    </div>
+                    <p></p>
+                    <div class="card">
+                        <div class="card-body text-truncate">
+                            <div class="d-flex justify-content-start" id="searchUserBox" onclick="location.href = `/soundcloud/tracks/?u=${document.getElementById(&#39;searchUsername&#39;).title}`;"><img class="border rounded-circle shadow searchPfp" id="searchPfp" src="../../assets/img/pfp%20placeholder.png?h=480a9e140f7250ad92b620385e2522aa" style="margin-right: 10px;">
+                                <div>
+                                    <h4 id="searchUsername">Track name</h4>
+                                    <h6 class="text-muted mb-2" id="searchBottomtext">69,420 Plays</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://arc.io/widget.min.js#2GLUPYJx"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="../../assets/js/script.min.js?h=f0e8607206df24f7c03eca928e2d2731"></script>
+    <script src="../../assets/js/soundcloud/soundcloud-track.min.js?h=fdf1e449022ef0d29f001f577d008dcd"></script>
+</body>
+
+</html>
