@@ -223,7 +223,7 @@ function searchForUser() {
 					
 					if(currentSelectedProvider == 1) {
 						$.ajax({
-							url: `https://api.mixerno.space/youtube/estimated/user/${dataa.cid}`,
+							url: `https://api.nextcounts.com/api/youtube/channel/estimate/mixerno/${dataa.cid}`,
 							type: "GET",
 							dataType: "JSON",
 							success: function(data){
@@ -233,7 +233,7 @@ function searchForUser() {
 								} else {
 									searchUsername.innerHTML = data.name;
 									searchPfp.src = data.image;
-									searchBottomtext.innerHTML = `${(data.SubscriberCount).toLocaleString()} Subscribers`;
+									searchBottomtext.innerHTML = `${(data.estimatedSubCount).toLocaleString()} Subscribers`;
 									searchUsername.title = dataa.cid;
 									searchProvider = 1;
 									searchUserBox.style.cursor = `pointer`;
@@ -298,7 +298,7 @@ function searchForUser() {
 					
 					if(currentSelectedProvider == 4) {
 						$.ajax({
-							url: `https://estimates.ncinsiders.live/est/youtube/${dataa.cid}`,
+							url: `https://estimates.nextcounts.com/est/youtube/${dataa.cid}`,
 							type: "GET",
 							dataType: "JSON",
 							success: function(data){
@@ -359,16 +359,16 @@ function loadDataFirstTime() {
 		
 		if(currentProvider == 1) {
 			$.ajax({
-				url: `https://api.mixerno.space/youtube/estimated/user/${user}`,
+				url: `https://api.nextcounts.com/api/youtube/channel/estimate/mixerno/${user}`,
 				type: "GET",
 				dataType: "JSON",
 				success: function(data){
 					if(data.msg) {
 						return;
 					} else {
-						updateCounts.mainCount(data.SubscriberCount);
+						updateCounts.mainCount(data.estimatedSubCount);
 						
-						updateCounts.views(data.totalviews);
+						updateCounts.views(data.totalViews);
 						updateCounts.videos(data.videos);
 					}
 				}
@@ -413,7 +413,7 @@ function loadDataFirstTime() {
 		
 		if(currentProvider == 4) {
 			$.ajax({
-				url: `https://estimates.ncinsiders.live/est/youtube/${user}`,
+				url: `https://estimates.nextcounts.com/est/youtube/${user}`,
 				type: "GET",
 				dataType: "JSON",
 				success: function(data){

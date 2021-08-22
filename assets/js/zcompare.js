@@ -498,7 +498,7 @@ function searchForUser1() {
                   searchBottomText.innerHTML = "Please check if the spelling is correct and try again.";
               } else {
                 $.ajax({
-                    url: `https://api.mixerno.space/youtube/estimated/user/${search.cid}`,
+                    url: `https://api.nextcounts.com/api/youtube/channel/estimate/mixerno/${search.cid}`,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
@@ -508,7 +508,7 @@ function searchForUser1() {
                         } else {
                           searchUsername.innerHTML = data.name;
                             searchPfp1.src = data.image;
-                            searchBottomText.innerHTML = `${(data.SubscriberCount).toLocaleString()} Subscribers`;
+                            searchBottomText.innerHTML = `${(data.estimatedSubCount).toLocaleString()} Subscribers`;
                             searchUsername.title = data.cid;
                             socialPlatform1 = 'ytsubcount-mixerno';
                         }
@@ -552,7 +552,7 @@ function searchForUser1() {
                   searchBottomText.innerHTML = "Please check if the spelling is correct and try again.";
               } else {
                 $.ajax({
-                    url: `https://estimates.ncinsiders.live/est/youtube/${search.cid}`,
+                    url: `https://estimates.nextcounts.com/est/youtube/${search.cid}`,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
@@ -984,7 +984,7 @@ function searchForUser2() {
                   searchBottomText.innerHTML = "Please check if the spelling is correct and try again.";
               } else {
                 $.ajax({
-                    url: `https://estimates.ncinsiders.live/est/youtube/${search.cid}`,
+                    url: `https://estimates.nextcounts.com/est/youtube/${search.cid}`,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
@@ -1038,7 +1038,7 @@ function searchForUser2() {
                   searchBottomText.innerHTML = "Please check if the spelling is correct and try again.";
               } else {
                 $.ajax({
-                    url: `https://mixerno.space/api/youtube/estimated/user/${search.cid}`,
+                    url: `https://api.nextcounts.com/api/youtube/channel/estimate/mixerno/${search.cid}`,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
@@ -1048,7 +1048,7 @@ function searchForUser2() {
                         } else {
                           searchUsername.innerHTML = data.name;
                             searchPfp2.src = data.image;
-                            searchBottomText.innerHTML = `${(data.SubscriberCount).toLocaleString()} Subscribers`;
+                            searchBottomText.innerHTML = `${(data.estimatedSubCount).toLocaleString()} Subscribers`;
                             searchUsername.title = data.cid;
                             socialPlatform2 = 'ytsubcount-mixerno';
                         }
@@ -1437,7 +1437,7 @@ function loadDataFirstTime() {
             document.getElementById('bottomtext-user0').innerHTML = "Subscribers";
             setInterval(function() {
                 $.ajax({
-                    url: `https://estimates.ncinsiders.live/est/youtube/${user0}`,
+                    url: `https://estimates.nextcounts.com/est/youtube/${user0}`,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
@@ -1470,16 +1470,16 @@ function loadDataFirstTime() {
             document.getElementById('bottomtext-user0').innerHTML = "Subscribers";
             setInterval(function() {
                 $.ajax({
-                    url: `https://mixerno.space/api/youtube/estimated/user/${user0}`,
+                    url: `https://api.nextcounts.com/api/youtube/channel/estimate/mixerno/${user0}`,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
                         if(data.msg) {
 							return;
                         } else {
-                            updateCounts.name(`${data.name} ${socialBadges.youtube}`, 0);
-                            updateCounts.pfp(data.image, 0);
-                            updateCounts.mainCount(data.SubscriberCount, 0, platform0);
+                            updateCounts.name(`${data.channelName} ${socialBadges.youtube}`, 0);
+                            updateCounts.pfp(data.avatar, 0);
+                            updateCounts.mainCount(data.estimatedSubCount, 0, platform0);
                         }
                     },
                     error: function(){}
@@ -1815,7 +1815,7 @@ function loadDataFirstTime() {
             });
             setInterval(function() {
                 $.ajax({
-                    url: `https://estimates.ncinsiders.live/est/youtube/${user1}`,
+                    url: `https://estimates.nextcounts.com/est/youtube/${user1}`,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
@@ -1848,16 +1848,16 @@ function loadDataFirstTime() {
             });
             setInterval(function() {
                 $.ajax({
-                    url: `https://mixerno.space/api/youtube/estimated/user/${user1}`,
+                    url: `https://api.nextcounts.com/api/youtube/channel/estimate/mixerno/${user1}`,
                     type: "GET",
                     dataType: "JSON",
                     success: function(data){
                         if(data.msg) {
 							return;
                         } else {
-                            updateCounts.name(`${data.name} ${socialBadges.youtube}`, 1);
-                            updateCounts.pfp(data.image, 1);
-                            updateCounts.mainCount(data.SubscriberCount, 1, platform1);
+                            updateCounts.name(`${data.channelName} ${socialBadges.youtube}`, 1);
+                            updateCounts.pfp(data.avatar, 1);
+                            updateCounts.mainCount(data.estimatedSubCount, 1, platform1);
                         }
                     },
                     error: function(){}
