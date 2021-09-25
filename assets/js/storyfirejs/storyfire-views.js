@@ -235,6 +235,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Storyfire Video Views Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/storyfire/video/${video}`,
@@ -266,6 +267,7 @@ function loadDataFirstTime() {
                 );
             }
             if(!data.error && !data.errn) {
+                $('head').find('title')[0].text = `Live Storyfire Video Views Count for "${data.title}"`;
                 updateCounts.name(data.title);
 
                 updateCounts.pfp(data.thumbnail);

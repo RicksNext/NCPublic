@@ -210,6 +210,9 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Tiktok Follower Count`;
+
+var userid = Number;
 function loadDataFirstTime() {
 
     $.ajax({
@@ -238,6 +241,7 @@ function loadDataFirstTime() {
 
                 toastr["error"]("It seems like the user you requested doesn't exist. Please check if the @ of the user is correct.", "Uh oh...");
             } else {
+                $('head').find('title')[0].text = `Live Tiktok Follower Count for "${data.username}"`;
                 updateCounts.name(data.username);
                 updateCounts.pfp(data.avatar);
                 updateCounts.banner("hide");
@@ -251,7 +255,7 @@ function loadDataFirstTime() {
 
                 setInterval(function() {
                     $.ajax({
-                        url: `https://api.nextcounts.com/api/tiktok/user/stats/${user}`,
+                        url: `https://api.nextcounts.com/api/tiktok/user/stats/${data.uid}`,
                         type: "GET",
                         dataType: "JSON",
                         success: function(data){

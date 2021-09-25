@@ -260,6 +260,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Triller Follower Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/triller/user/${user}`,
@@ -292,6 +293,7 @@ function loadDataFirstTime() {
             } else {
                 if (data.name !== null) {
                     if (data.name.length >= 1) {
+                        $('head').find('title')[0].text = `Live Triller Followers Count for "${data.name}"`;
                         if (data.isVerified == true) {
                             if (data.privateAcc == true) {
                                 updateCounts.name(
@@ -311,6 +313,7 @@ function loadDataFirstTime() {
                             }
                         }
                     } else {
+                        $('head').find('title')[0].text = `Live Triller Followers Count for "${data.username}"`;
                         if (data.isVerified == true) {
                             if (data.privateAcc == true) {
                                 updateCounts.name(
@@ -331,6 +334,7 @@ function loadDataFirstTime() {
                         }
                     }
                 } else {
+                    $('head').find('title')[0].text = `Live Triller Followers Count for "${data.username}"`;
                     if (data.isVerified == true) {
                         if (data.privateAcc == true) {
                             updateCounts.name(

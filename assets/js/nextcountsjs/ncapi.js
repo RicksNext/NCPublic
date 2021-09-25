@@ -158,6 +158,7 @@ $("#searchBtn").click(function () {
 });
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live NextCounts API Requests Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com`,

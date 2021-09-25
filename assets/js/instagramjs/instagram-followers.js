@@ -206,6 +206,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Instagram Follower Count`;
 
 function loadDataFirstTime() {
     $.ajax({
@@ -242,6 +243,8 @@ function loadDataFirstTime() {
                 } else {
                     updateCounts.name(data.username);
                 }
+
+                $('head').find('title')[0].text = `Live Instagram Follower Count for ${data.username}`;
                 updateCounts.pfp(data.pfp);
                 updateCounts.banner("hide");
                 hasBanner = false;

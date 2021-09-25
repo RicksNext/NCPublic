@@ -189,6 +189,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Utreon Video Views Count`;
 function loadDataFirstTime() {
     
     $.ajax({
@@ -217,6 +218,7 @@ function loadDataFirstTime() {
                 
                 toastr["error"]("It seems like the user you requested doesn't exist. Please check if the @ of the user is correct.", "Uh oh...");
             } else {
+                $('head').find('title')[0].text = `Live Utreon Video Views Count for "${data.title}"`;
                 updateCounts.name(data.title);
                 updateCounts.pfp(data.thumbnail);
                 updateCounts.banner("hide");

@@ -219,6 +219,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Subreddit Members Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/reddit/r/${subreddit}`,
@@ -249,6 +250,7 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
+                $('head').find('title')[0].text = `Live Subreddit Members Count for "${data.subreddit}"`;
                 updateCounts.name(data.subreddit);
 
                 updateCounts.pfp(data.subImg);

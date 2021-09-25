@@ -7,11 +7,14 @@ var updateCounts = {
         document.getElementById('userImg').src = url;
     },
     banner: function(url) {
-        if(url == "hide") {
-            document.getElementById('userBanner').style.opacity = `0`;
-            document.getElementById('userImg').style.marginTop = `-80px`;
+        if(window.location.pathname.includes(`/large/`)) {
+            if(url == "hide" || url == null) {
+                document.getElementById('userBanner').src = `https://nextcounts.com/assets/img/banner%20placeholder.jpg`;
+            } else {
+                document.getElementById('userBanner').src = url;
+            }
         } else {
-            document.getElementById('userBanner').src = url;
+            return;
         }
     },
     count: function(count) {
@@ -79,6 +82,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.pfp.large);
+                        updateCounts.banner(data.banner);
                         updateCounts.count(data.followers);
                         if (data.verified == true) {
                             if (data.protectedAcc == true) {
@@ -104,7 +108,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                         updateCounts.name(`${socialBadges.error} Something went wrong.`);
                     }
                 });
-            }, 2000);
+            }, 2500);
             break;
         case 'twitchfollowers':
             setInterval(function() {
@@ -113,6 +117,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.pfp);
+                        updateCounts.banner(data.channelBanner);
                         updateCounts.count(data.followers);
                         if (data.partner == true) {
                             updateCounts.name(`${socialBadges.twitch} ${data.username} ${socialBadges.verified}`);
@@ -139,6 +144,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.pfp);
+                        updateCounts.banner(data.channelBanner);
                         updateCounts.count(data.views);
                         if (data.partner == true) {
                             updateCounts.name(`${socialBadges.twitch} ${data.username} ${socialBadges.verified}`);
@@ -165,6 +171,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.avatar);
+                        updateCounts.banner(data.cover);
                         updateCounts.count(data.followersCount);
                         if (data.isVerified == true) {
                             updateCounts.name(`${data.username} ${socialBadges.verified}`);
@@ -190,6 +197,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                 if(!dataa.error) {
                     hasLoadedBefore = true;
                     updateCounts.pfp(dataa.avatar);
+                    updateCounts.banner(null);
                     updateCounts.name(`${socialBadges.tiktok} ${dataa.username}`);
 
                     setInterval(function() {
@@ -223,6 +231,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                 if(!dataa.error) {
                     hasLoadedBefore = true;
                     updateCounts.pfp(dataa.avatar);
+                    updateCounts.banner(null);
                     updateCounts.name(`${socialBadges.tiktok} ${dataa.username}`);
 
                     setInterval(function() {
@@ -257,6 +266,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.pfp("https://nextcounts.com/assets/img/logo.jpg");
+                        updateCounts.banner(null);
                         updateCounts.count(data.requests);
                         updateCounts.name(`${socialBadges.nextcounts} NextCounts API`);
                     } else {
@@ -278,6 +288,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                 if(!dataa.error) {
                     hasLoadedBefore = true;
                     updateCounts.pfp(dataa.pfp);
+                    updateCounts.banner(null);
 
                     if (dataa.verified == true) {
                         updateCounts.name(`${socialBadges.instagram} ${dataa.username} ${socialBadges.verified}`);
@@ -317,6 +328,8 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.count(data.stockPrice);
+                        updateCounts.banner(null);
+                        updateCounts.pfp(`https://nextcounts.com/assets/img/nasdaq%20logo.png`);
                         updateCounts.name(`${data.companyName}`);
                     } else {
                         if(hasLoadedBefore == false) {
@@ -338,6 +351,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.pfp('https://mixerno.space/favicon.ico');
+                        updateCounts.banner(null);
                         updateCounts.count(data.requests);
                         updateCounts.name(`Mixerno.space API`);
                     } else {
@@ -360,6 +374,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.guild.serverImg);
+                        updateCounts.banner(data.guild.serverBanner);
                         updateCounts.count(data.membersCount);
                         updateCounts.name(`${socialBadges.discord} ${data.guild.serverName}`);
                     } else {
@@ -382,6 +397,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     if(!data.error) {
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.subImg);
+                        updateCounts.banner(data.bannerImg);
                         updateCounts.count(data.members);
                         updateCounts.name(`${socialBadges.reddit} ${data.subreddit}`);
                     } else {
@@ -395,8 +411,536 @@ if(user == null && platform == null || user == "" && platform == "") {
                         updateCounts.name(`${socialBadges.error} Something went wrong.`);
                     }
                 });
-            }, 5000);
+            }, 2500);
             break;
+        case 'storyfirefollowers':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/storyfire/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.userImg);
+                        updateCounts.banner(null);
+                        updateCounts.count(data.followers);
+                        updateCounts.name(`${socialBadges.storyfire} ${data.username}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'storyfireblaze':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/storyfire/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.userImg);
+                        updateCounts.banner(null);
+                        updateCounts.count(data.blaze);
+                        updateCounts.name(`${socialBadges.storyfire} ${data.username}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'minecraftserver':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/minecraft/server/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.img);
+                        document.getElementById('userImg').className = "border rounded"
+                        updateCounts.banner(null);
+                        updateCounts.count(data.onlinePlayers);
+                        updateCounts.name(`<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M20 7L12 3L4 7M20 7L12 11M20 7V17L12 21M12 11L4 7M12 11V21M4 7V17L12 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg> ${data.host}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 5000);
+        break;
+        case 'gabfollowers':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/gab/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.pfp);
+                        updateCounts.banner(data.banner);
+                        updateCounts.count(data.followers);
+                        updateCounts.name(`<i class="fas fa-frog"></i> ${data.name}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'soundclouduser':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/soundcloud/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.avatar);
+                        updateCounts.banner(data.banner);
+                        updateCounts.count(data.followers);
+                        updateCounts.name(`${socialBadges.soundcloud} ${data.username}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'soundcloudplays':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/soundcloud/track/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.artwork);
+                        document.getElementById('userImg').className = "border rounded"
+                        updateCounts.banner(null);
+                        updateCounts.count(data.plays);
+                        updateCounts.name(`${socialBadges.soundcloud} ${data.title}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'soundcloudlikes':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/soundcloud/track/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.artwork);
+                        document.getElementById('userImg').className = "border rounded"
+                        updateCounts.banner(null);
+                        updateCounts.count(data.likes);
+                        updateCounts.name(`${socialBadges.soundcloud} ${data.title}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'twitchviewers':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/twitch/stream/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.streamPreview.medium);
+                        document.getElementById('userImg').className = "border rounded";
+                        document.getElementById('userImg').style.maxWidth = "135px";
+                        document.getElementById('userImg').style.width = "135px";
+                        updateCounts.banner(data.streamer.streamBanner);
+                        updateCounts.count(data.liveViewers);
+                        updateCounts.name(`${socialBadges.twitch} ${data.streamName}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 5000);
+        break;
+        case 'ytvideoviews':
+            $.ajax(`https://api.nextcounts.com/api/youtube/video/info/${user}`)
+            .done(function (dataa) {
+                if(!dataa.error) {
+                    hasLoadedBefore = true;
+                    updateCounts.pfp(dataa.thumbnails.medium.url);
+                    document.getElementById('userImg').className = "border rounded";
+                    document.getElementById('userImg').style.maxWidth = "135px";
+                    document.getElementById('userImg').style.width = "135px";
+                    updateCounts.banner(dataa.thumbnails.medium.url);
+
+                    updateCounts.name(`${socialBadges.youtube} ${dataa.videoTitle}`);
+
+                    setInterval(function() {
+                        $.ajax(`https://api.nextcounts.com/api/youtube/video/stats/${user}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                var views = parseInt(data.views);
+                                var likes = parseInt(data.likes);
+                                var localLikeCount = parseInt(localStorage.getItem('likeCount-' + user));
+                                var localViewCount = parseInt(localStorage.getItem('viewCount-' + user));
+                                var ratio = views / likes;
+                                if (localLikeCount == undefined || localLikeCount == null) {
+                                    localStorage.setItem('likeCount-' + user, likes);
+                                }
+                                if (localViewCount != views) {
+                                    localStorage.setItem('viewCount-' + user, views);
+                                    localStorage.setItem('likeCount-' + user, likes);
+                                }
+                                var estViewCount = Math.round(views + (likes - localLikeCount) * ratio);
+
+                                updateCounts.count(estViewCount);
+                            }
+                        })
+                        .fail(function () {
+                            if(hasLoadedBefore == false) {
+                                updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                            }
+                        });
+                    }, 2500);
+                } else {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                }
+            })
+            .fail(function () {
+                if(hasLoadedBefore == false) {
+                    updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                }
+            });
+        break;
+        case 'ytvideoviewsapi':
+            $.ajax(`https://api.nextcounts.com/api/youtube/video/info/${user}`)
+            .done(function (dataa) {
+                if(!dataa.error) {
+                    hasLoadedBefore = true;
+                    updateCounts.pfp(dataa.thumbnails.medium.url);
+                    document.getElementById('userImg').className = "border rounded";
+                    document.getElementById('userImg').style.maxWidth = "135px";
+                    document.getElementById('userImg').style.width = "135px";
+                    updateCounts.banner(dataa.thumbnails.medium.url);
+
+                    updateCounts.name(`${socialBadges.youtube} ${dataa.videoTitle}`);
+
+                    setInterval(function() {
+                        $.ajax(`https://api.nextcounts.com/api/youtube/video/stats/${user}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                updateCounts.count(data.views);
+                            }
+                        })
+                        .fail(function () {
+                            if(hasLoadedBefore == false) {
+                                updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                            }
+                        });
+                    }, 2500);
+                }
+            })
+            .fail(function () {
+                if(hasLoadedBefore == false) {
+                    updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                }
+            });
+        break;
+        case 'ytvideolikes':
+            $.ajax(`https://api.nextcounts.com/api/youtube/video/info/${user}`)
+            .done(function (dataa) {
+                if(!dataa.error) {
+                    hasLoadedBefore = true;
+                    updateCounts.pfp(dataa.thumbnails.medium.url);
+                    document.getElementById('userImg').className = "border rounded";
+                    document.getElementById('userImg').style.maxWidth = "135px";
+                    document.getElementById('userImg').style.width = "135px";
+                    updateCounts.banner(dataa.thumbnails.medium.url);
+
+                    updateCounts.name(`${socialBadges.youtube} ${dataa.videoTitle}`);
+
+                    setInterval(function() {
+                        $.ajax(`https://api.nextcounts.com/api/youtube/video/stats/${user}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                updateCounts.count(data.likes);
+                            }
+                        })
+                        .fail(function () {
+                            if(hasLoadedBefore == false) {
+                                updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                            }
+                        });
+                    }, 2500);
+                }
+            })
+            .fail(function () {
+                if(hasLoadedBefore == false) {
+                    updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                }
+            });
+        break;
+        case 'ytvideodislikes':
+            $.ajax(`https://api.nextcounts.com/api/youtube/video/info/${user}`)
+            .done(function (dataa) {
+                if(!dataa.error) {
+                    hasLoadedBefore = true;
+                    updateCounts.pfp(dataa.thumbnails.medium.url);
+                    document.getElementById('userImg').className = "border rounded";
+                    document.getElementById('userImg').style.maxWidth = "135px";
+                    document.getElementById('userImg').style.width = "135px";
+                    updateCounts.banner(dataa.thumbnails.medium.url);
+
+                    updateCounts.name(`${socialBadges.youtube} ${dataa.videoTitle}`);
+
+                    setInterval(function() {
+                        $.ajax(`https://api.nextcounts.com/api/youtube/video/stats/${user}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                updateCounts.count(data.dislikes);
+                            }
+                        })
+                        .fail(function () {
+                            if(hasLoadedBefore == false) {
+                                updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                            }
+                        });
+                    }, 2500);
+                }
+            })
+            .fail(function () {
+                if(hasLoadedBefore == false) {
+                    updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                }
+            });
+        break;
+        case 'ytvideocomments':
+            $.ajax(`https://api.nextcounts.com/api/youtube/video/info/${user}`)
+            .done(function (dataa) {
+                if(!dataa.error) {
+                    hasLoadedBefore = true;
+                    updateCounts.pfp(dataa.thumbnails.medium.url);
+                    document.getElementById('userImg').className = "border rounded";
+                    document.getElementById('userImg').style.maxWidth = "135px";
+                    document.getElementById('userImg').style.width = "135px";
+                    updateCounts.banner(dataa.thumbnails.medium.url);
+
+                    updateCounts.name(`${socialBadges.youtube} ${dataa.videoTitle}`);
+
+                    setInterval(function() {
+                        $.ajax(`https://api.nextcounts.com/api/youtube/video/stats/${user}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                updateCounts.count(data.comments);
+                            }
+                        })
+                        .fail(function () {
+                            if(hasLoadedBefore == false) {
+                                updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                            }
+                        });
+                    }, 2500);
+                }
+            })
+            .fail(function () {
+                if(hasLoadedBefore == false) {
+                    updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                }
+            });
+        break;
+        case 'ytsubcount':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/youtube/channel/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.userImg);
+                        updateCounts.banner(data.userBanner);
+                        updateCounts.count(data.subcount);
+                        updateCounts.name(`${socialBadges.youtube} ${data.username}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 5000);
+        break;
+        case 'ytviewcount':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/youtube/channel/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.userImg);
+                        updateCounts.banner(data.userBanner);
+                        updateCounts.count(data.viewcount);
+                        updateCounts.name(`${socialBadges.youtube} ${data.username}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 5000);
+        break;
+        case 'ytsubcountmixerno':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/youtube/channel/estimate/mixerno/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.avatar);
+                        updateCounts.banner(data.banner);
+                        updateCounts.count(data.estimatedSubCount);
+                        updateCounts.name(`${socialBadges.youtube} ${data.channelName}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'ytsubcountlcio':
+            $.ajax(`https://api.nextcounts.com/api/youtube/channel/${user}`)
+            .done(function (dataa) {
+                if(!dataa.error) {
+                    hasLoadedBefore = true;
+                    updateCounts.pfp(dataa.userImg);
+                    updateCounts.banner(dataa.userBanner);
+
+                    updateCounts.name(`${socialBadges.youtube} ${dataa.username}`);
+
+                    setInterval(function() {
+                        $.ajax(`https://api.nextcounts.com/api/youtube/channel/estimate/livecountsio/${user}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                updateCounts.count(data.estimatedSubCount);
+                            }
+                        })
+                        .fail(function () {
+                            if(hasLoadedBefore == false) {
+                                updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                            }
+                        });
+                    }, 2500);
+                } else {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                }
+            })
+            .fail(function () {
+                if(hasLoadedBefore == false) {
+                    updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                }
+            });
+        break;
+        case 'utreonfollowers':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/utreon/channel/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.pfp);
+                        updateCounts.banner(null);
+                        updateCounts.count(data.followers);
+                        updateCounts.name(`<i class="fa fa-chevron-right"></i> ${data.username}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'utreonvideoviews':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/utreon/video/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.thumbnail);
+                        updateCounts.banner(null);
+                        updateCounts.count(data.views);
+                        updateCounts.name(`<i class="fa fa-chevron-right"></i> ${data.subreddit}`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
         default:
             updateCounts.name(`${socialBadges.error} Something went wrong.`);
             updateCounts.count(80085);

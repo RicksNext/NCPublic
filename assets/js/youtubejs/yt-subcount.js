@@ -330,6 +330,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live YouTube Subscriber Count`;
 function loadDataFirstTime() {
 	
 	if (!providerInURL) {
@@ -468,6 +469,7 @@ function loadDataFirstTime() {
                 
                 toastr["error"]("It seems like the user you requested doesn't exist. Please check if the @ of the user is correct.", "Uh oh...");
             } else {
+				$('head').find('title')[0].text = `Live YouTube Subscriber Count for ${data.username}`;
                 updateCounts.name(data.username);
                 updateCounts.pfp(data.userImg);
 				if(data.userBanner !== "" && data.userBanner !== undefined) {

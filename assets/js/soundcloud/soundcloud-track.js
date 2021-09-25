@@ -174,6 +174,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Soundcloud Track Plays count`;
 function loadDataFirstTime() {
     
     $.ajax({
@@ -202,6 +203,7 @@ function loadDataFirstTime() {
                 
                 toastr["error"]("It seems like the user you requested doesn't exist. Please check if the @ of the user is correct.", "Uh oh...");
             } else {
+                $('head').find('title')[0].text = `Live Soundcloud Track Plays Count for "${data.title}"`;
                 updateCounts.name(data.title);
                 updateCounts.pfp(data.artwork);
                 updateCounts.banner("hide");

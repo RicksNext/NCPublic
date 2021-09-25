@@ -226,6 +226,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Twitch Stream Viewers Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/twitch/stream/${user}`,
@@ -281,6 +282,7 @@ function loadDataFirstTime() {
                 );
             }
             if(!data.error && !data.errn) {
+                $('head').find('title')[0].text = `Live Twitch Stream Viewers Count for "${data.streamName}"`;
                 updateCounts.name(data.streamName);
 
                 updateCounts.pfp(data.streamPreview.large);

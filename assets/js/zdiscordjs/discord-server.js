@@ -227,6 +227,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Discord Members Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/discord/server/${user}`,
@@ -258,6 +259,7 @@ function loadDataFirstTime() {
                 );
             } else {
                 updateCounts.name(data.guild.serverName);
+                $('head').find('title')[0].text = `Live Discord Members Count for "${data.guild.serverName}"`;
 
                 updateCounts.pfp(data.guild.serverImg);
                 if (data.guild.serverBanner && data.guild.serverBannerCode !== null) {

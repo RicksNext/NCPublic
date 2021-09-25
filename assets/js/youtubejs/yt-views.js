@@ -230,6 +230,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live YouTube Video Views Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/youtube/video/info/${videoid}`,
@@ -263,6 +264,7 @@ function loadDataFirstTime() {
 
             if(!data.error) {
                 updateCounts.name(data.videoTitle);
+                $('head').find('title')[0].text = `Live YouTube Video Views Count for "${data.videoTitle}"`;
 
                 updateCounts.pfp(data.thumbnails.medium.url);
 

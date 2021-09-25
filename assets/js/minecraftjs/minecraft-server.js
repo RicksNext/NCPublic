@@ -191,6 +191,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Minecraft Server Players Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/minecraft/server/${user}`,
@@ -221,6 +222,7 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
+                $('head').find('title')[0].text = `Live Minecraft Server Players Count for ${data.host}`;
                 updateCounts.name(data.host);
 
                 updateCounts.pfp(data.img);

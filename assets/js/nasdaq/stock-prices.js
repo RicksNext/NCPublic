@@ -189,6 +189,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Stock Market Price from NASDAQ`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/nasdaq/${user}`,
@@ -219,6 +220,7 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
+                $('head').find('title')[0].text = `Live Stock Market Price for ${data.companyName}`;
                 updateCounts.name(data.companyName);
 
                 updateCounts.mainCount(Math.abs(data.stockPrice));

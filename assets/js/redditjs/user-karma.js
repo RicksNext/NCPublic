@@ -205,6 +205,7 @@ function searchForUser() {
 }
 
 //Loads the actual data letsgooo
+$('head').find('title')[0].text = `Live Reddit User Karma Count`;
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api.nextcounts.com/api/reddit/u/${user}`,
@@ -235,6 +236,7 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
+                $('head').find('title')[0].text = `Live Reddit User Karma Count for "${data.name}"`;
                 updateCounts.name(data.name);
 
                 updateCounts.mainCount(data.totalKarma);
