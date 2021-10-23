@@ -367,6 +367,52 @@ if(user == null && platform == null || user == "" && platform == "") {
                 });
             }, 2000);
             break;
+        case 'teamtrees':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/teamtrees`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp('https://nextcounts.com/assets/img/teamtrees.png');
+                        updateCounts.banner(null);
+                        updateCounts.count(data.trees);
+                        updateCounts.name(`#TeamTrees`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2000);
+            break;
+        case 'teamseas':
+            setInterval(function() {
+                $.ajax(`https://api.nextcounts.com/api/teamseas`)
+                .done(function (data) {
+                    if(!data.error) {
+                        hasLoadedBefore = true;
+                        updateCounts.pfp('https://nextcounts.com/assets/img/teamseas.png');
+                        updateCounts.banner(null);
+                        updateCounts.count(data.donated);
+                        updateCounts.name(`#TeamSeas`);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2000);
+            break;
         case 'discordserver':
             setInterval(function() {
                 $.ajax(`https://api.nextcounts.com/api/discord/server/${user}`)

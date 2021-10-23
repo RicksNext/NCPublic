@@ -161,6 +161,26 @@
   transform: rotate(45deg);
 }
 
+.circleTeamtrees {
+  width: 8.5rem;
+  height: 8.5rem;
+  background: linear-gradient( to right, rgb(25, 109, 74), rgb(111, 186, 13) );
+  position: absolute;
+  border-radius: 50%;
+  z-index: 1;
+  transform: rotate(45deg);
+}
+
+.circleTeamseas {
+  width: 8.5rem;
+  height: 8.5rem;
+  background: linear-gradient( to right, rgb(1, 96, 153), rgb(181, 220, 225) );
+  position: absolute;
+  border-radius: 50%;
+  z-index: 1;
+  transform: rotate(45deg);
+}
+
 .socialInfo h1 {
   font-size: 3rem;
   color: #c0c0c0;

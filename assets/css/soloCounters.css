@@ -381,3 +381,11 @@ body {
   background: linear-gradient(120deg, #009ccc, #0479cd);
 }
 
+#app-navbar-teamtrees {
+  background: linear-gradient(120deg, rgb(25, 109, 74), rgb(111, 186, 13));
+}
+
+#app-navbar-teamseas {
+  background: linear-gradient(120deg, rgb(1, 96, 153), rgb(181, 220, 225));
+}
+
