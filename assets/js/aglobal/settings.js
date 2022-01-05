@@ -118,16 +118,6 @@ $('#themeSelector').change(function(){
     console.log($('#themeSelector').val());
 });
 
-document.getElementById("enableFluentBtn").addEventListener('change', function() {
-    if (this.checked) {
-      $('.btn').addClass('reveal');
-      localStorage.setItem("fluentBtn", "true");
-    } else {
-      $('.btn').removeClass('reveal');
-      localStorage.setItem("fluentBtn", "false");
-    }
-});
-
 document.getElementById("disableChartGlobal").addEventListener('change', function() {
     if (this.checked) {
         localStorage.setItem("globalChart", "false");
