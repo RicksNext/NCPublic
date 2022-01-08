@@ -206,7 +206,7 @@ function loadDataFirstTime() {
 
                 new Odometer({
                     el: document.getElementById("goalOdo"),
-                    value: data.donated / 2,
+                    value: data.donated && !isNaN(data.donated) ? data.donated / 2 : 0,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
@@ -257,6 +257,156 @@ function loadDataFirstTime() {
             try { JSON.parse(stats); } catch { toastr["info"](stats); };
 
             var ndata = JSON.parse(stats);
+            
+            var donationsGraph = document.createElement('div');
+            donationsGraph.className = 'chart';
+            document.getElementById('graphContainer').appendChild(donationsGraph);
+            
+            Highcharts.Point.prototype.highlight = function (event) {
+                event = this.series.chart.pointer.normalize(event);
+                this.onMouseOver(); // Show the hover marker
+                this.series.chart.tooltip.refresh(this); // Show the tooltip
+                this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+            };
+
+            Highcharts.Pointer.prototype.reset = function () {
+                return undefined;
+            };
+
+            ['mousemove', 'touchmove', 'touchstart'].forEach(function (eventType) {
+                document.getElementById('graphContainer').addEventListener(
+                    eventType,
+                    function (e) {
+                        var chart,
+                            point,
+                            i,
+                            event;
+            
+                        for (i = 1; i < Highcharts.charts.length; i = i + 1) {
+                            chart = Highcharts.charts[i];
+                            // Find coordinates within the chart
+                            event = chart.pointer.normalize(e);
+                            // Get the hovered point
+                            point = chart.series[0].searchPoint(event, true);
+            
+                            if (point) {
+                                point.highlight(e);
+                            }
+                        }
+                    }
+                );
+            });
+
+            
+            function syncExtremes(e) {
+                var thisChart = this.chart;
+
+                if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
+                    Highcharts.each(Highcharts.charts, function (chart) {
+                        if (chart !== thisChart) {
+                            if (chart.xAxis[0].setExtremes) { // It is null while updating
+                                chart.xAxis[0].setExtremes(
+                                    e.min,
+                                    e.max,
+                                    undefined,
+                                    false, {
+                                        trigger: 'syncExtremes'
+                                    }
+                                );
+                            }
+                        }
+                    });
+                }
+            }
+
+            new Highcharts.chart(donationsGraph, {
+                chart: {
+                    zoomType: "x",
+                    //marginLeft: 40, // Keep all charts left aligned
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: `Donations - Historical Data`,
+                    align: 'left',
+                    style: {
+                        color: textBright,
+                    },
+                    margin: 0,
+                    //x: 30
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: "datetime",
+                    crosshair: true,
+                    events: {
+                        setExtremes: syncExtremes
+                    },
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    gridLineColor: lineColor,
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                    title: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                tooltip: {
+                    positioner: function () {
+                        return {
+                            // right aligned
+                            x: this.chart.chartWidth - this.label.width,
+                            y: 10 // align to title
+                        };
+                    },
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '18px',
+                        color: textBright
+                    }
+                },
+                series: [{
+                    data: ndata,
+                    marker: {
+                        enabled: !1
+                    },
+                    name: `Donations - Historical Data`,
+                    type: 'spline',
+                    color: socialColor,
+                    fillOpacity: 0.3
+                }]
+            });
 
             oldTrees = ndata[ndata.length - 1][1];
 
@@ -264,7 +414,7 @@ function loadDataFirstTime() {
                 for (let i = 0; i < 30; i++) {
                     console.log(ndata.length - (i + 1))
                     $('#tableBody').append(`<tr>
-                        <td>${new Date(ndata[ndata.length - (i + 1)][0]).toLocaleString()}</td>
+                        <td>${new Date(ndata[ndata.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                         <td>${(ndata[ndata.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata[ndata.length - (i + 1)][1], ndata[ndata.length - (i + 2)][1], false)}</td>
                     </tr>`);
                 }
@@ -273,12 +423,12 @@ function loadDataFirstTime() {
                     console.log(ndata.length - (i + 1))
                     if (ndata.length - (i + 1) == 0) {
                         $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata[ndata.length - (i + 1)][0]).toLocaleString()}</td>
+                            <td>${new Date(ndata[ndata.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                             <td>${(ndata[ndata.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata[ndata.length - (i + 1)][1], ndata[ndata.length - (i + 1)][1], false)}</td>
                         </tr>`);
                     } else {
                         $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata[ndata.length - (i + 1)][0]).toLocaleString()}</td>
+                            <td>${new Date(ndata[ndata.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                             <td>${(ndata[ndata.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata[ndata.length - (i + 1)][1], ndata[ndata.length - (i + 2)][1], false)}</td>
                         </tr>`);
                     }

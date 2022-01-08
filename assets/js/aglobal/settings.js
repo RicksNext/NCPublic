@@ -58,6 +58,7 @@ if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "")
     }
 }
 
+/*
 if(localStorage.getItem("fluentBtn") == null || localStorage.getItem("fluentBtn") == "") {
     localStorage.setItem("fluentBtn", "false");
 } else {
@@ -72,6 +73,7 @@ if(localStorage.getItem("fluentBtn") == null || localStorage.getItem("fluentBtn"
         }
     }
 }
+*/
 
 if(localStorage.getItem("globalChart") == null || localStorage.getItem("globalChart") == "") {
     localStorage.setItem("globalChart", "true");
@@ -118,6 +120,7 @@ $('#themeSelector').change(function(){
     console.log($('#themeSelector').val());
 });
 
+/*
 document.getElementById("enableFluentBtn").addEventListener('change', function() {
     if (this.checked) {
       $('.btn').addClass('reveal');
@@ -127,6 +130,7 @@ document.getElementById("enableFluentBtn").addEventListener('change', function()
       localStorage.setItem("fluentBtn", "false");
     }
 });
+*/
 
 document.getElementById("disableChartGlobal").addEventListener('change', function() {
     if (this.checked) {
@@ -154,6 +158,7 @@ document.getElementById("disableThisChart").addEventListener('change', function(
     }
 });
 
+/*
 window.onload = () => {
 	let reveals = document.getElementsByClassName('reveal'), 
     maskSize = 150;
@@ -171,3 +176,4 @@ window.onload = () => {
         });
 	});
 }
+*/

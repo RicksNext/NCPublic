@@ -316,13 +316,437 @@ function loadDataFirstTime() {
 
             var ndata = JSON.parse(stats);
 
+            var viewsDiv = document.createElement('div');
+            var likesDiv = document.createElement('div');
+            var dislikesDiv = document.createElement('div');
+            var commentsDiv = document.createElement('div');
+            viewsDiv.className = likesDiv.className = dislikesDiv.className = commentsDiv.className = 'chart';
+            document.getElementById('graphContainer').appendChild(viewsDiv);
+            document.getElementById('graphContainer').appendChild(likesDiv);
+            document.getElementById('graphContainer').appendChild(dislikesDiv);
+            document.getElementById('graphContainer').appendChild(commentsDiv);
+            
+            Highcharts.Point.prototype.highlight = function (event) {
+                event = this.series.chart.pointer.normalize(event);
+                this.onMouseOver(); // Show the hover marker
+                this.series.chart.tooltip.refresh(this); // Show the tooltip
+                this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+            };
+
+            Highcharts.Pointer.prototype.reset = function () {
+                return undefined;
+            };
+
+            ['mousemove', 'touchmove', 'touchstart'].forEach(function (eventType) {
+                document.getElementById('graphContainer').addEventListener(
+                    eventType,
+                    function (e) {
+                        var chart,
+                            point,
+                            i,
+                            event;
+            
+                        for (i = 1; i < Highcharts.charts.length; i = i + 1) {
+                            chart = Highcharts.charts[i];
+                            // Find coordinates within the chart
+                            event = chart.pointer.normalize(e);
+                            // Get the hovered point
+                            point = chart.series[0].searchPoint(event, true);
+            
+                            if (point) {
+                                point.highlight(e);
+                            }
+                        }
+                    }
+                );
+            });
+
+            function syncExtremes(e) {
+                var thisChart = this.chart;
+
+                if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
+                    Highcharts.each(Highcharts.charts, function (chart) {
+                        if (chart !== thisChart) {
+                            if (chart.xAxis[0].setExtremes) { // It is null while updating
+                                chart.xAxis[0].setExtremes(
+                                    e.min,
+                                    e.max,
+                                    undefined,
+                                    false, {
+                                        trigger: 'syncExtremes'
+                                    }
+                                );
+                            }
+                        }
+                    });
+                }
+            }
+
+            new Highcharts.chart(viewsDiv, {
+                chart: {
+                    zoomType: "x",
+                    //marginLeft: 40, // Keep all charts left aligned
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: `Views - Historical Data`,
+                    align: 'left',
+                    style: {
+                        color: textBright,
+                    },
+                    margin: 0,
+                    //x: 30
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: "datetime",
+                    crosshair: true,
+                    events: {
+                        setExtremes: syncExtremes
+                    },
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    gridLineColor: lineColor,
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                    title: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                tooltip: {
+                    positioner: function () {
+                        return {
+                            // right aligned
+                            x: this.chart.chartWidth - this.label.width,
+                            y: 10 // align to title
+                        };
+                    },
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '18px',
+                        color: textBright
+                    }
+                },
+                series: [{
+                    data: ndata.views,
+                    marker: {
+                        enabled: !1
+                    },
+                    name: `Views - Historical Data`,
+                    type: 'spline',
+                    color: socialColor,
+                    fillOpacity: 0.3
+                }]
+            });
+
+            new Highcharts.chart(likesDiv, {
+                chart: {
+                    zoomType: "x",
+                    //marginLeft: 40, // Keep all charts left aligned
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: `Likes - Historical Data`,
+                    align: 'left',
+                    style: {
+                        color: textBright,
+                    },
+                    margin: 0,
+                    x: 30
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: "datetime",
+                    crosshair: true,
+                    events: {
+                        setExtremes: syncExtremes
+                    },
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    gridLineColor: lineColor,
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                    title: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                tooltip: {
+                    positioner: function () {
+                        return {
+                            // right aligned
+                            x: this.chart.chartWidth - this.label.width,
+                            y: 10 // align to title
+                        };
+                    },
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '18px',
+                        color: textBright
+                    }
+                },
+                series: [{
+                    data: ndata.likes,
+                    marker: {
+                        enabled: !1
+                    },
+                    name: `Likes - Historical Data`,
+                    type: 'spline',
+                    color: socialColor,
+                    fillOpacity: 0.3
+                }]
+            });
+
+            if(ndata.dislikes) {
+                new Highcharts.chart(dislikesDiv, {
+                    chart: {
+                        zoomType: "x",
+                        //marginLeft: 40, // Keep all charts left aligned
+                        spacingTop: 20,
+                        spacingBottom: 20,
+                        backgroundColor: "transparent",
+                        plotBorderColor: "transparent",
+                    },
+                    title: {
+                        text: `Dislikes (Legacy) - Historical Data`,
+                        align: 'left',
+                        style: {
+                            color: textBright,
+                        },
+                        margin: 0,
+                        x: 30
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    xAxis: {
+                        type: "datetime",
+                        crosshair: true,
+                        events: {
+                            setExtremes: syncExtremes
+                        },
+                        labels: {
+                            style: {
+                                color: textBright,
+                            },
+                        },
+                        gridLineColor: lineColor,
+                        lineColor: lineColor,
+                        minorGridLineColor: "#858585",
+                        tickColor: lineColor,
+                        title: {
+                            style: {
+                                color: textBright,
+                            },
+                        },
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        },
+                        gridLineColor: lineColor,
+                        labels: {
+                            style: {
+                                color: textBright,
+                            },
+                        },
+                        lineColor: lineColor,
+                        minorGridLineColor: "#505053",
+                        tickColor: lineColor,
+                    },
+                    tooltip: {
+                        positioner: function () {
+                            return {
+                                // right aligned
+                                x: this.chart.chartWidth - this.label.width,
+                                y: 10 // align to title
+                            };
+                        },
+                        borderWidth: 0,
+                        backgroundColor: 'none',
+                        pointFormat: '{point.y}',
+                        headerFormat: '',
+                        shadow: false,
+                        style: {
+                            fontSize: '18px',
+                            color: textBright
+                        }
+                    },
+                    series: [{
+                        data: ndata.dislikes,
+                        marker: {
+                            enabled: !1
+                        },
+                        name: `Dislikes (Legacy) - Historical Data`,
+                        type: 'spline',
+                        color: socialColor,
+                        fillOpacity: 0.3
+                    }]
+                });
+            }
+
+            new Highcharts.chart(commentsDiv, {
+                chart: {
+                    zoomType: "x",
+                    //marginLeft: 40, // Keep all charts left aligned
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: `Comments - Historical Data`,
+                    align: 'left',
+                    style: {
+                        color: textBright,
+                    },
+                    margin: 0,
+                    x: 30
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: "datetime",
+                    crosshair: true,
+                    events: {
+                        setExtremes: syncExtremes
+                    },
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    gridLineColor: lineColor,
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                    title: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                tooltip: {
+                    positioner: function () {
+                        return {
+                            // right aligned
+                            x: this.chart.chartWidth - this.label.width,
+                            y: 10 // align to title
+                        };
+                    },
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '18px',
+                        color: textBright
+                    }
+                },
+                series: [{
+                    data: ndata.comments,
+                    marker: {
+                        enabled: !1
+                    },
+                    name: `Comments - Historical Data`,
+                    type: 'spline',
+                    color: socialColor,
+                    fillOpacity: 0.3
+                }]
+            });
+
             oldViews = ndata.views[ndata.views.length - 1][1], oldLikes = ndata.likes[ndata.likes.length - 1][1]
 
             if (ndata.views.length > 30) {
                 for (let i = 0; i < 30; i++) {
                     console.log(ndata.views.length - (i + 1))
                     $('#tableBody').append(`<tr>
-                        <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toLocaleString()}</td>
+                        <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                         <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 2)][1], false)}</td>
                         <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 2)][1], false)}</td>
                         <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 2)][1], false)}</td>
@@ -333,14 +757,14 @@ function loadDataFirstTime() {
                     console.log(ndata.views.length - (i + 1))
                     if (ndata.views.length - (i + 1) == 0) {
                         $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toLocaleString()}</td>
+                            <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                             <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 1)][1], false)}</td>
                             <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 1)][1], false)}</td>
                             <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 1)][1], false)}</td>
                         </tr>`);
                     } else {
                         $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toLocaleString()}</td>
+                            <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                             <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 2)][1], false)}</td>
                             <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 2)][1], false)}</td>
                             <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 2)][1], false)}</td>
