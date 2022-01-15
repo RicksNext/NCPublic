@@ -1,4 +1,3 @@
-/*
 toastr.options = {
     closeButton: true,
     debug: false,
@@ -16,13 +15,12 @@ toastr.options = {
     showMethod: "fadeIn",
     hideMethod: "fadeOut",
 };
-*/
 
 //Stuff for the Chart & the actual chart
 
 const textBright = "#858585";
 const lineColor = "#858585";
-const socialColor = "#e01227";
+const socialColor = "#20c997";
 
 const chart = new Highcharts.chart({
     chart: {
@@ -76,7 +74,7 @@ const chart = new Highcharts.chart({
     series: [
         {
             showInLegend: false,
-            name: "Subscribers",
+            name: "Requests",
             marker: { enabled: false },
             color: socialColor,
             lineColor: socialColor,
@@ -125,27 +123,20 @@ function positiveOrNegative(number1, number2, id) {
 //URL Handler
 const queryString = window.location.search, urlParams = new URLSearchParams(queryString);
 
-const userInURL = urlParams.get("u"), odometerInURL = urlParams.get("o");
-var user = "";
-
-!userInURL ? user = "UCL-t6GiYdYgOgDdFVVx5G0w" : user = userInURL;
-
 //"Customize counter" Modal code
 var updateChart = true;
-var bannerCurrent = 1;
-var hasBanner = true;
 
 //Loads the actual data letsgooo
 
 var prevCount = [];
 var firstLive = [false, false];
 var oldFollowers = 0;
-var oldViews = 0;
+var oldLikes = 0;
 
 var rates = {
-    counts: [[], [], []],
-    vals: [0, 0, 0],
-    divisor: [0, 0, 0],
+    counts: [[], []],
+    vals: [0, 0],
+    divisor: [0, 0],
     add: function (i, a) {
         a = Number(a);
         rates.vals[i] *= rates.counts[i].length;
@@ -187,186 +178,73 @@ function getTime(t) {
 
 function loadDataFirstTime() {
     $.ajax({
-        url: `https://api-v2.nextcounts.com/api/youtube/channel/${user}`,
+        url: `https://api-v2.nextcounts.com/`,
         type: "GET",
         dataType: "JSON",
         success: function (data) {
-            if (data.error) {
+            if (!data.requests) {
                 toastr["error"](
-                    "It seems like the user you requested doesn't exist. Please check if the @ of the user is correct.",
+                    "It seems like the request endpoint has been disabled. Please try again later.",
                     "Uh oh..."
                 );
             } else {
-                updateCounts.name(data.username);
-
-                $('head').find('title')[0].text = `Live YouTube Subscriber Count for ${data.username}`;
-                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.userImg}" style="height: 50px;margin-right: 5px;" /> ${data.username}</a>`
-                updateCounts.pfp(data.userImg);
-                updateCounts.banner(data.userBanner);
-                hasBanner = true;
-
-                if(data.subcount >= 50000) {
-                    $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/youtube/channel/estimate/mixerno/${user}`,
-                        type: "GET",
-                        dataType: "JSON",
-                        success: function (dataa) {
-                            new Odometer({
-                                el: document.getElementById("mainOdometer"),
-                                value: dataa.estimatedSubCount,
-                                format: '(,ddd).dd',
-                            });
-
-                            new Odometer({
-                                el: document.getElementById("goalOdo"),
-                                value: !isNaN(dataa.estimatedSubCount) ? dataa.estimatedSubCount / 2 : 0,
-                                format: '(,ddd).dd',
-                            });
-
-                            new Odometer({
-                                el: document.getElementById("followingOdo"),
-                                value: data.subcount,
-                                format: '(,ddd).dd',
-                            });
-                            $('h5')[1].innerHTML = "Subscribers (API)";
-                            
-                            new Odometer({
-                                el: document.getElementById("likesOdo"),
-                                value: dataa.totalViews,
-                                format: '(,ddd).dd',
-                            });
-                            $('h5')[3].innerHTML = "Views (Estimated)";
-                        }, error: function () { }
-                    });
-                } else {
-                    new Odometer({
-                        el: document.getElementById("mainOdometer"),
-                        value: data.subcount,
-                        format: '(,ddd).dd',
-                    });
-    
-                    new Odometer({
-                        el: document.getElementById("goalOdo"),
-                        value: !isNaN(data.subcount) ? data.subcount / 2 : 0,
-                        format: '(,ddd).dd',
-                    });
-
-                    new Odometer({
-                        el: document.getElementById("followingOdo"),
-                        value: data.subcount,
-                        format: '(,ddd).dd',
-                    });
-                    $('h5')[1].innerHTML = "Subscribers (API)";
-
-                    new Odometer({
-                        el: document.getElementById("likesOdo"),
-                        value: data.likes,
-                        format: '(,ddd).dd',
-                    });
-                    $('h5')[3].innerHTML = "Views (API)";
-                }
+                $('head').find('title')[0].text = `Live NextCounts API Requests Count`;
+                updateCounts.name(`NextCounts API v2`);
 
                 new Odometer({
-                    el: document.getElementById("tweetsOdo"),
-                    value: data.videos,
+                    el: document.getElementById("mainOdometer"),
+                    value: data.requests,
+                    format: '(,ddd).dd',
+                });
+
+                new Odometer({
+                    el: document.getElementById("goalOdo"),
+                    value: data.requests && !isNaN(data.requests) ? data.requests / 2 : 0,
+                    format: '(,ddd).dd',
+                });
+                new Odometer({
+                    el: document.getElementById("firstSmallOdo"),
+                    value: data.youtube.quota,
                     format: '(,ddd).dd',
                 });
 
                 setInterval(function () {
                     $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/youtube/channel/${user}`,
+                        url: `https://api-v2.nextcounts.com/`,
                         type: "GET",
                         dataType: "JSON",
                         success: function (dataa) {
-                            if(dataa.subcount <= 50000) {
-                                $('h5')[1].innerHTML = "Subscribers (Estimate)";
-                                $('h5')[3].innerHTML = "Views (API)";
-                                $('strong')[0].innerHTML = "Live Subscribers Count (API)";
+                            updateCounts.mainCount(dataa.requests);
+                            updateCounts.following(dataa.youtube.quota);
+                            updateCounts.goalCount(dataa.requests);
 
-                                updateCounts.mainCount(dataa.subcount);
-                                updateCounts.videos(dataa.videos);
-                                updateCounts.views(dataa.viewcount);
-                                updateCounts.goalCount(dataa.subcount);
-    
-                                $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.subcount, oldFollowers, "followersToday");
-    
-                                $(`#tweetsToday`)[0].outerHTML = positiveOrNegative(dataa.viewcount, oldViews, "tweetsToday");
-                                
-                                if (!firstLive[0] || !firstLive[1]) {
-                                    prevCount[0] = dataa.subcount;
-                                    firstLive[0] = true;
-                                    prevCount[1] = dataa.viewcount;
-                                    firstLive[1] = true;
-                                } else {
-                                    rates.add(0, dataa.subcount - prevCount[0]);
-                                    rates.add(1, dataa.viewcount - prevCount[1]);
-                                    prevCount[0] = dataa.subcount;
-                                    prevCount[1] = dataa.viewcount;
-    
-                                    var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2;
-    
-                                    var final11 = Math.round(avgRate1 * 60).toLocaleString();
-                                    var final12 = Math.round(avgRate1 * 3600).toLocaleString();
-                                    var final13 = Math.round(avgRate1 * 86400).toLocaleString();
-    
-                                    var final21 = Math.round(avgRate2 * 60).toLocaleString();
-                                    var final22 = Math.round(avgRate2 * 3600).toLocaleString();
-                                    var final23 = Math.round(avgRate2 * 86400).toLocaleString();
-    
-                                    updateCounts.avgs1(final11, final12, final13);
-                                    updateCounts.avgs2(final21, final22, final23);
-                                }
+                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.requests, oldFollowers, "followersToday");
+
+                            $(`#likesToday`)[0].outerHTML = positiveOrNegative(dataa.youtube.quota, oldLikes, "likesToday");
+                            
+                            if (!firstLive[0] || !firstLive[1]) {
+                                prevCount[0] = dataa.requests;
+                                firstLive[0] = true;
+                                prevCount[1] = dataa.youtube.quota;
+                                firstLive[1] = true;
                             } else {
-                                updateCounts.subsecond(dataa.subcount);
-                            }
-                        }, error: function () { }
-                    });
+                                rates.add(0, dataa.requests - prevCount[0]);
+                                rates.add(1, dataa.youtube.quota - prevCount[1]);
+                                prevCount[0] = dataa.requests;
+                                prevCount[1] = dataa.youtube.quota;
 
-                    $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/youtube/channel/estimate/mixerno/${user}`,
-                        type: "GET",
-                        dataType: "JSON",
-                        success: function (dataa) {
-                            if(dataa.estimatedSubCount >= 50000) {
-                                $('h5')[1].innerHTML = "Subscribers (API)";
-                                $('h5')[3].innerHTML = "Views (Estimate)";
-                                $('strong')[0].innerHTML = "Live Subscribers Count (Estimated)";
+                                var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2;
 
-                                updateCounts.mainCount(dataa.estimatedSubCount);
-                                updateCounts.videos(dataa.videos);
-                                updateCounts.views(dataa.totalViews);
-                                updateCounts.goalCount(dataa.estimatedSubCount);
-    
-                                $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.estimatedSubCount, oldFollowers, "followersToday");
-    
-                                $(`#tweetsToday`)[0].outerHTML = positiveOrNegative(dataa.totalViews, oldViews, "tweetsToday");
-                                
-                                if (!firstLive[0] || !firstLive[1]) {
-                                    prevCount[0] = dataa.estimatedSubCount;
-                                    firstLive[0] = true;
-                                    prevCount[1] = dataa.totalViews;
-                                    firstLive[1] = true;
-                                } else {
-                                    rates.add(0, dataa.estimatedSubCount - prevCount[0]);
-                                    rates.add(1, dataa.totalViews - prevCount[1]);
-                                    prevCount[0] = dataa.estimatedSubCount;
-                                    prevCount[1] = dataa.totalViews;
-    
-                                    var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2;
-    
-                                    var final11 = Math.round(avgRate1 * 60).toLocaleString();
-                                    var final12 = Math.round(avgRate1 * 3600).toLocaleString();
-                                    var final13 = Math.round(avgRate1 * 86400).toLocaleString();
-    
-                                    var final21 = Math.round(avgRate2 * 60).toLocaleString();
-                                    var final22 = Math.round(avgRate2 * 3600).toLocaleString();
-                                    var final23 = Math.round(avgRate2 * 86400).toLocaleString();
-    
-                                    updateCounts.avgs1(final11, final12, final13);
-                                    updateCounts.avgs2(final21, final22, final23);
-                                }
-                            } else {
-                                updateCounts.subsecond(dataa.estimatedSubCount);
+                                var final11 = Math.round(avgRate1 * 60).toLocaleString();
+                                var final12 = Math.round(avgRate1 * 3600).toLocaleString();
+                                var final13 = Math.round(avgRate1 * 86400).toLocaleString();
+
+                                var final21 = Math.round(avgRate2 * 60).toLocaleString();
+                                var final22 = Math.round(avgRate2 * 3600).toLocaleString();
+                                var final23 = Math.round(avgRate2 * 86400).toLocaleString();
+
+                                updateCounts.avgs1(final11, final12, final13);
+                                updateCounts.avgs2(final21, final22, final23);
                             }
                         }, error: function () { }
                     });
@@ -376,21 +254,19 @@ function loadDataFirstTime() {
         error: function () { },
     });
 
-    $.ajax(`https://statsapi.nextcounts.com/youtubeuser/${user}`)
+    $.ajax(`https://statsapi.nextcounts.com/nextcounts/api`)
         .done(function (stats) {
             try { JSON.parse(stats); } catch { toastr["info"](stats); };
 
             var ndata = JSON.parse(stats);
 
-            var subscribersDiv = document.createElement('div');
-            var subscribersEstDiv = document.createElement('div');
-            var viewsDiv = document.createElement('div');
-            var videosDiv = document.createElement('div');
-            subscribersDiv.className = subscribersEstDiv.className = viewsDiv.className = videosDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(subscribersDiv);
-            document.getElementById('graphContainer').appendChild(subscribersEstDiv);
-            document.getElementById('graphContainer').appendChild(viewsDiv);
-            document.getElementById('graphContainer').appendChild(videosDiv);
+            var requestsDiv = document.createElement('div');
+            var blockedDiv = document.createElement('div');
+            var ytquotaDiv = document.createElement('div');
+            requestsDiv.className = blockedDiv.className = ytquotaDiv.className = 'chart';
+            document.getElementById('graphContainer').appendChild(requestsDiv);
+            document.getElementById('graphContainer').appendChild(blockedDiv);
+            document.getElementById('graphContainer').appendChild(ytquotaDiv);
             
             Highcharts.Point.prototype.highlight = function (event) {
                 event = this.series.chart.pointer.normalize(event);
@@ -448,7 +324,7 @@ function loadDataFirstTime() {
                 }
             }
 
-            new Highcharts.chart(subscribersDiv, {
+            new Highcharts.chart(requestsDiv, {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -458,7 +334,7 @@ function loadDataFirstTime() {
                     plotBorderColor: "transparent",
                 },
                 title: {
-                    text: `Subscribers (API) - Historical Data`,
+                    text: `Total Requests - Historical Data`,
                     align: 'left',
                     style: {
                         color: textBright,
@@ -526,18 +402,18 @@ function loadDataFirstTime() {
                     }
                 },
                 series: [{
-                    data: ndata.ytapi.subscribers,
+                    data: ndata.requestsTotal,
                     marker: {
                         enabled: !1
                     },
-                    name: `Subscribers (API) - Historical Data`,
+                    name: `Total Requests - Historical Data`,
                     type: 'spline',
                     color: socialColor,
                     fillOpacity: 0.3
                 }]
             });
 
-            new Highcharts.chart(subscribersEstDiv, {
+            new Highcharts.chart(blockedDiv, {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -547,7 +423,7 @@ function loadDataFirstTime() {
                     plotBorderColor: "transparent",
                 },
                 title: {
-                    text: `Subscribers (Mixerno Estimates) - Historical Data`,
+                    text: `Blocked Requests - Historical Data`,
                     align: 'left',
                     style: {
                         color: textBright,
@@ -615,18 +491,18 @@ function loadDataFirstTime() {
                     }
                 },
                 series: [{
-                    data: ndata.mixerno.subscribers,
+                    data: ndata.blockedTotal,
                     marker: {
                         enabled: !1
                     },
-                    name: `Subscribers (Mixerno Estimates) - Historical Data`,
+                    name: `Blocked Requests - Historical Data`,
                     type: 'spline',
                     color: socialColor,
                     fillOpacity: 0.3
                 }]
             });
 
-            new Highcharts.chart(viewsDiv, {
+            new Highcharts.chart(ytquotaDiv, {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -636,7 +512,7 @@ function loadDataFirstTime() {
                     plotBorderColor: "transparent",
                 },
                 title: {
-                    text: `Views - Historical Data`,
+                    text: `YouTube Quota Used - Historical Data`,
                     align: 'left',
                     style: {
                         color: textBright,
@@ -704,144 +580,45 @@ function loadDataFirstTime() {
                     }
                 },
                 series: [{
-                    data: ndata.ytapi.views,
+                    data: ndata.youtubeQuota,
                     marker: {
                         enabled: !1
                     },
-                    name: `Views - Historical Data`,
+                    name: `YouTube Quota Used - Historical Data`,
                     type: 'spline',
                     color: socialColor,
                     fillOpacity: 0.3
                 }]
             });
 
-            new Highcharts.chart(videosDiv, {
-                chart: {
-                    zoomType: "x",
-                    //marginLeft: 40, // Keep all charts left aligned
-                    spacingTop: 20,
-                    spacingBottom: 20,
-                    backgroundColor: "transparent",
-                    plotBorderColor: "transparent",
-                },
-                title: {
-                    text: `Videos - Historical Data`,
-                    align: 'left',
-                    style: {
-                        color: textBright,
-                    },
-                    margin: 0,
-                    x: 30
-                },
-                credits: {
-                    enabled: false
-                },
-                legend: {
-                    enabled: false
-                },
-                xAxis: {
-                    type: "datetime",
-                    crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
-                    labels: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                    gridLineColor: lineColor,
-                    lineColor: lineColor,
-                    minorGridLineColor: "#858585",
-                    tickColor: lineColor,
-                    title: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                },
-                yAxis: {
-                    title: {
-                        text: null
-                    },
-                    gridLineColor: lineColor,
-                    labels: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                    lineColor: lineColor,
-                    minorGridLineColor: "#505053",
-                    tickColor: lineColor,
-                },
-                tooltip: {
-                    positioner: function () {
-                        return {
-                            // right aligned
-                            x: this.chart.chartWidth - this.label.width,
-                            y: 10 // align to title
-                        };
-                    },
-                    borderWidth: 0,
-                    backgroundColor: 'none',
-                    pointFormat: '{point.y}',
-                    headerFormat: '',
-                    shadow: false,
-                    style: {
-                        fontSize: '18px',
-                        color: textBright
-                    }
-                },
-                series: [{
-                    data: ndata.ytapi.videos,
-                    marker: {
-                        enabled: !1
-                    },
-                    name: `Videos - Historical Data`,
-                    type: 'spline',
-                    color: socialColor,
-                    fillOpacity: 0.3
-                }]
-            });
+            oldFollowers = ndata.requestsTotal[ndata.requestsTotal.length - 1][1], oldLikes = ndata.blockedTotal[ndata.blockedTotal.length - 1][1];
 
-            if(ndata.ytapi.subscribers[0][1] >= 50000) {
-                oldFollowers = ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - 1][1];
-            } else {
-                oldFollowers = ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - 1][1];
-            }
-
-            oldViews = ndata.ytapi.views[ndata.ytapi.views.length - 1][1];
-
-
-            if (ndata.ytapi.subscribers.length > 30) {
-                for (let i = 0; i < 30; i++) {
-                    console.log(ndata.ytapi.subscribers.length - (i + 1))
+            if (ndata.requestsTotal.length > 30) {
+                for (let i = 0; i < ndata.requestsTotal.length - 1; i++) {
+                    console.log(ndata.requestsTotal.length - (i + 1))
                     $('#tableBody').append(`<tr>
-                        <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                        <td>${(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1], ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 2)][1], false)}</td>
-                        <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 2)][1], false)}</td>
-                        <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 2)][1], false)}</td>
-                        <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 2)][1], false)}</td>
+                        <td>${new Date(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                        <td>${(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1], ndata.requestsTotal[ndata.requestsTotal.length - (i + 2)][1], false)}</td>
+                        <td>${(ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1], ndata.blockedTotal[ndata.blockedTotal.length - (i + 2)][1], false)}</td>
+                        <td>${(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1], ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 2)][1], false)}</td>
                     </tr>`);
                 }
             } else {
-                for (let i = 0; i < ndata.ytapi.subscribers.length; i++) {
-                    console.log(ndata.ytapi.subscribers.length - (i + 1))
-                    if (ndata.ytapi.subscribers.length - (i + 1) == 0) {
+                for (let i = 0; i < ndata.requestsTotal.length; i++) {
+                    console.log(ndata.requestsTotal.length - (i + 1))
+                    if (ndata.requestsTotal.length - (i + 1) == 0) {
                         $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1], ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], false)}</td>
+                            <td>${new Date(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                            <td>${(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1], ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1], ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1], ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1], false)}</td>
                         </tr>`);
                     } else {
                         $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1], ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 2)][1], false)}</td>
+                            <td>${new Date(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                            <td>${(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1], ndata.requestsTotal[ndata.requestsTotal.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1], ndata.blockedTotal[ndata.blockedTotal.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1], ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 2)][1], false)}</td>
                         </tr>`);
                     }
                 }
@@ -865,7 +642,7 @@ var updateCounts = {
         document.getElementById("userImg").src = url;
     },
     banner: function (url) {
-        if (url == "hide") {
+        if (url == "hide" || url == null || url == "") {
             document.getElementById("userBanner").style.opacity = `0`;
             document.getElementById("userImg").style.marginTop = `-80px`;
         } else {
@@ -904,14 +681,14 @@ var updateCounts = {
             $("#takeover").html(secsLeft >= 0 ? getTime(secsLeft) : "Never");
         }
     },
-    subsecond: function (count) {
-        document.getElementById("followingOdo").innerHTML = count;
+    following: function (count) {
+        document.getElementById("firstSmallOdo").innerHTML = count;
     },
     videos: function (count) {
-        document.getElementById("tweetsOdo").innerHTML = count;
+        document.getElementById("secondSmallOdo").innerHTML = count;
     },
-    views: function (count) {
-        document.getElementById("likesOdo").innerHTML = count;
+    likes: function (count) {
+        document.getElementById("thirdSmallOdo").innerHTML = count;
     },
     avgs1: function (val1, val2, val3) {
         $("#11min").html(val1);
@@ -922,10 +699,5 @@ var updateCounts = {
         $("#21min").html(val1);
         $("#21hour").html(val2);
         $("#224hrs").html(val3);
-    },
-    avgs3: function (val1, val2, val3) {
-        $("#31min").html(val1);
-        $("#31hour").html(val2);
-        $("#324hrs").html(val3);
     },
 };

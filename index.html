@@ -10,9 +10,9 @@
     <meta name="twitter:description" content="Come check how many followers your friends have in their favorite platforms!">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="NextCounts">
-    <meta name="twitter:image" content="https://preview.nextcounts.com/assets/img/main icon black teal.png">
+    <meta name="twitter:image" content="https://nextcounts.com/assets/img/main icon black teal.png">
     <meta property="og:description" content="Come check how many followers your friends have in their favorite platforms!">
-    <meta property="og:image" content="https://preview.nextcounts.com/assets/img/main banner teal black.png">
+    <meta property="og:image" content="https://nextcounts.com/assets/img/main banner teal black.png">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" sizes="1280x1280" href="assets/img/main%20icon%20transparent%20white.png?h=bd82d3779ebddd3f8cc71cffaa6b7f55">
     <link rel="icon" type="image/png" sizes="1280x1280" href="assets/img/main%20icon%20transparent%20white.png?h=bd82d3779ebddd3f8cc71cffaa6b7f55">
@@ -20,12 +20,13 @@
     <link rel="icon" type="image/png" sizes="1280x1280" href="assets/img/main%20icon%20transparent%20white.png?h=bd82d3779ebddd3f8cc71cffaa6b7f55">
     <link rel="icon" type="image/png" sizes="1280x1280" href="assets/img/main%20icon%20transparent%20white.png?h=bd82d3779ebddd3f8cc71cffaa6b7f55">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css">
-    <link rel="manifest" href="manifest.json?h=0993ad606d8f085e05cc0534b0e272f9">
+    <link rel="manifest" href="manifest.json?h=17da46cc014bf6e59e2b214a6fbc5d87">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="assets/css/Footer-Basic.css?h=d15dfcb68fabe0442ff06063b052477c">
     <link rel="stylesheet" href="assets/css/gradient-navbar.css?h=4ae15b76681e1b1288bcefd94a110111">
@@ -33,10 +34,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="assets/css/navbar.css?h=86357661633fcd7458da996c46b2f27f">
     <link rel="stylesheet" href="assets/css/odometer.css?h=d2ae5baa3e34859d6f52e8fefb0d00c3">
-    <link rel="stylesheet" href="assets/css/styles.css?h=21a87c7f56b671238ff4a41f73e2ceff">
+    <link rel="stylesheet" href="assets/css/styles.css?h=8e97a119fd2805578ded22190409a301">
 </head>
 
 <body class="whitetheme" style="font-family: Poppins, sans-serif;">
+    <div class="modal fade" role="dialog" tabindex="-1" id="changelog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Changelog - NextCounts v3.0.1!</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>NextCounts got a new update since last time you got here! If you want, you can check the changes below!</p>
+                    <ul>
+                        <li>Triller Follower Counts were added!</li>
+                        <li>Discord Server Member counts too!</li>
+                        <li>and a counter for the NextCounts API too! Soon, the counts from our old API will be merged with the new one, so the counter will go up a lot soon and the past data graph will actually display data about the current API.<br><br><br><strong>More Customization:</strong><br></li>
+                        <li>Now you can change how long your charts will update: from just 15 seconds to never clear it, you're in absolute control!</li>
+                        <li>If you use the Dark theme, you will probably notice that it is now called "Darker" and has a slightly darker color scheme.</li>
+                        <li>There's now a new way to become an insider, unlocking a new visual theme and a demo for a feature, both of which are coming soon!<br><br><br><strong>Bug Fixes:</strong><br></li>
+                        <li>Patched a bug that would make odometers disappear and show "NaN" in its place.</li>
+                        <li>Banners in general should now display correctly without moving the counters down or up.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" role="dialog" tabindex="-1" id="settings">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -44,11 +68,19 @@
                     <h4 class="modal-title">Settings</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>Theme:</p><select class="shadow-sm custom-select" id="themeSelector"></select>
+                    <div class="form-group">
+                        <form>
+                            <p>Theme:</p><select class="shadow-sm custom-select" id="themeSelector"></select>
+                        </form>
+                        <form id="graphLimitSettingForm">
+                            <p><br>Graph Time Limit:</p><select class="shadow-sm custom-select" id="graphTimer"></select>
+                        </form>
+                    </div>
                     <p><br>Visual Settings</p>
                     <p class="lead text-center" id="settingsVisualDisclaimer">There are no visual options available for the current page.</p>
-                    <div class="custom-control custom-switch" id="chartGraphGlobalSwitch"><input class="custom-control-input" type="checkbox" id="disableChartGlobal"><label class="custom-control-label" for="disableChartGlobal">Disable Chart graph (Global option)</label></div>
-                    <div class="custom-control custom-switch" id="chartGraphSingleSwitch"><input class="custom-control-input" type="checkbox" id="disableThisChart"><label class="custom-control-label" for="disableThisChart">Disable Chart graph (this counter)</label></div>
+                    <div class="custom-control custom-switch" id="chartGraphGlobalSwitch"><input class="custom-control-input" type="checkbox" id="disableChartGlobal"><label class="custom-control-label" for="disableChartGlobal">Disable Wide Chart graph (Global option)</label></div>
+                    <div class="custom-control custom-switch" id="chartGraphSingleSwitch"><input class="custom-control-input" type="checkbox" id="disableThisChart"><label class="custom-control-label" data-toggle="tooltip" data-bss-tooltip="" for="disableThisChart" title="If in Compare page, this disables the Gap graph.">Disable Wide Chart graph (this counter)</label></div>
+                    <div class="custom-control custom-switch" id="chartDisableUsersGraphSwitch"><input class="custom-control-input" type="checkbox" id="disableUsersChart"><label class="custom-control-label" for="disableUsersChart">Disable Users Chart graph (keeps gap graph)</label></div>
                 </div>
                 <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button></div>
             </div>
@@ -62,7 +94,7 @@
                 </div>
                 <div class="modal-body"><select class="shadow-sm custom-select" id="searchPlatform"></select>
                     <p></p>
-                    <div class="input-group shadow-sm"><input class="form-control" type="text" id="searchbar">
+                    <div class="input-group shadow-sm"><input class="form-control" type="search" id="searchbar">
                         <div class="input-group-append"><button class="btn btn-primary" id="searchBtn" type="button">Search</button></div>
                     </div>
                     <p></p>
@@ -83,7 +115,7 @@
         </div>
     </div>
     <nav class="navbar navbar-light navbar-expand-md sticky-top shadow" id="app-navbar">
-        <div class="container-fluid"><a class="navbar-brand d-flex d-md-flex align-items-center align-items-md-center" href="#"><i class="icon-graph" id="brand-logo"></i>&nbsp;NextCounts&nbsp;<span class="badge badge-primary" style="background-color: var(--teal);">v3🎉</span></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container-fluid"><a class="navbar-brand d-flex d-md-flex align-items-center align-items-md-center" href="../../"><i class="icon-graph" id="brand-logo"></i>&nbsp;NextCounts&nbsp;<span class="badge badge-primary" style="background-color: var(--teal);">v3</span></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link active" href="https://twitter.com/NextCounts"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-twitter">
@@ -105,11 +137,16 @@
     </nav>
     <div class="text-center" style="margin-right: 20vw;margin-left: 20vw;margin-top: 20px;"><img class="img-fluid" alt="NextCounts Logo" src="assets/img/only%20icon%20teal.png?h=6b0e383fe7dad75ee99d83f22f82b7bd" style="height: 25vw;">
         <h1 style="color: var(--teal);font-size: 6vw;">NextCounts</h1>
-        <p class="lead">Welcome to NextCounts v3. The best version. Ever.<br><br></p>
+        <p class="lead">Welcome to NextCounts v3. The best version. Ever.<br><br></p><button class="btn btn-primary" type="button" data-target="#changelog" data-toggle="modal">Changelog (v3.0.1)</button>
     </div>
     <div style="text-align: center;margin: 5vw;">
-        <h2 data-toggle="tooltip" data-bss-tooltip="" title="At release, NextCounts v3 won't have all the platforms v2 had and all the platforms planned for this version."><strong>Any platform you wish.</strong></h2>
+        <h2 data-toggle="tooltip" data-bss-tooltip="" title="At the current stage, NextCounts doesn't yet have all the platforms planned to be added."><strong>Any platform you wish.</strong></h2>
+        <h4>We have one of the biggest collection of Social Media real-time counts. Never miss a moment.<br></h4>
         <div class="text-left">
+            <div class="card-columns" id="insidercomparegroup" style="display: none;margin: 2vw;">
+                <div class="card" style="opacity: 0;"></div>
+                <div class="card"><a class="btn btn-info btn-lg" role="button" style="height: 100%;width: 100%;" href="compare/"><i class="la la-area-chart"></i>&nbsp;Compare&nbsp;<span class="badge badge-primary">Demo</span><br></a></div>
+            </div>
             <div class="card-deck" style="margin: 2vw;">
                 <div class="card"><a class="btn btn-danger btn-lg" role="button" style="height: 100%;width: 100%;background: #bd2130;" href="youtube/user/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-youtube">
                             <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"></path>
@@ -119,6 +156,7 @@
                         </svg>&nbsp;YouTube Live Video Stats<br></a></div>
             </div>
             <div class="card-deck" style="margin: 2vw;">
+                <div class="card"><a class="btn btn-danger btn-lg" role="button" style="height: 100%;width: 100%;background: #f7375d;" href="triller/followers/"><img class="rounded img-fluid" src="assets/img/triller.svg?h=939c53eadd1092fcba3fba34f6cf07df" width="20" height="20">&nbsp;Triller Live Followers Count<br></a></div>
                 <div class="card"><a class="btn btn-primary btn-lg" role="button" style="height: 100%;width: 100%;background: var(--primary);" href="twitter/followers/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-twitter">
                             <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>
                         </svg>&nbsp;Twitter Live Followers Count<br></a></div>
@@ -134,6 +172,12 @@
                         </svg>&nbsp;Tiktok Live Followers Count<br></a></div>
             </div>
             <div class="card-deck" style="margin: 2vw;">
+                <div class="card"><a class="btn btn-primary btn-lg" role="button" style="height: 100%;width: 100%;background: #20c997;border-color: #20c997;" href="nextcounts/api/"><i class="icon-graph"></i>&nbsp;NextCounts API Requests<br></a></div>
+                <div class="card"><a class="btn btn-primary btn-lg" role="button" style="height: 100%;width: 100%;background: #7289DA;border-color: #7289DA;" href="discord/server/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-discord">
+                            <path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.249.594.05.05 0 0 0-.03.03.052.052 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z"></path>
+                        </svg>&nbsp;Discord Server Live Members<br></a></div>
+            </div>
+            <div class="card-deck" style="margin: 2vw;">
                 <div class="card"><a class="btn btn-success btn-lg" role="button" style="height: 100%;width: 100%;background: var(--success);" href="teamtrees/"><img class="img-fluid" src="assets/img/teamtrees.png?h=f49064bad801a6d83a6cf3230844b9e8" width="20" height="20">&nbsp;TeamTrees Live Donations<br></a></div>
                 <div class="card"><a class="btn btn-primary btn-lg" role="button" style="height: 100%;width: 100%;background: var(--primary);" href="teamseas/"><img class="img-fluid" src="assets/img/teamseas.png?h=e257e5e400463f0f5382f401215ea99b" width="20" height="20">&nbsp;TeamSeas Live Donations<br></a></div>
             </div>
@@ -143,10 +187,9 @@
         <div class="social"><a href="https://twitter.com/NextCounts"><i class="icon ion-social-twitter"></i></a><a href="https://twitter.com/NCInsiders"><i class="icon ion-social-twitter"></i></a></div>
         <ul class="list-inline">
             <li class="list-inline-item"><a href="https://nextcounts.com">Home</a></li>
-            <li class="list-inline-item"><a href="https://blog.nextcounts.com">Dev Blog</a></li>
             <li class="list-inline-item"><a href="https://dashboard.nextcounts.com">Streamer Dashboard</a></li>
         </ul>
-        <p class="copyright">NexMedia © 2021</p>
+        <p class="copyright">NexMedia © 2022</p>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
@@ -155,9 +198,9 @@
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://www.googletagmanager.com/gtag/js?id=G-R34Z4R4SVB"></script>
-    <script src="assets/js/aglobal/search.js?h=548ba507b14ed6e8a197d62bbef5d79a"></script>
-    <script src="assets/js/aglobal/settings.js?h=f89dab00e332fc01cca95ffa16a288b1"></script>
-    <script src="assets/js/odometer.js?h=1927551701c7b8e889150b9deeb58d20"></script>
+    <script src="assets/js/aglobal/odometer.js?h=1927551701c7b8e889150b9deeb58d20"></script>
+    <script src="assets/js/aglobal/search.js?h=2a1fb5107d73f216d9c2ddd695ac14df"></script>
+    <script src="assets/js/aglobal/settings.js?h=2d4ba23d0f7840251a7e5f0ffb9d1641"></script>
 </body>
 
 </html>

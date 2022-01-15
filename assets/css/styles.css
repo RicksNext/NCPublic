@@ -9,10 +9,15 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
 
 .darktheme, .darktheme .card, .darktheme .dataTables_length > label > select, .darktheme .dropdown-menu, .darktheme .dropdown-item, .darktheme .btn, .darktheme footer {
   color: #f8f9fa;
-  background-color: var(--dark);
+  background-color: rgb(18, 18, 18);
 }
 
-.darktheme .counterBtn {
+.amoledtheme, .amoledtheme .card, .amoledtheme .dataTables_length > label > select, .amoledtheme .dropdown-menu, .amoledtheme .dropdown-item, .amoledtheme .btn, .amoledtheme footer {
+  color: #f8f9fa;
+  background-color: rgb(0, 0, 0);
+}
+
+.darktheme .counterBtn, .amoledtheme .counterBtn {
   color: #e2e2e2;
   background-color: #495258;
 }
@@ -30,12 +35,26 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   color: #e2e2e2;
 }
 
+.amoledtheme .counterCard, .amoledtheme table, .amoledtheme .dataTables_length, .amoledtheme .dataTables_filter, .amoledtheme .dataTables_filter > label > input, .amoledtheme #tableBody > tr, .amoledtheme .dataTables_info, .amoledtheme .paginate_button.previous {
+  background-color: rgb(15, 15, 15);
+  color: #e2e2e2;
+}
+
 .darktheme .dropdown-item.active {
   background-color: rgb(125, 125, 125);
 }
 
+.amoledtheme .dropdown-item.active {
+  background-color: rgb(50, 50, 50);
+}
+
 .darktheme #app-navbar {
   background: rgba(80, 80, 80, 0.5);
+  color: #f8f9fa;
+}
+
+.amoledtheme #app-navbar {
+  background: rgba(30, 30, 30, 0.5);
   color: #f8f9fa;
 }
 
@@ -44,8 +63,18 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   color: rgb(225,225,225);
 }
 
+.amoledtheme select {
+  background: rgb(30, 30, 30);
+  color: rgb(225,225,225);
+}
+
 .darktheme .modal-content {
   background-image: linear-gradient( 125deg, rgba(80, 80, 80, 0.7), rgba(80, 80, 80, 0.5) 100% );
+  box-shadow: inset 1px 1px rgb(0 0 0 / 20%), inset -1px -1px rgb(0 0 0 / 10%), 1px 3px 24px -1px rgb(0 0 0 / 15%);
+}
+
+.amoledtheme .modal-content {
+  background-image: linear-gradient( 125deg, rgba(30, 30, 30, 0.7), rgba(30, 30, 30, 0.5) 100% );
   box-shadow: inset 1px 1px rgb(0 0 0 / 20%), inset -1px -1px rgb(0 0 0 / 10%), 1px 3px 24px -1px rgb(0 0 0 / 15%);
 }
 
@@ -112,6 +141,8 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
 
 #userbanner-header {
   width: 100%;
+  height: 300px;
+  object-fit: cover;
 }
 
 .userimgdiv {
@@ -165,6 +196,21 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
 
 .userheader-youtube, .userheader-youtube .navbar-brand {
   background-color: #e01227;
+  color: #f8f9fa;
+}
+
+.userheader-triller, .userheader-triller .navbar-brand {
+  background-color: #f7375d;
+  color: #f8f9fa;
+}
+
+.userheader-discord, .userheader-discord .navbar-brand {
+  background-color: #7289DA;
+  color: #f8f9fa;
+}
+
+.userheader-nextcounts, .userheader-nextcounts .navbar-brand {
+  background-color: #20c997;
   color: #f8f9fa;
 }
 

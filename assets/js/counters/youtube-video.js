@@ -21,7 +21,6 @@ toastr.options = {
 const textBright = "#858585";
 const lineColor = "#858585";
 const socialColor = "#e01227";
-var maxPoints = 900;
 
 const chart = new Highcharts.chart({
     chart: {

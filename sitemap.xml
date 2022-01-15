@@ -1,27 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
-        <loc>https://preview.nextcounts.com/teamseas/index.html</loc>
+        <loc>https://nextcounts.com/compare/index.html</loc>
     </url>
     <url>
-        <loc>https://preview.nextcounts.com/teamtrees/index.html</loc>
+        <loc>https://nextcounts.com/discord/server/index.html</loc>
     </url>
     <url>
-        <loc>https://preview.nextcounts.com/tiktok/followers/index.html</loc>
+        <loc>https://nextcounts.com/nextcounts/api/index.html</loc>
     </url>
     <url>
-        <loc>https://preview.nextcounts.com/twitch/followers/index.html</loc>
+        <loc>https://nextcounts.com/teamseas/index.html</loc>
     </url>
     <url>
-        <loc>https://preview.nextcounts.com/twitter/followers/index.html</loc>
+        <loc>https://nextcounts.com/teamtrees/index.html</loc>
     </url>
     <url>
-        <loc>https://preview.nextcounts.com/youtube/user/index.html</loc>
+        <loc>https://nextcounts.com/tiktok/followers/index.html</loc>
     </url>
     <url>
-        <loc>https://preview.nextcounts.com/youtube/video/index.html</loc>
+        <loc>https://nextcounts.com/triller/followers/index.html</loc>
     </url>
     <url>
-        <loc>https://preview.nextcounts.com/index.html</loc>
+        <loc>https://nextcounts.com/twitch/followers/index.html</loc>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/twitter/followers/index.html</loc>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/youtube/user/index.html</loc>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/youtube/video/index.html</loc>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/index.html</loc>
     </url>
 </urlset>

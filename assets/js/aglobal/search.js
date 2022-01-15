@@ -3,17 +3,17 @@ document.getElementById(`searchCard`).style.display = "none";
 
 var currVer = 'ncv3lesgo';
 $('#searchPlatform').append(`<option value=${currVer} selected="">Select a Platform</option>`);
-//$('#searchPlatform').append(`<option value="discordserver">Discord Server</option>`);
+$('#searchPlatform').append(`<option value="discordserver">Discord (Server)</option>`);
 //$('#searchPlatform').append(`<option value="mixernoapi">Mixerno.space (API)</option>`);
 //$('#searchPlatform').append(`<option value="nextcountsapi">NextCounts (API)</option>`);
 //$('#searchPlatform').append(`<option value="reddituser">Reddit (User Karma)</option>`);
 //$('#searchPlatform').append(`<option value="subreddit">Subreddit</option>`);
 //$('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
 //$('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</option>`);
-//$('#searchPlatform').append(`<option value="trilleruser">Triller</option>`);
+$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (Followers)</option>`);
+$('#searchPlatform').append(`<option value="trilleruser">Triller (Followers)</option>`);
 $('#searchPlatform').append(`<option value="twitchuser">Twitch (Followers)</option>`);
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (Followers)</option>`);
-$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (Followers)</option>`);
 $('#searchPlatform').append(`<option value="youtubeuser">YouTube (Channel)</option>`);
 $('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video)</option>`);
 
@@ -96,7 +96,7 @@ function searchForUser(searchTerm, platform) {
 
                 $.ajax(`https://api-v2.nextcounts.com/api/search/twitter/user/${t}`)
                 .done(function (data) {
-                    if(!data.error) {
+                    if(data.success == true) {
                         document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
                         document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitter/followers/?u=${data.userDefiner}`;
                         if (data.verified == true) {
@@ -141,7 +141,7 @@ function searchForUser(searchTerm, platform) {
 
                 $.ajax(`https://api-v2.nextcounts.com/api/search/tiktok/user/${t}`)
                 .done(function (data) {
-                    if(!data.error) {
+                    if(data.success == true) {
                         document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
                         document.getElementById(`searchUsername`).href = `https://nextcounts.com/tiktok/followers/?u=${data.userIdentifier}`;
                         if (data.verified == true) {
@@ -178,7 +178,7 @@ function searchForUser(searchTerm, platform) {
 
                 $.ajax(`https://api-v2.nextcounts.com/api/search/twitch/user/${t}`)
                 .done(function (dataa) {
-                    if(!dataa.error) {
+                    if(dataa.success == true) {
                         data = dataa.results[0];
 
                         document.getElementById(`searchFollowers`).innerHTML = `${dataa.followers.toLocaleString()} Followers`;
@@ -216,17 +216,17 @@ function searchForUser(searchTerm, platform) {
                     } else t = e;
                 }
 
-                $.ajax(`https://api-v2.nextcounts.com/api/triller/user/${t}`)
+                $.ajax(`https://api-v2.nextcounts.com/api/search/triller/user/${t}`)
                 .done(function (data) {
-                    if(!data.error) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.followersCount.toLocaleString()} Followers`;
-                        document.getElementById(`searchUsername`).href = `https://analytics.nextcounts.com/triller/user/?u=${t}`;
-                        if (data.isVerified == true) {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.verified}`;
+                    if(data.success == true) {
+                        document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].followers.toLocaleString()} Followers`;
+                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/triller/followers/?u=${data.results[0].definer}`;
+                        if (data.results[0].verified == true) {
+                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].username} ${socialBadges.verified}`;
                         } else {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.name}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].username}`;
                         }
-                        document.getElementById(`searchpfp`).src = `https://cors.nextcounts.com/raw?url=${data.avatar}`;
+                        document.getElementById(`searchpfp`).src = data.results[0].avatar;
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "block";
                     } else {
@@ -244,55 +244,11 @@ function searchForUser(searchTerm, platform) {
             case "discordserver":
                 $.ajax(`https://api-v2.nextcounts.com/api/discord/server/${searchTerm}`)
                 .done(function (data) {
-                    if(!data.error) {
+                    if(data.success == true) {
                         document.getElementById(`searchFollowers`).innerHTML = `${data.membersCount.toLocaleString()} Members`;
-                        document.getElementById(`searchUsername`).href = `https://analytics.nextcounts.com/discord/server/?u=${searchTerm}`;
+                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/discord/server/?u=${searchTerm}`;
                         document.getElementById(`searchUsername`).innerHTML = `${data.guild.serverName} ${socialBadges.discord}`;
-                        document.getElementById(`searchpfp`).src = `https://cors.nextcounts.com/raw?url=${data.guild.serverImg}`;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
-                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "none";
-                    }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "mixernoapi":
-                $.ajax(`https://api-v2.nextcounts.com/api/mixerno/stats`)
-                .done(function (data) {
-                    if(!data.error) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${Math.floor(data.requests).toLocaleString()} Requests`;
-                        document.getElementById(`searchUsername`).href = `https://analytics.nextcounts.com/mixerno/api`;
-                        document.getElementById(`searchUsername`).innerHTML = `Mixerno.space API`;
-                        document.getElementById(`searchpfp`).src = `https://cors.nextcounts.com/raw?url=https://mixerno.space/favicon.ico`;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
-                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "none";
-                    }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "nextcountsapi":
-                $.ajax(`https://api-v2.nextcounts.com/`)
-                .done(function (data) {
-                    if(!data.error) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${Math.floor(data.requests).toLocaleString()} Requests`;
-                        document.getElementById(`searchUsername`).href = `https://analytics.nextcounts.com/nextcounts/api`;
-                        document.getElementById(`searchUsername`).innerHTML = `NextCounts API ${socialBadges.nextcounts}`;
-                        document.getElementById(`searchpfp`).src = `https://cors.nextcounts.com/raw?url=https://nextcounts.com/assets/img/nc%20final%20logo.png`;
+                        document.getElementById(`searchpfp`).src = data.guild.serverImg;
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "block";
                     } else {

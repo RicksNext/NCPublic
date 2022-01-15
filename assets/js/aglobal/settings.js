@@ -4,19 +4,54 @@ gtag('js', new Date());
 
 gtag('config', 'G-R34Z4R4SVB');
 
-$('#themeSelector').append(
-    `<optgroup label="Select your theme">
-        <option value="white" selected>White (Default)</option>
-        <option value="dark">Dark</option>
+
+var maxPoints = 900;
+
+if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
+    $('#themeSelector').append(
+        `<optgroup label="Select your theme">
+            <option value="white" selected>White (Default)</option>
+            <option value="dark">Darker</option>
+            <option value="amoled">AMOLED Theme (Insider Exclusive - BETA)</option>
+        </optgroup>`
+    );
+    $('#insidercomparegroup').show();
+	$('.badge')[0].innerHTML = `v3.1 BETA`;
+} else {
+    $('#themeSelector').append(
+        `<optgroup label="Select your theme">
+            <option value="white" selected>White (Default)</option>
+            <option value="dark">Darker</option>
+        </optgroup>`
+    );
+	$('.badge')[0].innerHTML = `v3.0.1`;
+}
+
+$('#graphTimer').append(
+    `<optgroup label="Real-Time graph can show:">
+        <option value="7">15 Seconds</option>
+        <option value="30">1 Minute</option>
+        <option value="900" selected>30 Minutes (Default)</option>
+        <option value="1800">1 Hour</option>
+        <option value="3600">2 Hours</option>
+        <option value="5400">3 Hours</option>
+        <option value="2147483647">No Limit (Might cause lag after a while)</option>
     </optgroup>`
 );
 
 if(window.location.pathname == '/') {
     $(`#chartGraphGlobalSwitch`).hide();
     $(`#chartGraphSingleSwitch`).hide();
+    $(`#graphLimitSettingForm`).hide();
     $(`#settingsVisualDisclaimer`).show();
 } else {
     $(`#settingsVisualDisclaimer`).hide();
+}
+
+if(window.location.pathname.includes('compare')) {
+    $(`#chartDisableUsersGraphSwitch`).show();
+} else {
+    $(`#chartDisableUsersGraphSwitch`).hide();
 }
 
 toastr.options = {
@@ -37,6 +72,28 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
+if(localStorage.getItem("graphlimit") == null || localStorage.getItem("graphlimit") == "") {
+    localStorage.setItem("graphlimit", "900");
+} else {
+    $('#graphTimer')[0].value = localStorage.getItem("graphlimit");
+    maxPoints = Math.floor(localStorage.getItem("graphlimit"));
+}
+
+$('#graphTimer').change(function(){
+    localStorage.setItem("graphlimit", $('#graphTimer')[0].value);
+    maxPoints = Math.floor($('#graphTimer')[0].value);
+    console.log($('#graphTimer').val());
+
+    if(chart.series[0].points.length > $('#graphTimer').val()) {
+        for (let i = $('#graphTimer').val(); $('#graphTimer').val() <= chart.series[0].points.length; i++) {
+            chart.series[0].data[0].remove();
+        }
+    }
+});
+
+
+
+
 if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "") {
     localStorage.setItem("theme", "white");
 } else {
@@ -45,6 +102,13 @@ if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "")
             $('html')[0].className = 'darktheme';
             $('body')[0].className = 'darktheme';
             $('#themeSelector')[0].value = `dark`;
+            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+            break;
+        }
+        case "amoled": {
+            $('html')[0].className = 'amoledtheme';
+            $('body')[0].className = 'amoledtheme';
+            $('#themeSelector')[0].value = `amoled`;
             $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
             break;
         }
@@ -57,23 +121,6 @@ if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "")
         }
     }
 }
-
-/*
-if(localStorage.getItem("fluentBtn") == null || localStorage.getItem("fluentBtn") == "") {
-    localStorage.setItem("fluentBtn", "false");
-} else {
-    switch(localStorage.getItem("fluentBtn")) {
-        case "false": {
-            $('.btn').removeClass('reveal');
-            break;
-        }
-        default: {
-            $('.btn').addClass('reveal');
-            break;
-        }
-    }
-}
-*/
 
 if(localStorage.getItem("globalChart") == null || localStorage.getItem("globalChart") == "") {
     localStorage.setItem("globalChart", "true");
@@ -109,6 +156,13 @@ $('#themeSelector').change(function(){
             $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
             break;
         }
+        case `amoled`: {
+            localStorage.setItem("theme", "amoled");
+            $('html')[0].className = 'amoledtheme';
+            $('body')[0].className = 'amoledtheme';
+            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+            break;
+        }
         default: {
             localStorage.setItem("theme", "white");
             $('html')[0].className = 'whitetheme';
@@ -119,18 +173,6 @@ $('#themeSelector').change(function(){
     }
     console.log($('#themeSelector').val());
 });
-
-/*
-document.getElementById("enableFluentBtn").addEventListener('change', function() {
-    if (this.checked) {
-      $('.btn').addClass('reveal');
-      localStorage.setItem("fluentBtn", "true");
-    } else {
-      $('.btn').removeClass('reveal');
-      localStorage.setItem("fluentBtn", "false");
-    }
-});
-*/
 
 document.getElementById("disableChartGlobal").addEventListener('change', function() {
     if (this.checked) {
@@ -158,22 +200,69 @@ document.getElementById("disableThisChart").addEventListener('change', function(
     }
 });
 
-/*
-window.onload = () => {
-	let reveals = document.getElementsByClassName('reveal'), 
-    maskSize = 150;
-    
-    //$('.reveal').removeClass('btn');
-	window.addEventListener('mousemove', (e) => {
-        Array.from(reveals).forEach((element) => {
-        const {top, left, width, height} = element.getBoundingClientRect();
-        //const x = e.pageX - left - maskSize / 2, y = e.pageY - top - maskSize / 2;
-        const x = e.screenX - left - maskSize / 2, y = e.screenY - top - maskSize / 2;
-        //console.log(e.pageY - element.offsetTop / 2)
+document.getElementById("disableUsersChart").addEventListener('change', function() {
+    if (this.checked) {
+        charts[0].series[0].setData([]);
+        charts[1].series[0].setData([]);
+        $('#chartCard').hide();
+        updateUsersChart = false;
+    } else {
+        updateUsersChart = true;
+        $('#chartCard').show();
+    }
+});
 
-        element.style.webkitMaskPosition = `${x}px ${y}px`;
-        element.style.webkitMaskSize = `${maskSize}px ${maskSize}px`;
-        });
-	});
+//insider mode code
+
+// a key map of allowed keys
+var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down',
+    65: 'a',
+    66: 'b'
+};
+
+var konamiCode = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'];
+
+var konamiCodePosition = 0;
+
+document.addEventListener('keydown', function (e) {
+    var key = allowedKeys[e.keyCode];
+    var requiredKey = konamiCode[konamiCodePosition];
+
+    if (key == requiredKey) {
+        konamiCodePosition++;
+
+        if (konamiCodePosition == konamiCode.length) {
+            activateCheats();
+            konamiCodePosition = 0;
+        }
+    } else {
+        konamiCodePosition = 0;
+    }
+});
+
+function activateCheats() {
+    if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
+        var audio = new Audio('http://nextcounts.com/assets/logoff.mp3');
+        audio.play();
+
+        localStorage.setItem("insiderMode", 'false');
+		setTimeout(function(){
+			alert(`Insider Mode has been disabled!
+You need to refresh the page to disable Insider exclusive features. Don't tell anyone how you did this.`);
+		},20);
+    } else {
+        var audio = new Audio('http://nextcounts.com/assets/logon.mp3');
+        audio.play();
+
+        localStorage.setItem("insiderMode", 'true');
+		setTimeout(function(){
+			alert(`Insider Mode has been enabled!
+You need to refresh the page to enable Insider exclusive features. Don't tell anyone how you did this.`);
+		},20);
+        
+    }
 }
-*/

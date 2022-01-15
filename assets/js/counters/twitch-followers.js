@@ -22,7 +22,6 @@ $('#liveSpinner').hide();
 const textBright = "#858585";
 const lineColor = "#858585";
 const socialColor = "#9146FF";
-var maxPoints = 900;
 
 const chart = new Highcharts.chart({
     chart: {
@@ -212,7 +211,7 @@ function loadDataFirstTime() {
                     }
     
                     $('head').find('title')[0].text = `Live Twitch Follower Count for ${usdt.username}`;
-                    $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${usdt.avatar}" style="height: 50px;margin-right: 5px;" /> ${usdt.username}</a>`
+                    $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${usdt.avatar}" style="height: 50px;margin-right: 5px;" /> ${usdt.username} (@${user})</a>`
                     updateCounts.pfp(usdt.avatar);
                     updateCounts.banner(usdt.userBanner);
                     hasBanner = true;
