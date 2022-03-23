@@ -17,7 +17,7 @@ toastr.options = {
 };
 
 if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
-    //
+    // TODO: CFG5788-1
 } else {
     window.location.replace('/');
 }
@@ -31,14 +31,24 @@ const socialColors = {
 	twitch: `#6441a5`,
 	tiktok: `#EE1D52`,
 	triller: `#f7375d`,
-	reddit: `#f35d06`,
-	soundcloud: `#f35d06`,
 	storyfire: `#f35d06`,
     discord: `#7289DA`,
     nextcountsv2: "#359add",
     nextcounts: "#20c997",
     mixerno: "#707073"
-}
+};
+
+const customColors = [
+    "#0076B1",
+    "#000D38",
+    "#CC1552",
+    "#E4C722",
+    "#7400DA",
+    "#fe5f55",
+    //"#53b3cb",
+    "#59a96a",
+    "#0a369d"
+];
 
 Highcharts.setOptions({
     chart: {
@@ -106,7 +116,7 @@ const chart = new Highcharts.chart({
 
 var charts = [];
 
-var firstChart, secondChart;
+var firstChart, secondChart, ratesChart;
 
 //time calc for generating charts
 
@@ -135,7 +145,6 @@ function higherLowerOrEqual(number1, number2, noOtherData) {
 };
 
 function positiveOrNegative(number1, number2, id) {
-    console.log(number1, number2, id);
     if (number1 == null || number1 == undefined) number1 == number2;
     if (number2 == null || number2 == undefined) number2 == number1;
 
@@ -153,16 +162,32 @@ const queryString = window.location.search, urlParams = new URLSearchParams(quer
 
 var user1url = urlParams.get("u1"),
 user2url = urlParams.get("u2"),
-plat1 = urlParams.get("p1"),
-plat2 = urlParams.get("p2"),
+plat1url = urlParams.get("p1"),
+plat2url = urlParams.get("p2"),
 odometerInURL = urlParams.get("o");
 
-var user1, user2 = "";
+var user1, user2, plat1, plat2 = '';
 
-!user1 ? user1 = "charlidamelio" : user1 = user1url;
-!user2 ? user2 = "khaby.lame" : user2 = user2url;
-!plat1 ? plat1 = "tiktokuser" : plat1 = plat1;
-!plat2 ? plat2 = "tiktokuser" : plat2 = plat2;
+if (!user1url) {
+    user1 = "elonmusk";
+} else {
+    user1 = user1url;
+}
+if (!user2url) {
+    user2 = "ladygaga";
+} else {
+    user2 = user2url;
+}
+if (!plat1url) {
+    plat1 = "twitteruser";
+} else {
+    plat1 = plat1url;
+}
+if (!plat2url) {
+    plat2 = "twitteruser";
+} else {
+    plat2 = plat2url;
+}
 
 var validPlatforms = ["tiktokuser", "twitteruser", "youtubeuser", "youtubevideo", "trilleruser", "discordserver", "twitchuser"];
 
@@ -239,15 +264,16 @@ function loadUser(platform, user, number) {
                         } else {
                             if(firstLoad[number - 1] == true) {
                                 if (data.verified == true) {
-                                    updateCounts.name(`${data.username} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`, number);
+                                    updateCounts.name(`${data.username} ${socialBadges.verified}`, number);
                                 } else {
                                     updateCounts.name(data.username, number);
                                 }
 
+                                document.getElementById(`bottomtext-${number}`).innerHTML = `Followers ${socialBadges.tiktok}`;
                                 document.getElementById(`${number}0label`).innerHTML = `${data.username} Gains`;
                                 document.getElementById(`gainsheader${number}`).innerHTML = `${data.username} Today`;
                                 
-                                document.getElementById(`topheading`).innerHTML += document.getElementById(`topheading`).innerHTML.includes('Vs') ? `${data.username}` : `${data.username} Vs. `;
+                                document.getElementById(`topheading`).innerHTML += document.getElementById(`topheading`).innerHTML.includes('Vs') ? `${data.username} ${socialBadges.tiktok}` : `${data.username} ${socialBadges.tiktok} Vs. `;
 
                                 updateCounts.name(data.username, number);
     
@@ -320,7 +346,9 @@ function loadUser(platform, user, number) {
                                                 },
                                             },
                                             credits: {
-                                                enabled: false
+                                                enabled: true,
+                                                text: "NextCounts Analytics",
+                                                href: "https://nextcounts.com"
                                             },
                                             legend: {
                                                 enabled: false
@@ -410,12 +438,415 @@ function loadUser(platform, user, number) {
                 });
             } else return;
             break;
+        case "twitteruser":
+            if(firstLoad[number - 1] == true) {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/twitter/user/${user}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (data) {
+                        if (data.error) {
+                            if(firstLoad[number - 1] == true) toastr["error"]("It seems like one of the users you requested doesn't exist. Please check if the @ of the user is correct. - User " + number, "Uh oh...");
+                        } else {
+                            if(firstLoad[number - 1] == true) {
+                                if (data.verified == true) {
+                                    updateCounts.name(`${data.username} ${socialBadges.verified}`, number);
+                                } else {
+                                    updateCounts.name(data.username, number);
+                                }
+
+                                document.getElementById(`bottomtext-${number}`).innerHTML = `Followers ${socialBadges.twitter}`;
+                                document.getElementById(`${number}0label`).innerHTML = `${data.username} Gains`;
+                                document.getElementById(`gainsheader${number}`).innerHTML = `${data.username} Today`;
+                                
+                                document.getElementById(`topheading`).innerHTML += document.getElementById(`topheading`).innerHTML.includes('Vs') ? `${data.username} ${socialBadges.twitter}` : `${data.username} ${socialBadges.twitter} Vs. `;
+
+                                updateCounts.name(data.username, number);
+    
+                                updateCounts.pfp(data.pfp.large, number);
+                                updateCounts.banner("hide", number);
+                                hasBanner = false;
+                
+                                new Odometer({
+                                    el: document.getElementById("mainOdometer-"+number),
+                                    value: data.followers,
+                                    format: '(,ddd).dd',
+                                });
+                
+                                new Odometer({
+                                    el: document.getElementById(`user${number}goal`),
+                                    value: data.followers && !isNaN(data.followers) ? data.followers / 2 : 0,
+                                    format: '(,ddd).dd',
+                                });
+
+                                charts[number - 1] = new Highcharts.chart({
+                                    chart: {
+                                        renderTo: `userchart-${number}`
+                                    },
+                                    series: [
+                                        {
+                                            showInLegend: false,
+                                            name: "Followers",
+                                            marker: { enabled: false },
+                                            color: socialColors.twitter,
+                                            lineColor: socialColors.twitter,
+                                        },
+                                    ],
+                                });
+
+                                firstLoad[number - 1] = false;
+                                currcounts[number - 1] = data.followers;
+
+                                
+                                $.ajax(`https://statsapi.nextcounts.com/twitteruser/${user}`)
+                                .done(function (stats) {
+                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
+
+                                    var ndata = JSON.parse(stats);
+                                    
+                                    oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
+
+                                    chartSeries.push({
+                                        data: ndata.followers,
+                                        marker: {
+                                            enabled: false
+                                        },
+                                        name: `${data.username} - Follower Count`,
+                                        type: 'spline',
+                                        color: socialColors.twitter,
+                                        fillOpacity: 0.3
+                                    });
+
+                                    setTimeout(function() {
+                                        new Highcharts.chart(document.getElementById(`mainGraph`), {
+                                            chart: {
+                                                zoomType: "x",
+                                                backgroundColor: "transparent",
+                                                plotBorderColor: "transparent",
+                                            },
+                                            title: {
+                                                text: `Followers - Historical Comparison`,
+                                                align: 'left',
+                                                style: {
+                                                    color: textBright,
+                                                },
+                                            },
+                                            credits: {
+                                                enabled: true,
+                                                text: "NextCounts Analytics",
+                                                href: "https://nextcounts.com"
+                                            },
+                                            legend: {
+                                                enabled: false
+                                            },
+                                            xAxis: {
+                                                type: "datetime",
+                                                crosshair: true,
+                                                labels: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                                gridLineColor: lineColor,
+                                                lineColor: lineColor,
+                                                minorGridLineColor: "#858585",
+                                                tickColor: lineColor,
+                                                title: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                            },
+                                            yAxis: {
+                                                title: {
+                                                    text: null
+                                                },
+                                                gridLineColor: lineColor,
+                                                labels: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                                lineColor: lineColor,
+                                                minorGridLineColor: "#505053",
+                                                tickColor: lineColor,
+                                            },
+                                            series: chartSeries
+                                        });
+                                    }, 3500);
+                                });
+
+                                setTimeout(function() {
+                                    new Odometer({
+                                        el: document.getElementById(`gapcounter`),
+                                        value: 0,
+                                        format: '(,ddd).dd',
+                                    });
+                                }, 500);
+            
+                                setInterval(function () {
+                                    $.ajax({
+                                        url: `https://api-v2.nextcounts.com/api/twitter/user/${user}`,
+                                        type: "GET",
+                                        dataType: "JSON",
+                                        success: function (dataa) {
+                                            if(data.success == true) {
+                                                currcounts[number - 1] = dataa.followers;
+                                                updateCounts.mainCount(dataa.followers, number);
+                                                updateCounts.goalCount(dataa.followers, number);
+                    
+                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(dataa.followers, oldcounts[number - 1], `user${number}gains`);
+                                                
+                                                if (!firstLive[number - 1]) {
+                                                    prevCount[number - 1] = dataa.followers;
+                                                    firstLive[number - 1] = true;
+                                                } else {
+                                                    rates.add(number - 1, dataa.followers - prevCount[number - 1]);
+                                                    prevCount[number - 1] = dataa.followers;
+                    
+                                                    var avgRate = rates.vals[number - 1]/2;
+                    
+                                                    var final1 = Math.round(avgRate * 60).toLocaleString();
+                                                    var final2 = Math.round(avgRate * 3600).toLocaleString();
+                                                    var final3 = Math.round(avgRate * 86400).toLocaleString();
+                                                    updateCounts.avgs[number - 1](final1, final2, final3);
+                                                }
+                                            }
+                                        }, error: function () { }
+                                    });
+                                }, 2000);
+                            } else {
+                                //
+                            }
+                        }
+                    },
+                    error: function () { },
+                });
+            } else return;
+            break;
+        case "trilleruser":
+            if(firstLoad[number - 1] == true) {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/triller/user/${user}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (data) {
+                        if (data.error) {
+                            if(firstLoad[number - 1] == true) toastr["error"]("It seems like one of the users you requested doesn't exist. Please check if the @ of the user is correct. - User " + number, "Uh oh...");
+                        } else {
+                            if(firstLoad[number - 1] == true) {
+                                if (data.verified == true) {
+                                    updateCounts.name(`${data.username} ${socialBadges.verified}`, number);
+                                } else {
+                                    updateCounts.name(data.username, number);
+                                }
+
+                                document.getElementById(`bottomtext-${number}`).innerHTML = `Followers ${socialBadges.triller}`;
+                                document.getElementById(`${number}0label`).innerHTML = `${data.username} Gains`;
+                                document.getElementById(`gainsheader${number}`).innerHTML = `${data.username} Today`;
+                                
+                                document.getElementById(`topheading`).innerHTML += document.getElementById(`topheading`).innerHTML.includes('Vs') ? `${data.username} ${socialBadges.triller}` : `${data.username} ${socialBadges.triller} Vs. `;
+
+                                updateCounts.name(data.username, number);
+    
+                                updateCounts.pfp(data.avatar, number);
+                                updateCounts.banner("hide", number);
+                                hasBanner = false;
+                
+                                new Odometer({
+                                    el: document.getElementById("mainOdometer-"+number),
+                                    value: data.followers,
+                                    format: '(,ddd).dd',
+                                });
+                
+                                new Odometer({
+                                    el: document.getElementById(`user${number}goal`),
+                                    value: data.followers && !isNaN(data.followers) ? data.followers / 2 : 0,
+                                    format: '(,ddd).dd',
+                                });
+
+                                charts[number - 1] = new Highcharts.chart({
+                                    chart: {
+                                        renderTo: `userchart-${number}`
+                                    },
+                                    series: [
+                                        {
+                                            showInLegend: false,
+                                            name: "Followers",
+                                            marker: { enabled: false },
+                                            color: socialColors.triller,
+                                            lineColor: socialColors.triller,
+                                        },
+                                    ],
+                                });
+
+                                firstLoad[number - 1] = false;
+                                currcounts[number - 1] = data.followers;
+
+                                
+                                $.ajax(`https://statsapi.nextcounts.com/trilleruser/${user}`)
+                                .done(function (stats) {
+                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
+
+                                    var ndata = JSON.parse(stats);
+                                    
+                                    oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
+
+                                    chartSeries.push({
+                                        data: ndata.followers,
+                                        marker: {
+                                            enabled: false
+                                        },
+                                        name: `${data.username} - Follower Count`,
+                                        type: 'spline',
+                                        color: socialColors.triller,
+                                        fillOpacity: 0.3
+                                    });
+
+                                    setTimeout(function() {
+                                        new Highcharts.chart(document.getElementById(`mainGraph`), {
+                                            chart: {
+                                                zoomType: "x",
+                                                backgroundColor: "transparent",
+                                                plotBorderColor: "transparent",
+                                            },
+                                            title: {
+                                                text: `Followers - Historical Comparison`,
+                                                align: 'left',
+                                                style: {
+                                                    color: textBright,
+                                                },
+                                            },
+                                            credits: {
+                                                enabled: true,
+                                                text: "NextCounts Analytics",
+                                                href: "https://nextcounts.com"
+                                            },
+                                            legend: {
+                                                enabled: false
+                                            },
+                                            xAxis: {
+                                                type: "datetime",
+                                                crosshair: true,
+                                                labels: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                                gridLineColor: lineColor,
+                                                lineColor: lineColor,
+                                                minorGridLineColor: "#858585",
+                                                tickColor: lineColor,
+                                                title: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                            },
+                                            yAxis: {
+                                                title: {
+                                                    text: null
+                                                },
+                                                gridLineColor: lineColor,
+                                                labels: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                                lineColor: lineColor,
+                                                minorGridLineColor: "#505053",
+                                                tickColor: lineColor,
+                                            },
+                                            series: chartSeries
+                                        });
+                                    }, 3500);
+                                });
+
+                                setTimeout(function() {
+                                    new Odometer({
+                                        el: document.getElementById(`gapcounter`),
+                                        value: 0,
+                                        format: '(,ddd).dd',
+                                    });
+                                }, 500);
+            
+                                setInterval(function () {
+                                    $.ajax({
+                                        url: `https://api-v2.nextcounts.com/api/triller/user/${user}`,
+                                        type: "GET",
+                                        dataType: "JSON",
+                                        success: function (dataa) {
+                                            if(data.success == true) {
+                                                currcounts[number - 1] = dataa.followers;
+                                                updateCounts.mainCount(dataa.followers, number);
+                                                updateCounts.goalCount(dataa.followers, number);
+                    
+                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(dataa.followers, oldcounts[number - 1], `user${number}gains`);
+                                                
+                                                if (!firstLive[number - 1]) {
+                                                    prevCount[number - 1] = dataa.followers;
+                                                    firstLive[number - 1] = true;
+                                                } else {
+                                                    rates.add(number - 1, dataa.followers - prevCount[number - 1]);
+                                                    prevCount[number - 1] = dataa.followers;
+                    
+                                                    var avgRate = rates.vals[number - 1]/2;
+                    
+                                                    var final1 = Math.round(avgRate * 60).toLocaleString();
+                                                    var final2 = Math.round(avgRate * 3600).toLocaleString();
+                                                    var final3 = Math.round(avgRate * 86400).toLocaleString();
+                                                    updateCounts.avgs[number - 1](final1, final2, final3);
+                                                }
+                                            }
+                                        }, error: function () { }
+                                    });
+                                }, 2000);
+                            } else {
+                                //
+                            }
+                        }
+                    },
+                    error: function () { },
+                });
+            } else return;
+            break;
         default:
             toastr["error"](`It seems like the platform you selected (${platform}) isn't available in the compare page for NextCounts. Please check the spelling or replace it with a different platform.`, "Uh oh...");
             break;
     }
 
     setTimeout(function() {
+
+        var ratecolorone, ratecolortwo = customColors[Math.round(customColors.length * Math.random())];
+
+        ratesChart = new Highcharts.chart({
+            chart: {
+                renderTo: "ratesChart"
+            },
+            title: {
+                text: `Per minute gain rate - Chart Graph`,
+                align: 'left',
+                style: {
+                    color: textBright,
+                },
+            },
+            series: [
+                {
+                    showInLegend: false,
+                    name: `${$('#username-1')[0].innerHTML} - Follower Rate`,
+                    marker: { enabled: false },
+                    color: ratecolorone,
+                    lineColor: ratecolorone,
+                },
+                {
+                    showInLegend: false,
+                    name: `${$('#username-2')[0].innerHTML} - Follower Rate`,
+                    marker: { enabled: false },
+                    color: ratecolortwo,
+                    lineColor: ratecolortwo,
+                },
+            ],
+        });
         setInterval(function() {
             document.getElementById(`gapcounter`).innerHTML = currcounts[0] - currcounts[1];
     
@@ -423,7 +854,7 @@ function loadUser(platform, user, number) {
                 var gap = Math.floor(currcounts[0] - currcounts[1]);
     
                 var more = currcounts[0] > currcounts[1] ? 0 : 1, less = 1 - more;
-                var secsLeft = parseInt(gap / (rates.vals[less] - rates.vals[more]));
+                var secsLeft = parseInt(gap / (rates.vals[more] - rates.vals[less]));
                 $("#takeover").html(secsLeft >= 0 ? getTime(secsLeft) : "Never");
             }
     
@@ -432,9 +863,16 @@ function loadUser(platform, user, number) {
                     chart.series[0].data[0].remove();
                 }
                 chart.series[0].addPoint([calcTime(), currcounts[0] - currcounts[1]]);
+                
+                if (ratesChart.series[0].points.length >= maxPoints || ratesChart.series[1].points.length >= maxPoints) {
+                    ratesChart.series[0].data[0].remove();
+                    ratesChart.series[1].data[0].remove();
+                }
+                ratesChart.series[0].addPoint([calcTime(), Math.floor($('#11min')[0].innerHTML)]);
+                ratesChart.series[1].addPoint([calcTime(), Math.floor($('#21min')[0].innerHTML)]);
             }
         }, 2000);
-    }, 2000);
+    }, 3000);
 }
 
 
@@ -476,7 +914,7 @@ var updateCounts = {
         var semifinal = factor * 10 ** exponent;
         var final = semifinal - count;
 
-        document.getElementById(`user${user}goalheader`).innerHTML = `Left to ${count < 1e3 ? semifinal / 10 ** (exponent - 2) : count >= 1e3 && count < 1e4 ? semifinal / 10 ** (exponent) : count >= 1e4 && count < 1e6 ? semifinal / 10 ** (exponent - 1) : count >= 1e6 && count < 1e7 ? semifinal / 10 ** (exponent) : count >= 1e7 && count < 1e8 ? semifinal / 10 ** (exponent - 1) : count >= 1e8 && count < 1e9 ? semifinal / 10 ** (exponent - 2) : semifinal / 10 ** (exponent - 1)}${count < 1e3 ? "" : count >= 1e3 && count < 1e6 ? "k" : count >= 1e6 && count < 1e9 ? "M" : count >= 1e9 ? "B" : ""}`;
+        document.getElementById(`user${user}goalheader`).innerHTML = `Left to ${abbreviateGivenNumber(semifinal)}`;
 
         document.getElementById(`user${user}goal`).innerHTML = final;
     },

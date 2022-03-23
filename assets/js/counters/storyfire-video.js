@@ -20,7 +20,7 @@ toastr.options = {
 
 const textBright = "#858585";
 const lineColor = "#858585";
-const socialColor = "#f7375d";
+const socialColor = "#f35d06";
 
 const chart = new Highcharts.chart({
     chart: {
@@ -74,7 +74,7 @@ const chart = new Highcharts.chart({
     series: [
         {
             showInLegend: false,
-            name: "Followers",
+            name: "Views",
             marker: { enabled: false },
             color: socialColor,
             lineColor: socialColor,
@@ -123,19 +123,21 @@ function positiveOrNegative(number1, number2, id) {
 //URL Handler
 const queryString = window.location.search, urlParams = new URLSearchParams(queryString);
 
-const userInURL = urlParams.get("u"), odometerInURL = urlParams.get("o");
+const userInURL = urlParams.get("v"), odometerInURL = urlParams.get("o");
 var user = "";
 
-!userInURL ? user = "charlidamelio" : user = userInURL;
+!userInURL ? user = "621340b3343af0b0ee52ca67" : user = userInURL;
 
 //"Customize counter" Modal code
 var updateChart = true;
+var bannerCurrent = 0;
+var hasBanner = false;
 
 //Loads the actual data letsgooo
 
 var prevCount = [];
 var firstLive = [false, false];
-var oldFollowers = 0;
+var oldViews = 0;
 var oldLikes = 0;
 
 var rates = {
@@ -183,79 +185,79 @@ function getTime(t) {
 
 function loadDataFirstTime() {
     $.ajax({
-        url: `https://api-v2.nextcounts.com/api/triller/user/${user}`,
+        url: `https://api-v2.nextcounts.com/api/storyfire/video/${user}`,
         type: "GET",
         dataType: "JSON",
         success: function (data) {
-            if (data.error) {
+            if (data.success == false) {
                 toastr["error"](
                     "It seems like the user you requested doesn't exist. Please check if the @ of the user is correct.",
                     "Uh oh..."
                 );
             } else {
-                if(data.username !== null && data.username.length >= 1) {
-                    $('head').find('title')[0].text = `Live Triller Follower Count for ${data.username}`;
-                    $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.avatar}" style="height: 50px;margin-right: 5px;" /> ${data.username} (@${user})</a>`;
+                updateCounts.name(data.title);
 
-                    if (data.verified == true) {
-                        updateCounts.name(`${data.username} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`);
-                    } else {
-                        updateCounts.name(data.username);
-                    }
-                } else {
-                    $('head').find('title')[0].text = `Live Triller Follower Count for @${user}`;
-                    $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.avatar}" style="height: 50px;margin-right: 5px;" /> @${user}</a>`;
-                    if (data.verified == true) {
-                        updateCounts.name(`@${user} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`);
-                    } else {
-                        updateCounts.name(`@${user}`);
-                    }
-                }
-
-                updateCounts.pfp(data.avatar);
-                updateCounts.banner(data.banner);
+                $('head').find('title')[0].text = `Live StoryFire Video Views Count for "${data.title}"`;
+                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded img-fluid" id="userimg-header" src="${data.thumbnail}" style="height: 50px;margin-right: 5px;" /> ${data.title}</a>`
+                updateCounts.pfp(data.thumbnail);
+                updateCounts.banner("hide");
+                hasBanner = false;
 
                 new Odometer({
                     el: document.getElementById("mainOdometer"),
-                    value: data.followers,
+                    value: data.views,
                     format: '(,ddd).dd',
                 });
 
                 new Odometer({
                     el: document.getElementById("goalOdo"),
-                    value: data.followers && !isNaN(data.followers) ? data.followers / 2 : 0,
+                    value: data.views / 2,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
                     el: document.getElementById("firstSmallOdo"),
-                    value: data.following,
+                    value: data.likes,
+                    format: '(,ddd).dd',
+                });
+                new Odometer({
+                    el: document.getElementById("secondSmallOdo"),
+                    value: data.comments,
+                    format: '(,ddd).dd',
+                });
+
+                new Odometer({
+                    el: document.getElementById("thirdSmallOdo"),
+                    value: data.uploaderInfo.followersCount,
                     format: '(,ddd).dd',
                 });
 
                 setInterval(function () {
                     $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/triller/user/${user}`,
+                        url: `https://api-v2.nextcounts.com/api/storyfire/video/${user}`,
                         type: "GET",
                         dataType: "JSON",
                         success: function (dataa) {
-                            updateCounts.mainCount(dataa.followers);
-                            updateCounts.following(dataa.following);
-                            updateCounts.goalCount(dataa.followers);
+                            updateCounts.mainCount(dataa.views);
+                            updateCounts.goalCount(dataa.views);
 
-                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.followers, oldFollowers, "followersToday");
+                            updateCounts.firstSmall(dataa.likes);
+                            updateCounts.secondSmall(dataa.comments);
+                            updateCounts.thirdSmall(dataa.uploaderInfo.followersCount);
 
-                            $(`#likesToday`)[0].outerHTML = positiveOrNegative(dataa.following, oldLikes, "likesToday");
+                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.views, oldViews, "followersToday");
+
+                            $(`#likesToday`)[0].outerHTML = positiveOrNegative(dataa.likes, oldLikes, "likesToday");
                             
                             if (!firstLive[0] || !firstLive[1]) {
-                                prevCount[0] = dataa.followers;
+                                prevCount[0] = dataa.views;
                                 firstLive[0] = true;
-                                prevCount[1] = dataa.following;
+                                prevCount[1] = dataa.likes;
                                 firstLive[1] = true;
                             } else {
-                                rates.add(0, dataa.followers - prevCount[0]);
-                                rates.add(1, dataa.following - prevCount[1]);
-                                prevCount[0] = dataa.followers;
-                                prevCount[1] = dataa.following;
+                                rates.add(0, dataa.views - prevCount[0]);
+                                rates.add(1, dataa.likes - prevCount[1]);
+                                prevCount[0] = dataa.views;
+                                prevCount[1] = dataa.likes;
 
                                 var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2;
 
@@ -278,17 +280,19 @@ function loadDataFirstTime() {
         error: function () { },
     });
 
-    $.ajax(`https://statsapi.nextcounts.com/trilleruser/${user}`)
+    $.ajax(`https://statsapi.nextcounts.com/storyfirevideo/${user}`)
         .done(function (stats) {
             try { JSON.parse(stats); } catch { toastr["info"](stats); };
 
             var ndata = JSON.parse(stats);
 
-            var followersDiv = document.createElement('div');
-            var followingDiv = document.createElement('div');
-            followersDiv.className = followingDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(followersDiv);
-            document.getElementById('graphContainer').appendChild(followingDiv);
+            var viewsDiv = document.createElement('div');
+            var likesDiv = document.createElement('div');
+            var commentsDiv = document.createElement('div');
+            viewsDiv.className = likesDiv.className = commentsDiv.className = 'chart';
+            document.getElementById('graphContainer').appendChild(viewsDiv);
+            document.getElementById('graphContainer').appendChild(likesDiv);
+            document.getElementById('graphContainer').appendChild(commentsDiv);
             
             Highcharts.Point.prototype.highlight = function (event) {
                 event = this.series.chart.pointer.normalize(event);
@@ -325,7 +329,6 @@ function loadDataFirstTime() {
                 );
             });
 
-            
             function syncExtremes(e) {
                 var thisChart = this.chart;
 
@@ -347,7 +350,7 @@ function loadDataFirstTime() {
                 }
             }
 
-            new Highcharts.chart(followersDiv, {
+            new Highcharts.chart(viewsDiv, {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -357,7 +360,7 @@ function loadDataFirstTime() {
                     plotBorderColor: "transparent",
                 },
                 title: {
-                    text: `Followers - Historical Data`,
+                    text: `Views - Historical Data`,
                     align: 'left',
                     style: {
                         color: textBright,
@@ -425,18 +428,18 @@ function loadDataFirstTime() {
                     }
                 },
                 series: [{
-                    data: ndata.followers,
+                    data: ndata.views,
                     marker: {
                         enabled: !1
                     },
-                    name: `Followers - Historical Data`,
+                    name: `Views - Historical Data`,
                     type: 'spline',
                     color: socialColor,
                     fillOpacity: 0.3
                 }]
             });
 
-            new Highcharts.chart(followingDiv, {
+            new Highcharts.chart(likesDiv, {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -446,7 +449,7 @@ function loadDataFirstTime() {
                     plotBorderColor: "transparent",
                 },
                 title: {
-                    text: `Following - Historical Data`,
+                    text: `Likes - Historical Data`,
                     align: 'left',
                     style: {
                         color: textBright,
@@ -514,42 +517,134 @@ function loadDataFirstTime() {
                     }
                 },
                 series: [{
-                    data: ndata.following,
+                    data: ndata.likes,
                     marker: {
                         enabled: !1
                     },
-                    name: `Following - Historical Data`,
+                    name: `Likes - Historical Data`,
                     type: 'spline',
                     color: socialColor,
                     fillOpacity: 0.3
                 }]
             });
 
-            oldFollowers = ndata.followers[ndata.followers.length - 1][1], oldLikes = ndata.following[ndata.following.length - 1][1];
+            new Highcharts.chart(commentsDiv, {
+                chart: {
+                    zoomType: "x",
+                    //marginLeft: 40, // Keep all charts left aligned
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: `Comments - Historical Data`,
+                    align: 'left',
+                    style: {
+                        color: textBright,
+                    },
+                    margin: 0,
+                    x: 30
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: "datetime",
+                    crosshair: true,
+                    events: {
+                        setExtremes: syncExtremes
+                    },
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    gridLineColor: lineColor,
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                    title: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                tooltip: {
+                    positioner: function () {
+                        return {
+                            // right aligned
+                            x: this.chart.chartWidth - this.label.width,
+                            y: 10 // align to title
+                        };
+                    },
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '18px',
+                        color: textBright
+                    }
+                },
+                series: [{
+                    data: ndata.comments,
+                    marker: {
+                        enabled: !1
+                    },
+                    name: `Comments - Historical Data`,
+                    type: 'spline',
+                    color: socialColor,
+                    fillOpacity: 0.3
+                }]
+            });
 
-            if (ndata.followers.length > 30) {
+            oldViews = ndata.views[ndata.views.length - 1][1], oldLikes = ndata.likes[ndata.likes.length - 1][1]
+
+            if (ndata.views.length > 30) {
                 for (let i = 0; i < 30; i++) {
-                    console.log(ndata.followers.length - (i + 1))
+                    console.log(ndata.views.length - (i + 1))
                     $('#tableBody').append(`<tr>
-                        <td>${new Date(ndata.followers[ndata.followers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                        <td>${(ndata.followers[ndata.followers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.followers[ndata.followers.length - (i + 1)][1], ndata.followers[ndata.followers.length - (i + 2)][1], false)}</td>
-                        <td>${(ndata.following[ndata.following.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.following[ndata.following.length - (i + 1)][1], ndata.following[ndata.following.length - (i + 2)][1], false)}</td>
+                        <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                        <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 2)][1], false)}</td>
+                        <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 2)][1], false)}</td>
+                        <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 2)][1], false)}</td>
                     </tr>`);
                 }
             } else {
-                for (let i = 0; i < ndata.followers.length; i++) {
-                    console.log(ndata.followers.length - (i + 1))
-                    if (ndata.followers.length - (i + 1) == 0) {
+                for (let i = 0; i < ndata.views.length; i++) {
+                    console.log(ndata.views.length - (i + 1))
+                    if (ndata.views.length - (i + 1) == 0) {
                         $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.followers[ndata.followers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.followers[ndata.followers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.followers[ndata.followers.length - (i + 1)][1], ndata.followers[ndata.followers.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.following[ndata.following.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.following[ndata.following.length - (i + 1)][1], ndata.following[ndata.following.length - (i + 1)][1], false)}</td>
+                            <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                            <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 1)][1], false)}</td>
                         </tr>`);
                     } else {
                         $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.followers[ndata.followers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.followers[ndata.followers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.followers[ndata.followers.length - (i + 1)][1], ndata.followers[ndata.followers.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.following[ndata.following.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.following[ndata.following.length - (i + 1)][1], ndata.following[ndata.following.length - (i + 2)][1], false)}</td>
+                            <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                            <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 2)][1], false)}</td>
                         </tr>`);
                     }
                 }
@@ -573,7 +668,7 @@ var updateCounts = {
         document.getElementById("userImg").src = url;
     },
     banner: function (url) {
-        if (url == "hide" || url == null || url == "") {
+        if (url == "hide") {
             document.getElementById("userBanner").style.opacity = `0`;
             document.getElementById("userImg").style.marginTop = `-80px`;
         } else {
@@ -610,13 +705,13 @@ var updateCounts = {
             $("#takeover").html(secsLeft >= 0 ? getTime(secsLeft) : "Never");
         }
     },
-    following: function (count) {
+    firstSmall: function (count) {
         document.getElementById("firstSmallOdo").innerHTML = count;
     },
-    videos: function (count) {
+    secondSmall: function (count) {
         document.getElementById("secondSmallOdo").innerHTML = count;
     },
-    likes: function (count) {
+    thirdSmall: function (count) {
         document.getElementById("thirdSmallOdo").innerHTML = count;
     },
     avgs1: function (val1, val2, val3) {

@@ -123,7 +123,7 @@ function positiveOrNegative(number1, number2, id) {
 //URL Handler
 const queryString = window.location.search, urlParams = new URLSearchParams(queryString);
 
-const userInURL = urlParams.get("u"), odometerInURL = urlParams.get("o");
+const userInURL = urlParams.get("v"), odometerInURL = urlParams.get("o");
 var user = "";
 
 !userInURL ? user = "YbJOTdZBX1g" : user = userInURL;
@@ -191,7 +191,7 @@ function loadDataFirstTime() {
         success: function (data) {
             if (data.success == false) {
                 toastr["error"](
-                    "It seems like the user you requested doesn't exist. Please check if the @ of the user is correct.",
+                    "It seems like the video you requested doesn't exist. Please check if the @ of the user is correct.",
                     "Uh oh..."
                 );
             } else {
@@ -817,9 +817,7 @@ var updateCounts = {
         var semifinal = factor * 10 ** exponent;
         var final = semifinal - count;
 
-        document.getElementById("goalHeader").innerHTML = `Left to ${count < 1e3 ? semifinal / 10 ** (exponent - 2) : count >= 1e3 && count < 1e4 ? semifinal / 10 ** (exponent) : count >= 1e4 && count < 1e6 ? semifinal / 10 ** (exponent - 1) : count >= 1e6 && count < 1e7 ? semifinal / 10 ** (exponent) : count >= 1e7 && count < 1e8 ? semifinal / 10 ** (exponent - 1) : count >= 1e8 && count < 1e9 ? semifinal / 10 ** (exponent - 2) : semifinal / 10 ** (exponent - 1)}${count < 1e3 ? "" : count >= 1e3 && count < 1e6 ? "k" : count >= 1e6 && count < 1e9 ? "M" : count >= 1e9 ? "B" : ""}`;
-
-        document.getElementById("takeovertxt").innerHTML = `Time left to ${count < 1e3 ? semifinal / 10 ** (exponent - 2) : count >= 1e3 && count < 1e4 ? semifinal / 10 ** (exponent) : count >= 1e4 && count < 1e6 ? semifinal / 10 ** (exponent - 1) : count >= 1e6 && count < 1e7 ? semifinal / 10 ** (exponent) : count >= 1e7 && count < 1e8 ? semifinal / 10 ** (exponent - 1) : count >= 1e8 && count < 1e9 ? semifinal / 10 ** (exponent - 2) : semifinal / 10 ** (exponent - 1)}${count < 1e3 ? "" : count >= 1e3 && count < 1e6 ? "k" : count >= 1e6 && count < 1e9 ? "M" : count >= 1e9 ? "B" : ""}`;
+        document.getElementById("goalHeader").innerHTML = document.getElementById("takeovertxt").innerHTML = `Left to ${abbreviateGivenNumber(semifinal)}`;
 
         document.getElementById("goalOdo").innerHTML = final;
         

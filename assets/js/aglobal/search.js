@@ -8,11 +8,11 @@ $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</opt
 //$('#searchPlatform').append(`<option value="nextcountsapi">NextCounts (API)</option>`);
 //$('#searchPlatform').append(`<option value="reddituser">Reddit (User Karma)</option>`);
 //$('#searchPlatform').append(`<option value="subreddit">Subreddit</option>`);
-//$('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
-//$('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</option>`);
-$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (Followers)</option>`);
+$('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
+$('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</option>`);
+//$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (Followers)</option>`);
 $('#searchPlatform').append(`<option value="trilleruser">Triller (Followers)</option>`);
-$('#searchPlatform').append(`<option value="twitchuser">Twitch (Followers)</option>`);
+//$('#searchPlatform').append(`<option value="twitchuser">Twitch (Followers)</option>`);
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (Followers)</option>`);
 $('#searchPlatform').append(`<option value="youtubeuser">YouTube (Channel)</option>`);
 $('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video)</option>`);
@@ -279,7 +279,7 @@ function searchForUser(searchTerm, platform) {
                 .done(function (data) {
                     if(!data.error) {
                         document.getElementById(`searchFollowers`).innerHTML = `${data.totalKarma.toLocaleString()} Total Karma`;
-                        document.getElementById(`searchUsername`).href = `https://analytics.nextcounts.com/reddit/u/?u=${t}`;
+                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/reddit/u/?u=${t}`;
                         document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.reddit}`;
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "block";
@@ -340,17 +340,17 @@ function searchForUser(searchTerm, platform) {
                     } else t = e;
                 }
 
-                $.ajax(`https://api-v2.nextcounts.com/api/storyfire/search/user/${t}`)
+                $.ajax(`https://api-v2.nextcounts.com/api/search/storyfire/user/${t}`)
                 .done(function (data) {
-                    if(!data.error) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Subscribers`;
-                        document.getElementById(`searchUsername`).href = `https://analytics.nextcounts.com/storyfire/user/?u=${data.channelID}`;
-                        if (data.verified == true) {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.storyfire}`;
+                    if(!data.error && data.count > 0) {
+                        document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].followers.toLocaleString()} Subscribers`;
+                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/storyfire/user/?u=${data.results[0].channelID}`;
+                        if (data.results[0].verified == true) {
+                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].name} ${socialBadges.verified} ${socialBadges.storyfire}`;
                         } else {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.storyfire}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].name} ${socialBadges.storyfire}`;
                         }
-                        document.getElementById(`searchpfp`).src = `https://cors.nextcounts.com/raw?url=${data.userImg}`;
+                        document.getElementById(`searchpfp`).src = data.results[0].userImg;
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "block";
                     } else {
@@ -377,23 +377,23 @@ function searchForUser(searchTerm, platform) {
                     } else t = e;
                 }
 
-                $.ajax(`https://api-v2.nextcounts.com/api/storyfire/search/video/${t}`)
+                $.ajax(`https://api-v2.nextcounts.com/api/search/storyfire/video/${t}`)
                 .done(function (data) {
-                    if(!data.error) {
-                        document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.uploader}`;
-                        document.getElementById(`searchUsername`).href = `https://analytics.nextcounts.com/storyfire/video/?u=${data.videoID}`;
-                        document.getElementById(`searchUsername`).innerHTML = `${data.title} ${socialBadges.storyfire}`;
-                        document.getElementById(`searchpfp`).src = `https://cors.nextcounts.com/raw?url=${data.thumbnail}`;
+                    if(!data.error && data.count > 0) {
+                        document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].uploader} - ${data.results[0].views.toLocaleString()} Views`;
+                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/storyfire/video/?v=${data.results[0].videoID}`;
+                        document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.storyfire}`;
+                        document.getElementById(`searchpfp`).src = data.results[0].thumbnail;
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "block";
                     } else {
-                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
                     }
                 })
                 .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                    toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                     document.getElementById(`loadingSearch`).style.display = "none";
                     document.getElementById(`searchCard`).style.display = "none";
                 });
@@ -411,10 +411,9 @@ function searchForUser(searchTerm, platform) {
                 }
 
                 $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/channel/${t}`)
-                .done(function (dataa) {
-                    var data = JSON.parse(dataa);
+                .done(function (data) {
                     if(data.success == true) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].subcount} Subscribers`;
+                        document.getElementById(`searchFollowers`).innerHTML = `${abbreviateGivenNumber(data.results[0].subcount)} Subscribers`;
                         document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/user/?u=${data.results[0].cid}`;
                         document.getElementById(`searchUsername`).innerHTML = `${data.results[0].displayName} ${socialBadges.youtube}`;
                         document.getElementById(`searchpfp`).src = data.results[0].pfp;
@@ -448,19 +447,19 @@ function searchForUser(searchTerm, platform) {
                 .done(function (data) {
                     if(!data.error) {
                         document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].channelName}`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/video/?u=${data.results[0].videoid}`;
+                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/video/?v=${data.results[0].videoid}`;
                         document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.youtube}`;
                         document.getElementById(`searchpfp`).src = data.results[0].thumbnails.medium.url;
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "block";
                     } else {
-                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
                     }
                 })
                 .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                    toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                     document.getElementById(`loadingSearch`).style.display = "none";
                     document.getElementById(`searchCard`).style.display = "none";
                 });

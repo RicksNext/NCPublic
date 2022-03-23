@@ -4,6 +4,12 @@ gtag('js', new Date());
 
 gtag('config', 'G-R34Z4R4SVB');
 
+function abbreviateGivenNumber(givenNumber) {
+    if(givenNumber >= 1000000000) return (givenNumber/1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+    if(givenNumber >= 1000000) return (givenNumber/1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if(givenNumber >= 1000) return (givenNumber/1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return givenNumber;
+}
 
 var maxPoints = 900;
 
@@ -16,7 +22,7 @@ if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") ==
         </optgroup>`
     );
     $('#insidercomparegroup').show();
-	$('.badge')[0].innerHTML = `v3.1 BETA`;
+	$('.badge')[0].innerHTML = `v3.1.1 BETA 2`;
 } else {
     $('#themeSelector').append(
         `<optgroup label="Select your theme">
@@ -24,7 +30,7 @@ if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") ==
             <option value="dark">Darker</option>
         </optgroup>`
     );
-	$('.badge')[0].innerHTML = `v3.0.1`;
+	$('.badge')[0].innerHTML = `v3.1`;
 }
 
 $('#graphTimer').append(
@@ -224,23 +230,21 @@ var allowedKeys = {
     66: 'b'
 };
 
-var konamiCode = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'];
-
-var konamiCodePosition = 0;
+var unlockcode = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'], ucp = 0;
 
 document.addEventListener('keydown', function (e) {
     var key = allowedKeys[e.keyCode];
-    var requiredKey = konamiCode[konamiCodePosition];
+    var requiredKey = unlockcode[ucp];
 
     if (key == requiredKey) {
-        konamiCodePosition++;
+        ucp++;
 
-        if (konamiCodePosition == konamiCode.length) {
+        if (ucp == unlockcode.length) {
             activateCheats();
-            konamiCodePosition = 0;
+            ucp = 0;
         }
     } else {
-        konamiCodePosition = 0;
+        ucp = 0;
     }
 });
 

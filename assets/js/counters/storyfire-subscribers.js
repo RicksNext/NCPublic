@@ -1,26 +1,8 @@
-toastr.options = {
-    closeButton: true,
-    debug: false,
-    newestOnTop: false,
-    progressBar: true,
-    positionClass: "toast-bottom-right",
-    preventDuplicates: true,
-    onclick: null,
-    showDuration: "300",
-    hideDuration: "1500",
-    timeOut: "7000",
-    extendedTimeOut: "2500",
-    showEasing: "swing",
-    hideEasing: "linear",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut",
-};
-
 //Stuff for the Chart & the actual chart
 
 const textBright = "#858585";
 const lineColor = "#858585";
-const socialColor = "#f7375d";
+const socialColor = "#f35d06";
 
 const chart = new Highcharts.chart({
     chart: {
@@ -74,7 +56,7 @@ const chart = new Highcharts.chart({
     series: [
         {
             showInLegend: false,
-            name: "Followers",
+            name: "Subscribers",
             marker: { enabled: false },
             color: socialColor,
             lineColor: socialColor,
@@ -126,22 +108,24 @@ const queryString = window.location.search, urlParams = new URLSearchParams(quer
 const userInURL = urlParams.get("u"), odometerInURL = urlParams.get("o");
 var user = "";
 
-!userInURL ? user = "charlidamelio" : user = userInURL;
+!userInURL ? user = "idyjhe3pzIVZaJD85AW7Duvh2Jq2" : user = userInURL;
 
 //"Customize counter" Modal code
 var updateChart = true;
+var bannerCurrent = 1;
+var hasBanner = true;
 
 //Loads the actual data letsgooo
 
 var prevCount = [];
 var firstLive = [false, false];
 var oldFollowers = 0;
-var oldLikes = 0;
+var oldViews = 0;
 
 var rates = {
-    counts: [[], []],
-    vals: [0, 0],
-    divisor: [0, 0],
+    counts: [[], [], []],
+    vals: [0, 0, 0],
+    divisor: [0, 0, 0],
     add: function (i, a) {
         a = Number(a);
         rates.vals[i] *= rates.counts[i].length;
@@ -183,7 +167,7 @@ function getTime(t) {
 
 function loadDataFirstTime() {
     $.ajax({
-        url: `https://api-v2.nextcounts.com/api/triller/user/${user}`,
+        url: `https://api-v2.nextcounts.com/api/storyfire/user/${user}`,
         type: "GET",
         dataType: "JSON",
         success: function (data) {
@@ -193,27 +177,13 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
-                if(data.username !== null && data.username.length >= 1) {
-                    $('head').find('title')[0].text = `Live Triller Follower Count for ${data.username}`;
-                    $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.avatar}" style="height: 50px;margin-right: 5px;" /> ${data.username} (@${user})</a>`;
+                updateCounts.name(data.username);
 
-                    if (data.verified == true) {
-                        updateCounts.name(`${data.username} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`);
-                    } else {
-                        updateCounts.name(data.username);
-                    }
-                } else {
-                    $('head').find('title')[0].text = `Live Triller Follower Count for @${user}`;
-                    $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.avatar}" style="height: 50px;margin-right: 5px;" /> @${user}</a>`;
-                    if (data.verified == true) {
-                        updateCounts.name(`@${user} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`);
-                    } else {
-                        updateCounts.name(`@${user}`);
-                    }
-                }
-
-                updateCounts.pfp(data.avatar);
-                updateCounts.banner(data.banner);
+                $('head').find('title')[0].text = `Live StoryFire Subscriber Count for ${data.username}`;
+                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.userImg}" style="height: 50px;margin-right: 5px;" /> ${data.username}</a>`
+                updateCounts.pfp(data.userImg);
+                updateCounts.banner("hide");
+                hasBanner = false;
 
                 new Odometer({
                     el: document.getElementById("mainOdometer"),
@@ -223,39 +193,48 @@ function loadDataFirstTime() {
 
                 new Odometer({
                     el: document.getElementById("goalOdo"),
-                    value: data.followers && !isNaN(data.followers) ? data.followers / 2 : 0,
+                    value: !isNaN(data.followers) ? data.followers / 2 : 0,
                     format: '(,ddd).dd',
                 });
+
                 new Odometer({
-                    el: document.getElementById("firstSmallOdo"),
+                    el: document.getElementById("followingOdo"),
                     value: data.following,
+                    format: '(,ddd).dd',
+                });
+
+                new Odometer({
+                    el: document.getElementById("tweetsOdo"),
+                    value: data.blaze,
                     format: '(,ddd).dd',
                 });
 
                 setInterval(function () {
                     $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/triller/user/${user}`,
+                        url: `https://api-v2.nextcounts.com/api/storyfire/user/${user}`,
                         type: "GET",
                         dataType: "JSON",
                         success: function (dataa) {
+
                             updateCounts.mainCount(dataa.followers);
                             updateCounts.following(dataa.following);
+                            updateCounts.blaze(dataa.blaze);
                             updateCounts.goalCount(dataa.followers);
 
                             $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.followers, oldFollowers, "followersToday");
 
-                            $(`#likesToday`)[0].outerHTML = positiveOrNegative(dataa.following, oldLikes, "likesToday");
+                            $(`#tweetsToday`)[0].outerHTML = positiveOrNegative(dataa.blaze, oldViews, "tweetsToday");
                             
                             if (!firstLive[0] || !firstLive[1]) {
                                 prevCount[0] = dataa.followers;
                                 firstLive[0] = true;
-                                prevCount[1] = dataa.following;
+                                prevCount[1] = dataa.blaze;
                                 firstLive[1] = true;
                             } else {
                                 rates.add(0, dataa.followers - prevCount[0]);
-                                rates.add(1, dataa.following - prevCount[1]);
+                                rates.add(1, dataa.blaze - prevCount[1]);
                                 prevCount[0] = dataa.followers;
-                                prevCount[1] = dataa.following;
+                                prevCount[1] = dataa.blaze;
 
                                 var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2;
 
@@ -278,17 +257,19 @@ function loadDataFirstTime() {
         error: function () { },
     });
 
-    $.ajax(`https://statsapi.nextcounts.com/trilleruser/${user}`)
+    $.ajax(`https://statsapi.nextcounts.com/storyfireuser/${user}`)
         .done(function (stats) {
             try { JSON.parse(stats); } catch { toastr["info"](stats); };
 
             var ndata = JSON.parse(stats);
 
-            var followersDiv = document.createElement('div');
-            var followingDiv = document.createElement('div');
-            followersDiv.className = followingDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(followersDiv);
-            document.getElementById('graphContainer').appendChild(followingDiv);
+            var subscribersDiv = document.createElement('div');
+            var subscribedDiv = document.createElement('div');
+            var blazeDiv = document.createElement('div');
+            subscribersDiv.className = subscribedDiv.className = blazeDiv.className = 'chart';
+            document.getElementById('graphContainer').appendChild(subscribersDiv);
+            document.getElementById('graphContainer').appendChild(subscribedDiv);
+            document.getElementById('graphContainer').appendChild(blazeDiv);
             
             Highcharts.Point.prototype.highlight = function (event) {
                 event = this.series.chart.pointer.normalize(event);
@@ -325,7 +306,6 @@ function loadDataFirstTime() {
                 );
             });
 
-            
             function syncExtremes(e) {
                 var thisChart = this.chart;
 
@@ -347,7 +327,7 @@ function loadDataFirstTime() {
                 }
             }
 
-            new Highcharts.chart(followersDiv, {
+            new Highcharts.chart(subscribersDiv, {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -357,7 +337,7 @@ function loadDataFirstTime() {
                     plotBorderColor: "transparent",
                 },
                 title: {
-                    text: `Followers - Historical Data`,
+                    text: `Subscribers - Historical Data`,
                     align: 'left',
                     style: {
                         color: textBright,
@@ -429,14 +409,14 @@ function loadDataFirstTime() {
                     marker: {
                         enabled: !1
                     },
-                    name: `Followers - Historical Data`,
+                    name: `Subscribers - Historical Data`,
                     type: 'spline',
                     color: socialColor,
                     fillOpacity: 0.3
                 }]
             });
 
-            new Highcharts.chart(followingDiv, {
+            new Highcharts.chart(subscribedDiv, {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -446,7 +426,7 @@ function loadDataFirstTime() {
                     plotBorderColor: "transparent",
                 },
                 title: {
-                    text: `Following - Historical Data`,
+                    text: `Subscribed - Historical Data`,
                     align: 'left',
                     style: {
                         color: textBright,
@@ -518,14 +498,105 @@ function loadDataFirstTime() {
                     marker: {
                         enabled: !1
                     },
-                    name: `Following - Historical Data`,
+                    name: `Subscribed - Historical Data`,
                     type: 'spline',
                     color: socialColor,
                     fillOpacity: 0.3
                 }]
             });
 
-            oldFollowers = ndata.followers[ndata.followers.length - 1][1], oldLikes = ndata.following[ndata.following.length - 1][1];
+            new Highcharts.chart(blazeDiv, {
+                chart: {
+                    zoomType: "x",
+                    //marginLeft: 40, // Keep all charts left aligned
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: `Blaze - Historical Data`,
+                    align: 'left',
+                    style: {
+                        color: textBright,
+                    },
+                    margin: 0,
+                    x: 30
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: "datetime",
+                    crosshair: true,
+                    events: {
+                        setExtremes: syncExtremes
+                    },
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    gridLineColor: lineColor,
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                    title: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                tooltip: {
+                    positioner: function () {
+                        return {
+                            // right aligned
+                            x: this.chart.chartWidth - this.label.width,
+                            y: 10 // align to title
+                        };
+                    },
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '18px',
+                        color: textBright
+                    }
+                },
+                series: [{
+                    data: ndata.blaze,
+                    marker: {
+                        enabled: !1
+                    },
+                    name: `Blaze - Historical Data`,
+                    type: 'spline',
+                    color: socialColor,
+                    fillOpacity: 0.3
+                }]
+            });
+
+            oldFollowers = ndata.followers[ndata.followers.length - 1][1];
+            oldViews = ndata.blaze[ndata.blaze.length - 1][1];
+
 
             if (ndata.followers.length > 30) {
                 for (let i = 0; i < 30; i++) {
@@ -534,6 +605,7 @@ function loadDataFirstTime() {
                         <td>${new Date(ndata.followers[ndata.followers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                         <td>${(ndata.followers[ndata.followers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.followers[ndata.followers.length - (i + 1)][1], ndata.followers[ndata.followers.length - (i + 2)][1], false)}</td>
                         <td>${(ndata.following[ndata.following.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.following[ndata.following.length - (i + 1)][1], ndata.following[ndata.following.length - (i + 2)][1], false)}</td>
+                        <td>${(ndata.blaze[ndata.blaze.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.blaze[ndata.blaze.length - (i + 1)][1], ndata.blaze[ndata.blaze.length - (i + 2)][1], false)}</td>
                     </tr>`);
                 }
             } else {
@@ -544,12 +616,14 @@ function loadDataFirstTime() {
                             <td>${new Date(ndata.followers[ndata.followers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                             <td>${(ndata.followers[ndata.followers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.followers[ndata.followers.length - (i + 1)][1], ndata.followers[ndata.followers.length - (i + 1)][1], false)}</td>
                             <td>${(ndata.following[ndata.following.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.following[ndata.following.length - (i + 1)][1], ndata.following[ndata.following.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.blaze[ndata.blaze.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.blaze[ndata.blaze.length - (i + 1)][1], ndata.blaze[ndata.blaze.length - (i + 1)][1], false)}</td>
                         </tr>`);
                     } else {
                         $('#tableBody').append(`<tr>
                             <td>${new Date(ndata.followers[ndata.followers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                             <td>${(ndata.followers[ndata.followers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.followers[ndata.followers.length - (i + 1)][1], ndata.followers[ndata.followers.length - (i + 2)][1], false)}</td>
                             <td>${(ndata.following[ndata.following.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.following[ndata.following.length - (i + 1)][1], ndata.following[ndata.following.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.blaze[ndata.blaze.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.blaze[ndata.blaze.length - (i + 1)][1], ndata.blaze[ndata.blaze.length - (i + 2)][1], false)}</td>
                         </tr>`);
                     }
                 }
@@ -573,7 +647,7 @@ var updateCounts = {
         document.getElementById("userImg").src = url;
     },
     banner: function (url) {
-        if (url == "hide" || url == null || url == "") {
+        if (url == "hide") {
             document.getElementById("userBanner").style.opacity = `0`;
             document.getElementById("userImg").style.marginTop = `-80px`;
         } else {
@@ -611,13 +685,10 @@ var updateCounts = {
         }
     },
     following: function (count) {
-        document.getElementById("firstSmallOdo").innerHTML = count;
+        document.getElementById("followingOdo").innerHTML = count;
     },
-    videos: function (count) {
-        document.getElementById("secondSmallOdo").innerHTML = count;
-    },
-    likes: function (count) {
-        document.getElementById("thirdSmallOdo").innerHTML = count;
+    blaze: function (count) {
+        document.getElementById("tweetsOdo").innerHTML = count;
     },
     avgs1: function (val1, val2, val3) {
         $("#11min").html(val1);
@@ -628,5 +699,10 @@ var updateCounts = {
         $("#21min").html(val1);
         $("#21hour").html(val2);
         $("#224hrs").html(val3);
+    },
+    avgs3: function (val1, val2, val3) {
+        $("#31min").html(val1);
+        $("#31hour").html(val2);
+        $("#324hrs").html(val3);
     },
 };

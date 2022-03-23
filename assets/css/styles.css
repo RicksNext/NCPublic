@@ -214,6 +214,11 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   color: #f8f9fa;
 }
 
+.userheader-storyfire, .userheader-storyfire .navbar-brand {
+  background-color: #f35d06;
+  color: #f8f9fa;
+}
+
 .alt001 {
   color: #b00b69;
 }
