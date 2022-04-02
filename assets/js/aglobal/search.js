@@ -1,8 +1,9 @@
 document.getElementById(`loadingSearch`).style.display = "none";
 document.getElementById(`searchCard`).style.display = "none";
 
-var currVer = 'ncv3lesgo';
+var currVer = 'ncv312lesgo';
 $('#searchPlatform').append(`<option value=${currVer} selected="">Select a Platform</option>`);
+$('#searchPlatform').append(`<option value="brimeuser">Brime.tv (User)</option>`);
 $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</option>`);
 //$('#searchPlatform').append(`<option value="mixernoapi">Mixerno.space (API)</option>`);
 //$('#searchPlatform').append(`<option value="nextcountsapi">NextCounts (API)</option>`);
@@ -10,10 +11,10 @@ $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</opt
 //$('#searchPlatform').append(`<option value="subreddit">Subreddit</option>`);
 $('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
 $('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</option>`);
-//$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (Followers)</option>`);
-$('#searchPlatform').append(`<option value="trilleruser">Triller (Followers)</option>`);
-//$('#searchPlatform').append(`<option value="twitchuser">Twitch (Followers)</option>`);
-$('#searchPlatform').append(`<option value="twitteruser">Twitter (Followers)</option>`);
+//$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
+$('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>`);
+//$('#searchPlatform').append(`<option value="twitchuser">Twitch (User)</option>`);
+$('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>`);
 $('#searchPlatform').append(`<option value="youtubeuser">YouTube (Channel)</option>`);
 $('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video)</option>`);
 
@@ -190,6 +191,44 @@ function searchForUser(searchTerm, platform) {
                             document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.twitch}`;
                         }
                         document.getElementById(`searchpfp`).src = dataa.avatar;
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "block";
+                    } else {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    }
+                })
+                .fail(function () {
+                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                    document.getElementById(`loadingSearch`).style.display = "none";
+                    document.getElementById(`searchCard`).style.display = "none";
+                });
+            break;
+            case "brimeuser":
+                var e = searchTerm.replace("@", ""), t = "";
+                if (e.includes("https://") || e.includes("http://")) {
+                    var n = e.split("/");
+                    t = n[3]
+                } else {
+                    if (e.includes("brime.tv")) {
+                        n = e.split("/");
+                        t = n[1]
+                    } else t = e;
+                }
+
+                $.ajax(`https://api-v2.nextcounts.com/api/brime/user/${t}`)
+                .done(function (data) {
+                    if(data.success == true) {
+                        document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
+                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/brime/channel/?u=${t}`;
+
+                        if (data.verified == true) {
+                            document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified}`;
+                        } else {
+                            document.getElementById(`searchUsername`).innerHTML = `${data.username}`;
+                        }
+                        document.getElementById(`searchpfp`).src = data.avatar;
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "block";
                     } else {
