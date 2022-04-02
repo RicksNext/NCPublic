@@ -15,7 +15,7 @@ toastr.options = {
     showMethod: "fadeIn",
     hideMethod: "fadeOut",
 };
-$('#liveSpinner').hide();
+//$('#liveSpinner').hide();
 
 //Stuff for the Chart & the actual chart
 
