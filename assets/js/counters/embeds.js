@@ -191,7 +191,8 @@ if(user == null && platform == null || user == "" && platform == "") {
             break;
         case 'tiktokfollowers':
             $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/${user}`)
-            .done(function (dataa) {
+            .done(function (dataaa) {
+                let dataa = JSON.parse(dataaa);
                 if(!dataa.error) {
                     if(hasLoadedBefore == false) {
                         new Odometer({
@@ -232,7 +233,8 @@ if(user == null && platform == null || user == "" && platform == "") {
             break;
         case 'tiktokhearts':
             $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/${user}`)
-            .done(function (dataa) {
+            .done(function (dataaa) {
+                let dataa = JSON.parse(dataaa);
                 if(!dataa.error) {
                     if(hasLoadedBefore == false) {
                         new Odometer({
