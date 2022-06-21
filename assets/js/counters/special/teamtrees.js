@@ -194,6 +194,22 @@ function loadDataFirstTime() {
                 );
             } else {
                 updateCounts.name(`#TeamTrees`);
+                $('#openExternalBtn')[0].href = `https://teamtrees.org`;
+
+                $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=teamtrees`;
+
+                let samplePhrase = `NextCounts Live #TeamTrees Donation Count!`;
+                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
+                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;
+                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${samplePhrase}&summary=${samplePhrase}&source=${window.location.href}`;
+                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=${samplePhrase}`;
+                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=${samplePhrase} ${window.location.href}`;
+                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=${samplePhrase}`;
+                $('#mailShareBtn')[0].href = `mailto:?subject=${samplePhrase}&body=${samplePhrase} ${window.location.href}`;
+                $('#copytoClipBtn')[0].onclick = function () {
+                    navigator.clipboard.writeText(window.location.href);
+                    toastr["success"]("Copied to clipboard!", "Success!");
+                }
 
                 $('head').find('title')[0].text = `TeamTrees Live Donations Count`;
                 updateCounts.banner(`https://teamtrees.org/img/big-header.png`);

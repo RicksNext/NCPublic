@@ -196,6 +196,22 @@ function loadDataFirstTime() {
                 $('head').find('title')[0].text = `Live Discord Members Count for ${data.guild.serverName}`;
                 $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.guild.serverImg}" style="height: 50px;margin-right: 5px;" /> ${data.guild.serverName}</a>`;
                 updateCounts.name(`${data.guild.serverName}`);
+                $('#openExternalBtn')[0].href = `https://discord.com/invite/${user}`;
+
+                $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=discordserver&u=${user}`;
+
+                let samplePhrase = `NextCounts Live Discord Server Members Count for '${data.guild.serverName}'!`;
+                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
+                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;
+                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${samplePhrase}&summary=${samplePhrase}&source=${window.location.href}`;
+                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=${samplePhrase}`;
+                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=${samplePhrase} ${window.location.href}`;
+                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=${samplePhrase}`;
+                $('#mailShareBtn')[0].href = `mailto:?subject=${samplePhrase}&body=${samplePhrase} ${window.location.href}`;
+                $('#copytoClipBtn')[0].onclick = function () {
+                    navigator.clipboard.writeText(window.location.href);
+                    toastr["success"]("Copied to clipboard!", "Success!");
+                }
 
                 updateCounts.pfp(data.guild.serverImg);
                 updateCounts.banner(data.guild.serverBanner);
@@ -592,6 +608,8 @@ var updateCounts = {
             var gap = Math.floor(semifinal - count);
             var secsLeft = parseInt( gap / (0, rates.vals[0]) );
             $("#takeover").html(secsLeft >= 0 ? getTime(secsLeft) : "Never");
+            $('#progressSoFar')[0].innerHTML = $('#progressSoFar')[0].style.width = `${(count / semifinal) * 100}%`;
+            $('#progressSoFar')[0].ariaValueNow = count / semifinal * 100;
         }
     },
     following: function (count) {

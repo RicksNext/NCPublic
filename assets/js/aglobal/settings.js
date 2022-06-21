@@ -13,24 +13,52 @@ function abbreviateGivenNumber(givenNumber) {
 
 var maxPoints = 900;
 
+
+if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "") {
+    localStorage.setItem("theme", "white");
+} else {
+    switch(localStorage.getItem("theme")) {
+        case "dark": {
+            $('html')[0].className = 'darktheme';
+            $('body')[0].className = 'darktheme';
+            if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `dark`;
+            if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+            break;
+        }
+        case "amoled": {
+            $('html')[0].className = 'amoledtheme';
+            $('body')[0].className = 'amoledtheme';
+            if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `amoled`;
+            if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+            break;
+        }
+        default: {
+            $('html')[0].className = 'whitetheme';
+            $('body')[0].className = 'whitetheme';
+            if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `white`;
+            if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-dark`, ` navbar-light`);
+            break;
+        }
+    }
+}
+
 if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
-    $('#themeSelector').append(
+    if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
         `<optgroup label="Select your theme">
             <option value="white" selected>White (Default)</option>
             <option value="dark">Darker</option>
             <option value="amoled">AMOLED Theme (Insider Exclusive - BETA)</option>
         </optgroup>`
     );
-    $('#insidercomparegroup').show();
-	$('.badge')[0].innerHTML = `v3.1.1 BETA 2`;
+    if(!window.location.pathname.includes(`/embed/`)) $('#insidercomparegroup').show();
+	//if(!window.location.pathname.includes(`/embed/`)) $('.badge')[0].innerHTML = `v3.2 BETA 1`;
 } else {
-    $('#themeSelector').append(
+    if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
         `<optgroup label="Select your theme">
             <option value="white" selected>White (Default)</option>
             <option value="dark">Darker</option>
         </optgroup>`
     );
-	$('.badge')[0].innerHTML = `v3.1`;
 }
 
 $('#graphTimer').append(
@@ -56,8 +84,10 @@ if(window.location.pathname == '/') {
 
 if(window.location.pathname.includes('compare')) {
     $(`#chartDisableUsersGraphSwitch`).show();
+    $(`#chartDisableRateGraphSwitch`).show();
 } else {
     $(`#chartDisableUsersGraphSwitch`).hide();
+    $(`#chartDisableRateGraphSwitch`).hide();
 }
 
 toastr.options = {
@@ -78,109 +108,7 @@ toastr.options = {
     "hideMethod": "fadeOut"
 }
 
-if(localStorage.getItem("graphlimit") == null || localStorage.getItem("graphlimit") == "") {
-    localStorage.setItem("graphlimit", "900");
-} else {
-    $('#graphTimer')[0].value = localStorage.getItem("graphlimit");
-    maxPoints = Math.floor(localStorage.getItem("graphlimit"));
-}
-
-$('#graphTimer').change(function(){
-    localStorage.setItem("graphlimit", $('#graphTimer')[0].value);
-    maxPoints = Math.floor($('#graphTimer')[0].value);
-    console.log($('#graphTimer').val());
-
-    if(chart.series[0].points.length > $('#graphTimer').val()) {
-        for (let i = $('#graphTimer').val(); $('#graphTimer').val() <= chart.series[0].points.length; i++) {
-            chart.series[0].data[0].remove();
-        }
-    }
-});
-
-
-
-
-if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "") {
-    localStorage.setItem("theme", "white");
-} else {
-    switch(localStorage.getItem("theme")) {
-        case "dark": {
-            $('html')[0].className = 'darktheme';
-            $('body')[0].className = 'darktheme';
-            $('#themeSelector')[0].value = `dark`;
-            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
-            break;
-        }
-        case "amoled": {
-            $('html')[0].className = 'amoledtheme';
-            $('body')[0].className = 'amoledtheme';
-            $('#themeSelector')[0].value = `amoled`;
-            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
-            break;
-        }
-        default: {
-            $('html')[0].className = 'whitetheme';
-            $('body')[0].className = 'whitetheme';
-            $('#themeSelector')[0].value = `white`;
-            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-dark`, ` navbar-light`);
-            break;
-        }
-    }
-}
-
-if(localStorage.getItem("globalChart") == null || localStorage.getItem("globalChart") == "") {
-    localStorage.setItem("globalChart", "true");
-} else {
-    switch(localStorage.getItem("globalChart")) {
-        case "false": {
-            setTimeout(function() {
-                chart.series[0].setData([]);
-                updateChart = false;
-                $('#chartCard').hide();
-                document.getElementById("disableChartGlobal").checked = true;
-                document.getElementById("disableThisChart").checked = true;
-            }, 100);
-            break;
-        }
-        default: {
-            setTimeout(function() {
-                updateChart = true;
-                $('#chartCard').show();
-                document.getElementById("disableChartGlobal").checked = false;
-            }, 100);
-            break;
-        }
-    }
-}
-
-$('#themeSelector').change(function(){
-    switch($('#themeSelector').val()) {
-        case `dark`: {
-            localStorage.setItem("theme", "dark");
-            $('html')[0].className = 'darktheme';
-            $('body')[0].className = 'darktheme';
-            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
-            break;
-        }
-        case `amoled`: {
-            localStorage.setItem("theme", "amoled");
-            $('html')[0].className = 'amoledtheme';
-            $('body')[0].className = 'amoledtheme';
-            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
-            break;
-        }
-        default: {
-            localStorage.setItem("theme", "white");
-            $('html')[0].className = 'whitetheme';
-            $('body')[0].className = 'whitetheme';
-            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-dark`, ` navbar-light`);
-            break;
-        }
-    }
-    console.log($('#themeSelector').val());
-});
-
-document.getElementById("disableChartGlobal").addEventListener('change', function() {
+if(!window.location.pathname.includes(`/embed/`)) document.getElementById("disableChartGlobal").addEventListener('change', function() {
     if (this.checked) {
         localStorage.setItem("globalChart", "false");
         chart.series[0].setData([]);
@@ -195,7 +123,7 @@ document.getElementById("disableChartGlobal").addEventListener('change', functio
     }
 });
 
-document.getElementById("disableThisChart").addEventListener('change', function() {
+if(!window.location.pathname.includes(`/embed/`)) document.getElementById("disableThisChart").addEventListener('change', function() {
     if (this.checked) {
         chart.series[0].setData([]);
         $('#chartCard').hide();
@@ -206,7 +134,7 @@ document.getElementById("disableThisChart").addEventListener('change', function(
     }
 });
 
-document.getElementById("disableUsersChart").addEventListener('change', function() {
+if(!window.location.pathname.includes(`/embed/`)) document.getElementById("disableUsersChart").addEventListener('change', function() {
     if (this.checked) {
         charts[0].series[0].setData([]);
         charts[1].series[0].setData([]);
@@ -270,3 +198,74 @@ You need to refresh the page to enable Insider exclusive features. Don't tell an
         
     }
 }
+
+if(localStorage.getItem("graphlimit") == null || localStorage.getItem("graphlimit") == "") {
+    localStorage.setItem("graphlimit", "900");
+} else {
+    $('#graphTimer')[0].value = localStorage.getItem("graphlimit");
+    maxPoints = Math.floor(localStorage.getItem("graphlimit"));
+}
+
+$('#graphTimer').change(function(){
+    localStorage.setItem("graphlimit", $('#graphTimer')[0].value);
+    maxPoints = Math.floor($('#graphTimer')[0].value);
+    console.log($('#graphTimer').val());
+
+    if(chart.series[0].points.length > $('#graphTimer').val()) {
+        for (let i = $('#graphTimer').val(); $('#graphTimer').val() <= chart.series[0].points.length; i++) {
+            chart.series[0].data[0].remove();
+        }
+    }
+});
+
+if(localStorage.getItem("globalChart") == null || localStorage.getItem("globalChart") == "") {
+    localStorage.setItem("globalChart", "true");
+} else {
+    switch(localStorage.getItem("globalChart")) {
+        case "false": {
+            setTimeout(function() {
+                chart.series[0].setData([]);
+                updateChart = false;
+                $('#chartCard').hide();
+                document.getElementById("disableChartGlobal").checked = true;
+                document.getElementById("disableThisChart").checked = true;
+            }, 100);
+            break;
+        }
+        default: {
+            setTimeout(function() {
+                updateChart = true;
+                $('#chartCard').show();
+                document.getElementById("disableChartGlobal").checked = false;
+            }, 100);
+            break;
+        }
+    }
+}
+
+$('#themeSelector').change(function(){
+    switch($('#themeSelector').val()) {
+        case `dark`: {
+            localStorage.setItem("theme", "dark");
+            $('html')[0].className = 'darktheme';
+            $('body')[0].className = 'darktheme';
+            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+            break;
+        }
+        case `amoled`: {
+            localStorage.setItem("theme", "amoled");
+            $('html')[0].className = 'amoledtheme';
+            $('body')[0].className = 'amoledtheme';
+            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+            break;
+        }
+        default: {
+            localStorage.setItem("theme", "white");
+            $('html')[0].className = 'whitetheme';
+            $('body')[0].className = 'whitetheme';
+            $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-dark`, ` navbar-light`);
+            break;
+        }
+    }
+    console.log($('#themeSelector').val());
+});

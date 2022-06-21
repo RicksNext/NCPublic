@@ -204,6 +204,24 @@ function loadDataFirstTime() {
                 } else {
                     let usdt = dataa.results[dataa.results.findIndex(e => (e.username).toLowerCase() == user)];
 
+                    $('#openExternalBtn')[0].href = `https://twitch.tv/${user}`;
+    
+                    $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=twitchfollowers&u=${user}`;
+                    $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=twitchviews&u=${user}`;
+
+                    let samplePhrase = `NextCounts Live Twitch Follower Counts for ${usdt.username}!`;
+                    $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
+                    $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;
+                    $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${samplePhrase}&summary=${samplePhrase}&source=${window.location.href}`;
+                    $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=${samplePhrase}`;
+                    $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=${samplePhrase} ${window.location.href}`;
+                    $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=${samplePhrase}`;
+                    $('#mailShareBtn')[0].href = `mailto:?subject=${samplePhrase}&body=${samplePhrase}${window.location.href}`;
+                    $('#copytoClipBtn')[0].onclick = function () {
+                        navigator.clipboard.writeText(window.location.href);
+                        toastr["success"]("Copied to clipboard!", "Success!");
+                    }
+
                     if (usdt.partner == true) {
                         updateCounts.name(`${usdt.username} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`);
                     } else {
@@ -632,6 +650,8 @@ var updateCounts = {
             var gap = Math.floor(semifinal - count);
             var secsLeft = parseInt( gap / (0, rates.vals[0]) );
             $("#takeover").html(secsLeft >= 0 ? getTime(secsLeft) : "Never");
+            $('#progressSoFar')[0].innerHTML = $('#progressSoFar')[0].style.width = `${(count / semifinal) * 100}%`;
+            $('#progressSoFar')[0].ariaValueNow = count / semifinal * 100;
         }
     },
     first: function (count) {

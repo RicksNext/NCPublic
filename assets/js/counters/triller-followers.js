@@ -193,7 +193,9 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
+                var samplePhrase = ``;
                 if(data.username !== null && data.username.length >= 1) {
+                    samplePhrase = `NextCounts Live Triller Follower Count for ${data.username}!`;
                     $('head').find('title')[0].text = `Live Triller Follower Count for ${data.username}`;
                     $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.avatar}" style="height: 50px;margin-right: 5px;" /> ${data.username} (@${user})</a>`;
 
@@ -203,6 +205,7 @@ function loadDataFirstTime() {
                         updateCounts.name(data.username);
                     }
                 } else {
+                    samplePhrase = `NextCounts Live Triller Follower Count for @${user}!`;
                     $('head').find('title')[0].text = `Live Triller Follower Count for @${user}`;
                     $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.avatar}" style="height: 50px;margin-right: 5px;" /> @${user}</a>`;
                     if (data.verified == true) {
@@ -210,6 +213,21 @@ function loadDataFirstTime() {
                     } else {
                         updateCounts.name(`@${user}`);
                     }
+                }
+                $('#openExternalBtn')[0].href = `https://triller.co/@${user}`;
+
+                $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=trilleruser&u=${user}`;
+
+                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
+                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;
+                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${samplePhrase}&summary=${samplePhrase}&source=${window.location.href}`;
+                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=${samplePhrase}`;
+                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=${samplePhrase} ${window.location.href}`;
+                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=${samplePhrase}`;
+                $('#mailShareBtn')[0].href = `mailto:?subject=${samplePhrase}&body=${samplePhrase} ${window.location.href}`;
+                $('#copytoClipBtn')[0].onclick = function () {
+                    navigator.clipboard.writeText(window.location.href);
+                    toastr["success"]("Copied to clipboard!", "Success!");
                 }
 
                 updateCounts.pfp(data.avatar);
@@ -608,6 +626,8 @@ var updateCounts = {
             var gap = Math.floor(semifinal - count);
             var secsLeft = parseInt( gap / (0, rates.vals[0]) );
             $("#takeover").html(secsLeft >= 0 ? getTime(secsLeft) : "Never");
+            $('#progressSoFar')[0].innerHTML = $('#progressSoFar')[0].style.width = `${(count / semifinal) * 100}%`;
+            $('#progressSoFar')[0].ariaValueNow = count / semifinal * 100;
         }
     },
     following: function (count) {

@@ -45,7 +45,6 @@ const customColors = [
     "#E4C722",
     "#7400DA",
     "#fe5f55",
-    //"#53b3cb",
     "#59a96a",
     "#0a369d"
 ];
@@ -169,27 +168,27 @@ odometerInURL = urlParams.get("o");
 var user1, user2, plat1, plat2 = '';
 
 if (!user1url) {
-    user1 = "elonmusk";
+    user1 = "UC-lHJZR3Gqxm24_Vd_AJ5Yw";
 } else {
     user1 = user1url;
 }
 if (!user2url) {
-    user2 = "ladygaga";
+    user2 = "UCX6OQ3DkcsbYNE6H8uQQuVA";
 } else {
     user2 = user2url;
 }
 if (!plat1url) {
-    plat1 = "twitteruser";
+    plat1 = "youtubeuserest";
 } else {
     plat1 = plat1url;
 }
 if (!plat2url) {
-    plat2 = "twitteruser";
+    plat2 = "youtubeuserest";
 } else {
     plat2 = plat2url;
 }
 
-var validPlatforms = ["tiktokuser", "twitteruser", "youtubeuser", "youtubevideo", "trilleruser", "discordserver", "twitchuser"];
+var validPlatforms = ["tiktokuser", "twitteruser", "youtubeuserest", "youtubeuser", "youtubevideo", "trilleruser", "discordserver", "twitchuser"];
 
 //"Customize counter" Modal code
 var updateChart = true, updateUsersChart = true;
@@ -417,6 +416,378 @@ function loadUser(platform, user, number) {
                                                 } else {
                                                     rates.add(number - 1, dataa.followers - prevCount[number - 1]);
                                                     prevCount[number - 1] = dataa.followers;
+                    
+                                                    var avgRate = rates.vals[number - 1]/2;
+                    
+                                                    var final1 = Math.round(avgRate * 60).toLocaleString();
+                                                    var final2 = Math.round(avgRate * 3600).toLocaleString();
+                                                    var final3 = Math.round(avgRate * 86400).toLocaleString();
+                                                    updateCounts.avgs[number - 1](final1, final2, final3);
+                                                }
+                                            }
+                                        }, error: function () { }
+                                    });
+                                }, 2000);
+                            } else {
+                                //
+                            }
+                        }
+                    },
+                    error: function () { },
+                });
+            } else return;
+            break;
+        case "youtubeuserest":
+            if(firstLoad[number - 1] == true) {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/youtube/channel/estimate/mixerno/${user}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (data) {
+                        if (data.error) {
+                            if(firstLoad[number - 1] == true) toastr["error"]("It seems like one of the users you requested doesn't exist. Please check if the @ of the user is correct. - User " + number, "Uh oh...");
+                        } else {
+                            if(firstLoad[number - 1] == true) {
+                                if (data.verified == true) {
+                                    updateCounts.name(`${data.channelName} ${socialBadges.verified}`, number);
+                                } else {
+                                    updateCounts.name(data.channelName, number);
+                                }
+
+                                document.getElementById(`bottomtext-${number}`).innerHTML = `Subscribers ${socialBadges.youtube}`;
+                                document.getElementById(`${number}0label`).innerHTML = `${data.channelName} Gains`;
+                                document.getElementById(`gainsheader${number}`).innerHTML = `${data.channelName} Today`;
+                                
+                                document.getElementById(`topheading`).innerHTML += document.getElementById(`topheading`).innerHTML.includes('Vs') ? `${data.channelName} ${socialBadges.youtube}` : `${data.channelName} ${socialBadges.youtube} Vs. `;
+
+                                updateCounts.name(data.channelName, number);
+    
+                                updateCounts.pfp(data.avatar, number);
+                                updateCounts.banner("hide", number);
+                                hasBanner = false;
+                
+                                new Odometer({
+                                    el: document.getElementById("mainOdometer-"+number),
+                                    value: data.estimatedSubCount,
+                                    format: '(,ddd).dd',
+                                });
+                
+                                new Odometer({
+                                    el: document.getElementById(`user${number}goal`),
+                                    value: data.estimatedSubCount && !isNaN(data.estimatedSubCount) ? data.estimatedSubCount / 2 : 0,
+                                    format: '(,ddd).dd',
+                                });
+
+                                charts[number - 1] = new Highcharts.chart({
+                                    chart: {
+                                        renderTo: `userchart-${number}`
+                                    },
+                                    series: [
+                                        {
+                                            showInLegend: false,
+                                            name: "Subscribers",
+                                            marker: { enabled: false },
+                                            color: socialColors.youtube,
+                                            lineColor: socialColors.youtube,
+                                        },
+                                    ],
+                                });
+
+                                firstLoad[number - 1] = false;
+                                currcounts[number - 1] = data.estimatedSubCount;
+
+                                
+                                $.ajax(`https://statsapi.nextcounts.com/youtubeuser/${user}`)
+                                .done(function (stats) {
+                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
+
+                                    var ndata = JSON.parse(stats);
+                                    
+                                    oldcounts[number - 1] = ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - 1][1];
+
+                                    chartSeries.push({
+                                        data: ndata.mixerno.subscribers,
+                                        marker: {
+                                            enabled: false
+                                        },
+                                        name: `${data.channelName} - Subscribers Count`,
+                                        type: 'spline',
+                                        color: socialColors.youtube,
+                                        fillOpacity: 0.3
+                                    });
+
+                                    setTimeout(function() {
+                                        new Highcharts.chart(document.getElementById(`mainGraph`), {
+                                            chart: {
+                                                zoomType: "x",
+                                                backgroundColor: "transparent",
+                                                plotBorderColor: "transparent",
+                                            },
+                                            title: {
+                                                text: `Subscribers - Historical Comparison`,
+                                                align: 'left',
+                                                style: {
+                                                    color: textBright,
+                                                },
+                                            },
+                                            credits: {
+                                                enabled: true,
+                                                text: "NextCounts Analytics",
+                                                href: "https://nextcounts.com"
+                                            },
+                                            legend: {
+                                                enabled: false
+                                            },
+                                            xAxis: {
+                                                type: "datetime",
+                                                crosshair: true,
+                                                labels: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                                gridLineColor: lineColor,
+                                                lineColor: lineColor,
+                                                minorGridLineColor: "#858585",
+                                                tickColor: lineColor,
+                                                title: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                            },
+                                            yAxis: {
+                                                title: {
+                                                    text: null
+                                                },
+                                                gridLineColor: lineColor,
+                                                labels: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                                lineColor: lineColor,
+                                                minorGridLineColor: "#505053",
+                                                tickColor: lineColor,
+                                            },
+                                            series: chartSeries
+                                        });
+                                    }, 3500);
+                                });
+
+                                setTimeout(function() {
+                                    new Odometer({
+                                        el: document.getElementById(`gapcounter`),
+                                        value: 0,
+                                        format: '(,ddd).dd',
+                                    });
+                                }, 500);
+            
+                                setInterval(function () {
+                                    $.ajax({
+                                        url: `https://api-v2.nextcounts.com/api/youtube/channel/estimate/mixerno/${user}`,
+                                        type: "GET",
+                                        dataType: "JSON",
+                                        success: function (dataa) {
+                                            if(data.success == true) {
+                                                currcounts[number - 1] = dataa.estimatedSubCount;
+                                                updateCounts.mainCount(dataa.estimatedSubCount, number);
+                                                updateCounts.goalCount(dataa.estimatedSubCount, number);
+                    
+                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(dataa.estimatedSubCount, oldcounts[number - 1], `user${number}gains`);
+                                                
+                                                if (!firstLive[number - 1]) {
+                                                    prevCount[number - 1] = dataa.estimatedSubCount;
+                                                    firstLive[number - 1] = true;
+                                                } else {
+                                                    rates.add(number - 1, dataa.estimatedSubCount - prevCount[number - 1]);
+                                                    prevCount[number - 1] = dataa.estimatedSubCount;
+                    
+                                                    var avgRate = rates.vals[number - 1]/2;
+                    
+                                                    var final1 = Math.round(avgRate * 60).toLocaleString();
+                                                    var final2 = Math.round(avgRate * 3600).toLocaleString();
+                                                    var final3 = Math.round(avgRate * 86400).toLocaleString();
+                                                    updateCounts.avgs[number - 1](final1, final2, final3);
+                                                }
+                                            }
+                                        }, error: function () { }
+                                    });
+                                }, 2000);
+                            } else {
+                                //
+                            }
+                        }
+                    },
+                    error: function () { },
+                });
+            } else return;
+            break;
+        case "youtubeuser":
+            if(firstLoad[number - 1] == true) {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/youtube/channel/${user}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (data) {
+                        if (data.error) {
+                            if(firstLoad[number - 1] == true) toastr["error"]("It seems like one of the users you requested doesn't exist. Please check if the @ of the user is correct. - User " + number, "Uh oh...");
+                        } else {
+                            if(firstLoad[number - 1] == true) {
+                                if (data.verified == true) {
+                                    updateCounts.name(`${data.username} ${socialBadges.verified}`, number);
+                                } else {
+                                    updateCounts.name(data.username, number);
+                                }
+
+                                document.getElementById(`bottomtext-${number}`).innerHTML = `Subscribers ${socialBadges.youtube}`;
+                                document.getElementById(`${number}0label`).innerHTML = `${data.username} Gains`;
+                                document.getElementById(`gainsheader${number}`).innerHTML = `${data.username} Today`;
+                                
+                                document.getElementById(`topheading`).innerHTML += document.getElementById(`topheading`).innerHTML.includes('Vs') ? `${data.username} ${socialBadges.youtube}` : `${data.username} ${socialBadges.youtube} Vs. `;
+
+                                updateCounts.name(data.username, number);
+    
+                                updateCounts.pfp(data.userImg, number);
+                                updateCounts.banner("hide", number);
+                                hasBanner = false;
+                
+                                new Odometer({
+                                    el: document.getElementById("mainOdometer-"+number),
+                                    value: data.subcount,
+                                    format: '(,ddd).dd',
+                                });
+                
+                                new Odometer({
+                                    el: document.getElementById(`user${number}goal`),
+                                    value: data.subcount && !isNaN(data.subcount) ? data.subcount / 2 : 0,
+                                    format: '(,ddd).dd',
+                                });
+
+                                charts[number - 1] = new Highcharts.chart({
+                                    chart: {
+                                        renderTo: `userchart-${number}`
+                                    },
+                                    series: [
+                                        {
+                                            showInLegend: false,
+                                            name: "Subscribers",
+                                            marker: { enabled: false },
+                                            color: socialColors.youtube,
+                                            lineColor: socialColors.youtube,
+                                        },
+                                    ],
+                                });
+
+                                firstLoad[number - 1] = false;
+                                currcounts[number - 1] = data.subcount;
+
+                                
+                                $.ajax(`https://statsapi.nextcounts.com/youtubeuser/${user}`)
+                                .done(function (stats) {
+                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
+
+                                    var ndata = JSON.parse(stats);
+                                    
+                                    oldcounts[number - 1] = ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - 1][1];
+
+                                    chartSeries.push({
+                                        data: ndata.ytapi.subscribers,
+                                        marker: {
+                                            enabled: false
+                                        },
+                                        name: `${data.username} - Subscribers Count`,
+                                        type: 'spline',
+                                        color: socialColors.youtube,
+                                        fillOpacity: 0.3
+                                    });
+
+                                    setTimeout(function() {
+                                        new Highcharts.chart(document.getElementById(`mainGraph`), {
+                                            chart: {
+                                                zoomType: "x",
+                                                backgroundColor: "transparent",
+                                                plotBorderColor: "transparent",
+                                            },
+                                            title: {
+                                                text: `Subscribers - Historical Comparison`,
+                                                align: 'left',
+                                                style: {
+                                                    color: textBright,
+                                                },
+                                            },
+                                            credits: {
+                                                enabled: true,
+                                                text: "NextCounts Analytics",
+                                                href: "https://nextcounts.com"
+                                            },
+                                            legend: {
+                                                enabled: false
+                                            },
+                                            xAxis: {
+                                                type: "datetime",
+                                                crosshair: true,
+                                                labels: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                                gridLineColor: lineColor,
+                                                lineColor: lineColor,
+                                                minorGridLineColor: "#858585",
+                                                tickColor: lineColor,
+                                                title: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                            },
+                                            yAxis: {
+                                                title: {
+                                                    text: null
+                                                },
+                                                gridLineColor: lineColor,
+                                                labels: {
+                                                    style: {
+                                                        color: textBright,
+                                                    },
+                                                },
+                                                lineColor: lineColor,
+                                                minorGridLineColor: "#505053",
+                                                tickColor: lineColor,
+                                            },
+                                            series: chartSeries
+                                        });
+                                    }, 3500);
+                                });
+
+                                setTimeout(function() {
+                                    new Odometer({
+                                        el: document.getElementById(`gapcounter`),
+                                        value: 0,
+                                        format: '(,ddd).dd',
+                                    });
+                                }, 500);
+            
+                                setInterval(function () {
+                                    $.ajax({
+                                        url: `https://api-v2.nextcounts.com/api/youtube/channel/${user}`,
+                                        type: "GET",
+                                        dataType: "JSON",
+                                        success: function (dataa) {
+                                            if(data.success == true) {
+                                                currcounts[number - 1] = dataa.subcount;
+                                                updateCounts.mainCount(dataa.subcount, number);
+                                                updateCounts.goalCount(dataa.subcount, number);
+                    
+                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(dataa.subcount, oldcounts[number - 1], `user${number}gains`);
+                                                
+                                                if (!firstLive[number - 1]) {
+                                                    prevCount[number - 1] = dataa.subcount;
+                                                    firstLive[number - 1] = true;
+                                                } else {
+                                                    rates.add(number - 1, dataa.subcount - prevCount[number - 1]);
+                                                    prevCount[number - 1] = dataa.subcount;
                     
                                                     var avgRate = rates.vals[number - 1]/2;
                     
@@ -833,14 +1204,14 @@ function loadUser(platform, user, number) {
             series: [
                 {
                     showInLegend: false,
-                    name: `${$('#username-1')[0].innerHTML} - Follower Rate`,
+                    name: `${$('#username-1')[0].innerHTML} - Gain Rate`,
                     marker: { enabled: false },
                     color: ratecolorone,
                     lineColor: ratecolorone,
                 },
                 {
                     showInLegend: false,
-                    name: `${$('#username-2')[0].innerHTML} - Follower Rate`,
+                    name: `${$('#username-2')[0].innerHTML} - Gain Rate`,
                     marker: { enabled: false },
                     color: ratecolortwo,
                     lineColor: ratecolortwo,
@@ -872,7 +1243,7 @@ function loadUser(platform, user, number) {
                 ratesChart.series[1].addPoint([calcTime(), Math.floor($('#21min')[0].innerHTML)]);
             }
         }, 2000);
-    }, 3000);
+    }, 5000);
 }
 
 

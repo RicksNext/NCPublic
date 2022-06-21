@@ -196,6 +196,24 @@ function loadDataFirstTime() {
                 );
             } else {
                 updateCounts.name(data.results[0].title);
+                $('#openExternalBtn')[0].href = `https://youtube.com/watch?v=${user}`;
+
+                $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=ytvideoviews&u=${user}`;
+                $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=ytvideolikes&u=${user}`;
+                $('#smallEmbedBtn-2')[0].href = `https://nextcounts.com/embed/small/?p=ytvideocomments&u=${user}`;
+
+
+                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=NextCounts Live YT Video View Count for ${data.results[0].title}!`;
+                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=NextCounts Live YT Video View Count for ${data.results[0].title}! ${window.location.href} @nextcounts! `;
+                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=NextCounts Live YT Video View Count for ${data.results[0].title}!&summary=NextCounts Live YT Video View Count for ${data.results[0].title}!&source=${window.location.href}`;
+                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=NextCounts Live YT Video View Count for ${data.results[0].title}!`;
+                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=NextCounts Live YT Video View Count for ${data.results[0].title}! ${window.location.href}`;
+                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=NextCounts Live YT Video View Count for ${data.results[0].title}!`;
+                $('#mailShareBtn')[0].href = `mailto:?subject=NextCounts Live YT Video View Count for ${data.results[0].title}!&body=NextCounts Live YT Video View Count for ${data.results[0].title}! ${window.location.href}`;
+                $('#copytoClipBtn')[0].onclick = function () {
+                    navigator.clipboard.writeText(window.location.href);
+                    toastr["success"]("Copied to clipboard!", "Success!");
+                }
 
                 $('head').find('title')[0].text = `Live YT Video Views Count for "${data.results[0].title}"`;
                 $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded img-fluid" id="userimg-header" src="${data.results[0].thumbnails.medium.url}" style="height: 50px;margin-right: 5px;" /> ${data.results[0].title}</a>`
@@ -570,7 +588,7 @@ function loadDataFirstTime() {
                         plotBorderColor: "transparent",
                     },
                     title: {
-                        text: `Dislikes (Legacy) - Historical Data`,
+                        text: `Dislikes - Historical Data`,
                         align: 'left',
                         style: {
                             color: textBright,
@@ -642,7 +660,7 @@ function loadDataFirstTime() {
                         marker: {
                             enabled: !1
                         },
-                        name: `Dislikes (Legacy) - Historical Data`,
+                        name: `Dislikes - Historical Data`,
                         type: 'spline',
                         color: socialColor,
                         fillOpacity: 0.3
@@ -825,6 +843,8 @@ var updateCounts = {
             var gap = Math.floor(semifinal - count);
             var secsLeft = parseInt( gap / (0, rates.vals[0]) );
             $("#takeover").html(secsLeft >= 0 ? getTime(secsLeft) : "Never");
+            $('#progressSoFar')[0].innerHTML = $('#progressSoFar')[0].style.width = `${(count / semifinal) * 100}%`;
+            $('#progressSoFar')[0].ariaValueNow = count / semifinal * 100;
         }
     },
     firstSmall: function (count) {

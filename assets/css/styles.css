@@ -12,9 +12,17 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   background-color: rgb(18, 18, 18);
 }
 
+.darktheme .progress {
+  background-color: rgb(64 , 64, 64);
+}
+
 .amoledtheme, .amoledtheme .card, .amoledtheme .dataTables_length > label > select, .amoledtheme .dropdown-menu, .amoledtheme .dropdown-item, .amoledtheme .btn, .amoledtheme footer {
   color: #f8f9fa;
   background-color: rgb(0, 0, 0);
+}
+
+.amoledtheme .progress {
+  background-color: rgb(39, 39, 39);
 }
 
 .darktheme .counterBtn, .amoledtheme .counterBtn {

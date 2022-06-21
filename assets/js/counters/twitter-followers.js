@@ -201,6 +201,23 @@ function loadDataFirstTime() {
                     updateCounts.name(data.username);
                 }
 
+                $('#openExternalBtn')[0].href = `https://twitter.com/${user}`;
+
+                $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=twitteruser&u=${user}`;
+
+
+                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=NextCounts Live Twitter Follower Counts for ${data.username}!`;
+                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href} @nextcounts! `;
+                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!&summary=NextCounts Live Twitter Follower Counts for ${data.username}!&source=${window.location.href}`;
+                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!`;
+                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href}`;
+                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!`;
+                $('#mailShareBtn')[0].href = `mailto:?subject=NextCounts Live Twitter Follower Counts for ${data.username}!&body=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href}`;
+                $('#copytoClipBtn')[0].onclick = function () {
+                    navigator.clipboard.writeText(window.location.href);
+                    toastr["success"]("Copied to clipboard!", "Success!");
+                }
+
                 $('head').find('title')[0].text = `Live Twitter Follower Count for ${data.username}`;
                 $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.pfp.large}" style="height: 50px;margin-right: 5px;" /> ${data.username} (@${user})</a>`
                 updateCounts.pfp(data.pfp.large);
@@ -714,6 +731,8 @@ var updateCounts = {
             var gap = Math.floor(semifinal - count);
             var secsLeft = parseInt( gap / (0, rates.vals[0]) );
             $("#takeover").html(secsLeft >= 0 ? getTime(secsLeft) : "Never");
+            $('#progressSoFar')[0].innerHTML = $('#progressSoFar')[0].style.width = `${(count / semifinal) * 100}%`;
+            $('#progressSoFar')[0].ariaValueNow = count / semifinal * 100;
         }
     },
     following: function (count) {

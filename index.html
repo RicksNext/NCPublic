@@ -34,32 +34,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="assets/css/navbar.css?h=86357661633fcd7458da996c46b2f27f">
     <link rel="stylesheet" href="assets/css/odometer.css?h=d2ae5baa3e34859d6f52e8fefb0d00c3">
-    <link rel="stylesheet" href="assets/css/styles.css?h=b0724734d9710230f4df4b09fcceba71">
+    <link rel="stylesheet" href="assets/css/styles.css?h=087f8b1c26b17e79218a99e09a0e7105">
 </head>
 
 <body class="whitetheme" style="font-family: Poppins, sans-serif;">
-    <div class="modal fade" role="dialog" tabindex="-1" id="changelog">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Changelog - NextCounts v3.1!</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="modal-body">
-                    <p>New update, new counters!</p>
-                    <ul>
-                        <li>StoryFire Live Subscriber Counts and StoryFire Live Video Views Count have been added!</li>
-                        <li>TikTok and Twitch counters have been disabled for now. They will be re-enabled in a future version of NextCounts.</li>
-                        <li>For Insiders: the Beta Compare page got a new graph! Now, you can see the average rate per minute of a user in a nice colored graph!</li>
-                        <li>TikTok and Twitch have been disabled in the Compare page.</li>
-                        <li>YouTube Video Dislikes have been added back to the Analytics! Soon, they will also be present in the counters.<br><br><br><strong>Bug Fixes:</strong><br></li>
-                        <li>Fixed a bug that would make milestones like 900k show up as 90k. Sorry about that!</li>
-                        <li>YouTube Search should work now. It's also worth mentioning that YouTube Video Search is a bit unstable at the moment, and some results are, for some reason, showing up instead of others. When you search up "Rewind 2018" and the actual Rewind video shows up, you'll know we patched it.</li>
-                    </ul>
-                </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button></div>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" role="dialog" tabindex="-1" id="settings">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -77,9 +55,10 @@
                     </div>
                     <p><br>Visual Settings</p>
                     <p class="lead text-center" id="settingsVisualDisclaimer">There are no visual options available for the current page.</p>
-                    <div class="custom-control custom-switch" id="chartGraphGlobalSwitch"><input class="custom-control-input" type="checkbox" id="disableChartGlobal"><label class="custom-control-label" for="disableChartGlobal">Disable Wide Chart graph (Global option)</label></div>
-                    <div class="custom-control custom-switch" id="chartGraphSingleSwitch"><input class="custom-control-input" type="checkbox" id="disableThisChart"><label class="custom-control-label" data-toggle="tooltip" data-bss-tooltip="" for="disableThisChart" title="If in Compare page, this disables the Gap graph.">Disable Wide Chart graph (this counter)</label></div>
-                    <div class="custom-control custom-switch" id="chartDisableUsersGraphSwitch"><input class="custom-control-input" type="checkbox" id="disableUsersChart"><label class="custom-control-label" for="disableUsersChart">Disable Users Chart graph (keeps gap graph)</label></div>
+                    <div class="custom-control custom-switch" id="chartGraphGlobalSwitch"><input class="custom-control-input" type="checkbox" id="disableChartGlobal"><label class="custom-control-label" for="disableChartGlobal">Disable Wide Line graph (Global option)</label></div>
+                    <div class="custom-control custom-switch" id="chartGraphSingleSwitch"><input class="custom-control-input" type="checkbox" id="disableThisChart"><label class="custom-control-label" data-toggle="tooltip" data-bss-tooltip="" for="disableThisChart" title="If in Compare page, this disables the Gap graph.">Disable Wide Line graph (this counter)</label></div>
+                    <div class="custom-control custom-switch" id="chartDisableUsersGraphSwitch"><input class="custom-control-input" type="checkbox" id="disableUsersChart"><label class="custom-control-label" for="disableUsersChart">Disable Users Line graph (keeps gap graph)</label></div>
+                    <div class="custom-control custom-switch" id="chartDisableRateGraphSwitch"><input class="custom-control-input" type="checkbox" id="disableGainRateGraph"><label class="custom-control-label" for="disableUsersChart-1">Disable Gain Rate Line graph (keeps gap graph)</label></div>
                 </div>
                 <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button></div>
             </div>
@@ -114,7 +93,7 @@
         </div>
     </div>
     <nav class="navbar navbar-light navbar-expand-md sticky-top shadow" id="app-navbar">
-        <div class="container-fluid"><a class="navbar-brand d-flex d-md-flex align-items-center align-items-md-center" href="../../"><i class="icon-graph" id="brand-logo"></i>&nbsp;NextCounts&nbsp;<span class="badge badge-primary" style="background-color: var(--teal);">v3</span></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container-fluid"><a class="navbar-brand d-flex d-md-flex align-items-center align-items-md-center" href="../../"><i class="icon-graph" id="brand-logo"></i>&nbsp;NextCounts&nbsp;</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link active" href="https://twitter.com/NextCounts"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-twitter">
@@ -124,19 +103,13 @@
                                 <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"></path>
                             </svg>&nbsp;Settings</a></li>
                     <li class="nav-item"><a class="nav-link active" href="#" data-target="#search" data-toggle="modal"><i class="fas fa-search"></i>&nbsp;Search</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="https://dashboard.nextcounts.com"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-dashboard">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <circle cx="12" cy="13" r="2"></circle>
-                                <line x1="13.45" y1="11.55" x2="15.5" y2="9.5"></line>
-                                <path d="M6.4 20a9 9 0 1 1 11.2 0Z"></path>
-                            </svg>&nbsp;Streamer Dashboard</a></li>
                 </ul>
             </div>
         </div>
     </nav>
     <div class="text-center" style="margin-right: 20vw;margin-left: 20vw;margin-top: 20px;"><img class="img-fluid" alt="NextCounts Logo" src="assets/img/only%20icon%20teal.png?h=6b0e383fe7dad75ee99d83f22f82b7bd" style="height: 25vw;">
         <h1 style="color: var(--teal);font-size: 6vw;">NextCounts</h1>
-        <p class="lead"><br><br></p><button class="btn btn-primary" type="button" data-target="#changelog" data-toggle="modal">Changelog (v3.1)</button>
+        <p class="lead"><br><br></p>
     </div>
     <div style="text-align: center;margin: 5vw;">
         <h2><strong>Any platform you wish.</strong></h2>
@@ -144,7 +117,7 @@
         <div class="text-left">
             <div class="card-columns" id="insidercomparegroup" style="display: none;margin: 2vw;">
                 <div class="card" style="opacity: 0;"></div>
-                <div class="card"><a class="btn btn-info btn-lg" role="button" style="height: 100%;width: 100%;" href="compare/"><i class="la la-area-chart"></i>&nbsp;Compare&nbsp;<span class="badge badge-primary">Alpha</span><br></a></div>
+                <div class="card"><a class="btn btn-info btn-lg" role="button" style="height: 100%;width: 100%;" href="compare/"><i class="la la-area-chart"></i>&nbsp;Compare&nbsp;<span class="badge badge-primary">Beta</span><br></a></div>
             </div>
             <div class="card-deck" style="margin: 2vw;">
                 <div class="card"><a class="btn btn-danger btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: #bd2130;" href="youtube/user/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-youtube">
@@ -165,11 +138,11 @@
                         </svg>&nbsp;Twitter Live Followers Count<br></a></div>
             </div>
             <div class="card-deck" style="margin: 2vw;">
-                <div class="card" data-toggle="tooltip" data-bss-tooltip="" title="Under Maintenance"><a class="btn btn-danger disabled btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: #9146FF;border-color: #9146FF;" href="twitch/followers/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-twitch">
+                <div class="card" data-toggle="tooltip" data-bss-tooltip="" title="Under Maintenance"><a class="btn btn-danger btn-block btn-lg disabled" role="button" style="height: 100%;width: 100%;background: #9146FF;border-color: #9146FF;" href="twitch/followers/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-twitch">
                             <path d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0H3.857zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142v6.286z"></path>
                             <path d="M11.857 3.143h-1.143V6.57h1.143V3.143zm-3.143 0H7.571V6.57h1.143V3.143z"></path>
                         </svg>&nbsp;Twitch Live Followers Count<br></a></div>
-                <div class="card" data-toggle="tooltip" data-bss-tooltip="" title="Under Maintenance"><a class="btn btn-primary disabled btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: #EE1D52;border-color: #EE1D52;" href="tiktok/followers/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-brand-tiktok">
+                <div class="card" title="Under Maintenance"><a class="btn btn-primary btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: #EE1D52;border-color: #EE1D52;" href="tiktok/followers/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-brand-tiktok">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M9 12a4 4 0 1 0 4 4v-12a5 5 0 0 0 5 5"></path>
                         </svg>&nbsp;Tiktok Live Followers Count<br></a></div>
@@ -193,7 +166,6 @@
         <div class="social"><a href="https://twitter.com/NextCounts" style="background: var(--secondary);"><i class="icon ion-social-twitter" style="color: #005bbb ;"></i></a><a data-toggle="tooltip" data-bss-tooltip="" href="https://twitter.com/NCInsiders" title="Twitter Insider Account" style="background: var(--secondary);"><i class="icon ion-social-twitter" style="color: #ffd500;"></i></a></div>
         <ul class="list-inline">
             <li class="list-inline-item"><a href="https://nextcounts.com">Home</a></li>
-            <li class="list-inline-item"><a href="https://dashboard.nextcounts.com">Streamer Dashboard</a></li>
         </ul>
         <p class="copyright">NexMedia © 2022</p>
     </footer>
@@ -205,8 +177,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://www.googletagmanager.com/gtag/js?id=G-R34Z4R4SVB"></script>
     <script src="assets/js/aglobal/odometer.js?h=1927551701c7b8e889150b9deeb58d20"></script>
-    <script src="assets/js/aglobal/search.js?h=689ed9cfbc040797d56be862244dd828"></script>
-    <script src="assets/js/aglobal/settings.js?h=844c37529e180893be862ef704859516"></script>
+    <script src="assets/js/aglobal/search.js?h=e3b7b57a188ad5c8c88726f13524ceb6"></script>
+    <script src="assets/js/aglobal/settings.js?h=e42feab12ed5f8ff122e85582049ce48"></script>
 </body>
 
 </html>

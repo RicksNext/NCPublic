@@ -11,7 +11,7 @@ $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</opt
 //$('#searchPlatform').append(`<option value="subreddit">Subreddit</option>`);
 $('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
 $('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</option>`);
-//$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
+$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
 $('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>`);
 //$('#searchPlatform').append(`<option value="twitchuser">Twitch (User)</option>`);
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>`);
@@ -134,21 +134,22 @@ function searchForUser(searchTerm, platform) {
                     var n = e.split("/");
                     t = n[3]
                 } else {
-                    if (e.includes("twitch.tv")) {
+                    if (e.includes("tiktok.com")) {
                         n = e.split("/");
                         t = n[1]
                     } else t = e;
                 }
 
                 $.ajax(`https://api-v2.nextcounts.com/api/search/tiktok/user/${t}`)
-                .done(function (data) {
+                .done(function (dataa) {
+                    var data = JSON.parse(dataa);
                     if(data.success == true) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
+                        document.getElementById(`searchFollowers`).innerHTML = `@${data.userIdentifier}`;
                         document.getElementById(`searchUsername`).href = `https://nextcounts.com/tiktok/followers/?u=${data.userIdentifier}`;
                         if (data.verified == true) {
                             document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.tiktok}`;
                         } else {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.twitter}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.tiktok}`;
                         }
                         document.getElementById(`searchpfp`).src = data.userImg;
                         document.getElementById(`loadingSearch`).style.display = "none";
