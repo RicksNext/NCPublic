@@ -1,4 +1,5 @@
 # NextCounts v3 HTML
+![Image](./assets/img/ncbanner.png)
 This is the entirety of the NextCounts HTML and JS code. This **does not** include the API code, only the front-end hosted in the main domain, nextcounts.com .
 
 ------------
