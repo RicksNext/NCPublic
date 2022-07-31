@@ -185,6 +185,8 @@ function getTime(t) {
     return d + str[2] + h + str[3] + m + str[4] + s + str[5];
 }
 
+var abbreviated = true;
+
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api-v2.nextcounts.com/api/youtube/channel/${user}`,
@@ -197,7 +199,11 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
-                updateCounts.name(data.username);
+                if(data.abbreviated == false && data.verifiedSubCount && data.verifiedSubCount == true) {
+                    updateCounts.name(`${data.username} <i class="far fa-check-circle" data-toggle="tooltip" title="Verified SubCount">`);
+                } else {
+                    updateCounts.name(data.username);
+                }
                 $('#openExternalBtn')[0].href = `https://youtube.com/channel/${user}`;
 
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=ytsubcount&u=${user}`;
@@ -223,7 +229,7 @@ function loadDataFirstTime() {
                 updateCounts.banner(data.userBanner);
                 hasBanner = true;
 
-                if(data.subcount >= 50000) {
+                if(data.subcount >= 50000 && data.abbreviated === true) {
                     $.ajax({
                         url: `https://api-v2.nextcounts.com/api/youtube/channel/estimate/mixerno/${user}`,
                         type: "GET",
@@ -296,7 +302,8 @@ function loadDataFirstTime() {
                         type: "GET",
                         dataType: "JSON",
                         success: function (dataa) {
-                            if(dataa.subcount <= 50000) {
+                            if(dataa.subcount < 50000 || dataa.abbreviated == false) {
+                                abbreviated = false;
                                 $('h5')[1].innerHTML = "Subscribers (Estimate)";
                                 $('h5')[3].innerHTML = "Views (API)";
                                 $('strong')[0].innerHTML = "Live Subscribers Count (API)";
@@ -345,7 +352,7 @@ function loadDataFirstTime() {
                         type: "GET",
                         dataType: "JSON",
                         success: function (dataa) {
-                            if(dataa.estimatedSubCount >= 50000) {
+                            if(dataa.estimatedSubCount >= 50000 && abbreviated === true) {
                                 $('h5')[1].innerHTML = "Subscribers (API)";
                                 $('h5')[3].innerHTML = "Views (Estimate)";
                                 $('strong')[0].innerHTML = "Live Subscribers Count (Estimated)";
@@ -410,6 +417,7 @@ function loadDataFirstTime() {
             document.getElementById('graphContainer').appendChild(viewsDiv);
             document.getElementById('graphContainer').appendChild(videosDiv);
             
+            /*
             Highcharts.Point.prototype.highlight = function (event) {
                 event = this.series.chart.pointer.normalize(event);
                 this.onMouseOver(); // Show the hover marker
@@ -445,6 +453,7 @@ function loadDataFirstTime() {
                 );
             });
 
+
             function syncExtremes(e) {
                 var thisChart = this.chart;
 
@@ -465,6 +474,7 @@ function loadDataFirstTime() {
                     });
                 }
             }
+            */
 
             new Highcharts.chart(subscribersDiv, {
                 chart: {
@@ -494,7 +504,7 @@ function loadDataFirstTime() {
                     type: "datetime",
                     crosshair: true,
                     events: {
-                        setExtremes: syncExtremes
+                        //setExtremes: syncExtremes
                     },
                     labels: {
                         style: {
@@ -583,7 +593,7 @@ function loadDataFirstTime() {
                     type: "datetime",
                     crosshair: true,
                     events: {
-                        setExtremes: syncExtremes
+                        //setExtremes: syncExtremes
                     },
                     labels: {
                         style: {
@@ -672,7 +682,7 @@ function loadDataFirstTime() {
                     type: "datetime",
                     crosshair: true,
                     events: {
-                        setExtremes: syncExtremes
+                        //setExtremes: syncExtremes
                     },
                     labels: {
                         style: {
@@ -761,7 +771,7 @@ function loadDataFirstTime() {
                     type: "datetime",
                     crosshair: true,
                     events: {
-                        setExtremes: syncExtremes
+                        //setExtremes: syncExtremes
                     },
                     labels: {
                         style: {

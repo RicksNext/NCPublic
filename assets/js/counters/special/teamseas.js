@@ -278,6 +278,7 @@ function loadDataFirstTime() {
             donationsGraph.className = 'chart';
             document.getElementById('graphContainer').appendChild(donationsGraph);
             
+            /*
             Highcharts.Point.prototype.highlight = function (event) {
                 event = this.series.chart.pointer.normalize(event);
                 this.onMouseOver(); // Show the hover marker
@@ -334,6 +335,7 @@ function loadDataFirstTime() {
                     });
                 }
             }
+            */
 
             new Highcharts.chart(donationsGraph, {
                 chart: {

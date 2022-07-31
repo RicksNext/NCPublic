@@ -343,6 +343,7 @@ function loadDataFirstTime() {
             document.getElementById('graphContainer').appendChild(dislikesDiv);
             document.getElementById('graphContainer').appendChild(commentsDiv);
             
+            /*
             Highcharts.Point.prototype.highlight = function (event) {
                 event = this.series.chart.pointer.normalize(event);
                 this.onMouseOver(); // Show the hover marker
@@ -398,6 +399,7 @@ function loadDataFirstTime() {
                     });
                 }
             }
+            */
 
             new Highcharts.chart(viewsDiv, {
                 chart: {

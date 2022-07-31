@@ -40,7 +40,6 @@ const socialColors = {
 
 const customColors = [
     "#0076B1",
-    "#000D38",
     "#CC1552",
     "#E4C722",
     "#7400DA",
@@ -1246,6 +1245,33 @@ function loadUser(platform, user, number) {
     }, 5000);
 }
 
+function searchForUser(user, platform) {
+    switch (platform) {
+        case "twitter":
+            $.ajax({
+                url: `https://api.twitter.com/1.1/users/show.json?screen_name=${user}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (data) {
+                    if (data.errors) {
+                        toastr["error"](`It seems like the username you entered (${user}) isn't available on Twitter. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        $('#username-1')[0].innerHTML = data.name;
+                        $('#username-1')[0].href = `https://twitter.com/${user}`;
+                        $('#username-1')[0].style.color = textBright;
+                        $('#username-1')[0].style.textDecoration = "none";
+                        $('#username-1')[0].style.fontWeight = "bold";
+                        $('#username-1')[0].style.fontSize = "1.2em";
+                        $('#username-1')[0].style.display = "block";
+                        $('#username-1')[0].style.marginTop = "0.5em";
+                        $('#username-1')[0].style.marginBottom = "0.5em";
+                    }
+                },
+                error: function () { },
+            });
+            break;     
+    }
+}
 
 loadUser(plat1, user1, 1);loadUser(plat2, user2, 2);
 
