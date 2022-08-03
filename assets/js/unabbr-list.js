@@ -2,8 +2,20 @@ $.getJSON("https://api-v2.nextcounts.com/api/youtube/channels/unabbreviated/list
     let totalCards = 0,
         cardsAdded = 0;
 
+    //sort the channels by the most subscribers
+    let chanList = data.data.sort(function (a, b) {
+        return b.subs - a.subs;
+    });
+
+    let totalSubs = 0;
+    for (let i = 0; i < chanList.length; i++) {
+        totalSubs += chanList[i].subs;
+    }
+
+    document.getElementById('infoPar').innerHTML = `Total of Channels: <strong>${data.count.toLocaleString()}</strong> - Total Subscribers Counted: <strong>${totalSubs.toLocaleString()}</strong>`;
+
     for (var i = 0; i < data.count; i++) {
-        let channel = data.data[i];
+        let channel = chanList[i];
 
         //create a card element for each channel
         let card = document.createElement("div");
