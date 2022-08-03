@@ -4,6 +4,12 @@ gtag('js', new Date());
 
 gtag('config', 'G-R34Z4R4SVB');
 
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "d1prspqwfj");
+
 function abbreviateGivenNumber(givenNumber) {
     if(givenNumber >= 1000000000) return (givenNumber/1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
     if(givenNumber >= 1000000) return (givenNumber/1000000).toFixed(1).replace(/\.0$/, '') + 'M';
