@@ -49,6 +49,8 @@ if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "")
 }
 
 if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
+    if(document.getElementById('showFullscreen')) $('#showFullscreen').show();
+    
     if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
         `<optgroup label="Select your theme">
             <option value="white" selected>White (Default)</option>

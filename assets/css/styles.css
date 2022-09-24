@@ -153,22 +153,6 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   object-fit: cover;
 }
 
-.userimgdiv {
-  margin-top: -5vw;
-  transition: 0.75px;
-  display: block;
-}
-
-.userimg {
-  width: 12vw;
-  height: 12vw;
-  transition: .7s;
-  vertical-align: middle;
-  z-index: 2 !important;
-  object-fit: cover;
-  position: relative;
-}
-
 .horizimg {
   /*width: 11vw;*/
   height: 8vw;
@@ -177,14 +161,6 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   z-index: 2 !important;
   object-fit: cover;
   position: relative;
-}
-
-.mainOdometer {
-  font-size: 5vw;
-}
-
-.smallOdometer {
-  font-size: 2.5vw;
 }
 
 .userheader-tiktok, .userheader-tiktok .navbar-brand {

@@ -1,0 +1,100 @@
+@media (min-width: 993px) {
+  .userimg {
+    width: 8rem;
+    height: 8rem;
+    transition: 0.75s;
+  }
+}
+
+@media (min-width: 993px) {
+  .mainOdometer {
+    font-size: 5rem;
+  }
+}
+
+@media (min-width: 993px) {
+  .smallOdometer {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .userimg {
+    width: 6rem;
+    height: 6rem;
+    transition: 0.75s;
+  }
+}
+
+@media (max-width: 992px) {
+  .mainOdometer {
+    font-size: 3.67rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .smallOdometer {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .userimg {
+    width: 5rem;
+    height: 5rem;
+    transition: 0.75s;
+  }
+}
+
+@media (max-width: 767px) {
+  .mainOdometer {
+    font-size: 2.7rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .smallOdometer {
+    font-size: 1.37rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .userimg {
+    width: 6.5rem;
+    height: 6.5rem;
+    transition: 0.75s;
+  }
+}
+
+@media (max-width: 575px) {
+  .mainOdometer {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .smallOdometer {
+    font-size: 2.35rem;
+  }
+}
+
+@media (max-width: 467px) {
+  .userimg {
+    width: 4.5rem;
+    height: 4.5rem;
+    transition: 0.75s;
+  }
+}
+
+@media (max-width: 467px) {
+  .mainOdometer {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 467px) {
+  .smallOdometer {
+    font-size: 1.7rem;
+  }
+}
+

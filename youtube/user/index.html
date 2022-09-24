@@ -34,7 +34,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="../../assets/css/navbar.css?h=86357661633fcd7458da996c46b2f27f">
     <link rel="stylesheet" href="../../assets/css/odometer.css?h=d2ae5baa3e34859d6f52e8fefb0d00c3">
-    <link rel="stylesheet" href="../../assets/css/styles.css?h=087f8b1c26b17e79218a99e09a0e7105">
+    <link rel="stylesheet" href="../../assets/css/solo-counters.css?h=61c2b864b0916790e384a2f935e38a78">
+    <link rel="stylesheet" href="../../assets/css/styles.css?h=ac7cc05eecd44152aed5e9674b8e20ce">
 </head>
 
 <body class="whitetheme" style="font-family: Poppins, sans-serif;">
@@ -112,6 +113,20 @@
             <div class="card counterCard">
                 <div class="card-header">
                     <h5><strong>Live Subscribers Count (Estimated)</strong></h5>
+                    <div class="modal fade" role="dialog" tabindex="-1" id="fullscreen">
+                        <div class="modal-dialog" role="document" style="max-width: 100%;margin: 0;top: 0;bottom: 0;left: 0;right: 0;height: 100vh;display: flex;background: #272727;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">FullScreen Live Count&nbsp;<span class="badge badge-pill badge-danger">Preview</span></h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>LiveCount will be displayed here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><button class="btn" id="showFullscreen" type="button" data-target="#fullscreen" data-toggle="modal" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-fullscreen">
+                            <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"></path>
+                        </svg></button>
                 </div>
                 <div class="card-body text-center"><img class="img-fluid userbanner-counter" id="userBanner" src="../../assets/img/main%20banner%20teal%20black.png?h=09257e1d6f91beefec4591567e700d11">
                     <div class="userimgdiv" style="margin-bottom: 15px;"><img class="rounded-circle img-fluid shadow userimg" id="userImg" src="../../assets/img/main%20icon%20black%20teal.png?h=b7d39168026b8b8fefd1516c65c8430b"></div>
@@ -319,8 +334,9 @@
     <script src="https://www.googletagmanager.com/gtag/js?id=G-R34Z4R4SVB"></script>
     <script src="../../assets/js/aglobal/odometer.js?h=91a8930826f7c6d1894f564c0c1ef5de"></script>
     <script src="../../assets/js/aglobal/search.js?h=e3b7b57a188ad5c8c88726f13524ceb6"></script>
-    <script src="../../assets/js/aglobal/settings.js?h=c1a82204504c7c76d0b138090951516e"></script>
+    <script src="../../assets/js/aglobal/settings.js?h=8f313487b7a2c892c0d1a693b1c64760"></script>
     <script src="../../assets/js/counters/youtube-subscribers.js?h=1708a947d0a651138e0386ba9c8cfb29"></script>
+    <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4928242198674611"></script>
 </body>
 
 </html>

@@ -1,0 +1,243 @@
+@media (min-width: 800px) {
+  .userimg {
+    width: 9rem;
+    height: 9rem;
+    transition: 0.75s;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (min-width: 800px) {
+  .userImgWide {
+    width: 15rem;
+    height: 8.5rem;
+    transition: 0.75s;
+    margin-top: 20px;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (min-width: 800px) {
+  .userimgdiv {
+    margin-top: -90px;
+    transition: 0.75s;
+    display: block;
+  }
+}
+
+@media (min-width: 800px) {
+  .mainOdometer {
+    font-size: 4.5rem;
+  }
+}
+
+@media (min-width: 800px) {
+  .smallOdometer {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 799px) {
+  .userimg {
+    width: 9rem;
+    height: 9rem;
+    transition: 0.75s;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (max-width: 799px) {
+  .userImgWide {
+    width: 13.5rem;
+    height: 7.5rem;
+    transition: 0.75s;
+    margin-top: 15px;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (max-width: 799px) {
+  .userimgdiv {
+    margin-top: -70px;
+    transition: 0.75s;
+    display: block;
+  }
+}
+
+@media (max-width: 799px) {
+  .mainOdometer {
+    font-size: 3em;
+  }
+}
+
+@media (max-width: 799px) {
+  .smallOdometer {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 799px) {
+  #username {
+    font-size: 2.1rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .userimg {
+    width: 7rem;
+    height: 7rem;
+    transition: 0.75s;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (max-width: 599px) {
+  .userImgWide {
+    width: 10.37rem;
+    height: 6rem;
+    transition: 0.75s;
+    margin-top: 0px;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (max-width: 599px) {
+  .userimgdiv {
+    margin-top: -50px;
+    transition: 0.75s;
+    display: block;
+  }
+}
+
+@media (max-width: 599px) {
+  .mainOdometer {
+    font-size: 3.37rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .smallOdometer {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 599px) {
+  #username {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .userimg {
+    width: 6.5rem;
+    height: 6.5rem;
+    transition: 0.75s;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (max-width: 425px) {
+  .userImgWide {
+    width: 8.5rem;
+    height: 5rem;
+    transition: 0.75s;
+    margin-top: 5px;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (max-width: 425px) {
+  .userimgdiv {
+    margin-top: -50px;
+    transition: 0.75s;
+    display: block;
+  }
+}
+
+@media (max-width: 425px) {
+  .mainOdometer {
+    font-size: 2.75rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .smallOdometer {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 425px) {
+  #username {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .userimg {
+    width: 5.5rem;
+    height: 5.5rem;
+    transition: 0.75s;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (max-width: 300px) {
+  .userImgWide {
+    width: 8rem;
+    height: 5.5rem;
+    transition: 0.75s;
+    margin-top: 10px;
+    vertical-align: middle;
+    z-index: 2 !important;
+    object-fit: cover;
+    position: relative;
+  }
+}
+
+@media (max-width: 300px) {
+  .userimgdiv {
+    margin-top: -50px;
+    transition: 0.75s;
+    display: block;
+  }
+}
+
+@media (max-width: 300px) {
+  .mainOdometer {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .smallOdometer {
+    font-size: 1.5rem;
+  }
+}
+
