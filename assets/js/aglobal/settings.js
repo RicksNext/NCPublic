@@ -48,25 +48,20 @@ if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "")
     }
 }
 
+if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
+    `<optgroup label="Select your theme">
+            <option value="white" selected>White (Default)</option>
+            <option value="dark">Darker</option>
+            <option value="amoled">AMOLED Theme (NEW)</option>
+        </optgroup>`
+);
+
 if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
     if(document.getElementById('showFullscreen')) $('#showFullscreen').show();
-    
-    if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
-        `<optgroup label="Select your theme">
-            <option value="white" selected>White (Default)</option>
-            <option value="dark">Darker</option>
-            <option value="amoled">AMOLED Theme (Insider Exclusive - BETA)</option>
-        </optgroup>`
-    );
+
     if(!window.location.pathname.includes(`/embed/`)) $('#insidercomparegroup').show();
-	//if(!window.location.pathname.includes(`/embed/`)) $('.badge')[0].innerHTML = `v3.2 BETA 1`;
 } else {
-    if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
-        `<optgroup label="Select your theme">
-            <option value="white" selected>White (Default)</option>
-            <option value="dark">Darker</option>
-        </optgroup>`
-    );
+    //
 }
 
 $('#graphTimer').append(
