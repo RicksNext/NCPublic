@@ -45,7 +45,7 @@ setInterval(function () {
                 });
 
                 $('#userImg-1').attr('src', candidates[0].foto);
-                data.apuracao.definido == true ? $('#username-1').text(`${candidates[0].nome} ${socialBadges.verified} - ${candidates[0].partido}`) : $('#username-1').text(`${candidates[0].nome} - ${candidates[0].partido}`);
+                data.apuracao.definido == true && ((candidates[0].votos / data.votos.validos) * 100) > 50 ? document.getElementById(`username-1`).innerHTML = (`${candidates[0].nome} ${socialBadges.verified} - ${candidates[0].partido}`) : document.getElementById(`username-1`).innerHTML = (`${candidates[0].nome} - ${candidates[0].partido}`);
                 $('#username-1').removeClass('skeleton skeleton-text');
                 $('#mainOdometer-1').text(candidates[0].votos);
 
@@ -66,8 +66,9 @@ setInterval(function () {
                         src=${candidate.foto}><p class="candidName">${candidate.nome} - ${candidate.partido}</p>
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title smallOdometer odometer">${Math.floor(candidate.votos)}</h3>
-                        <p class="card-text">Votes</p>
+                    <div class="card-title smallOdometer odometer">${Math.floor(candidate.votos)}</div>
+                        <!-- <h3 class="card-title smallOdometer odometer">${Math.floor(candidate.votos)}</h3> -->
+                        <p class="card-text lowerPar">${((candidate.votos / data.votos.validos) * 100).toLocaleString()}% of Votes</p>
                     </div>`;
 
                     document.getElementsByClassName("card-columns")[$('.card-columns').length - 1].appendChild(card);
@@ -81,8 +82,7 @@ setInterval(function () {
                     }
                 }
 
-                $('#gapcounter').text(Math.floor(candidates[0].votos - candidates[1].votos));
-                $('#gapcounter').addClass('odometer');
+                $(`#gapcounter`).text(Math.floor(candidates[0].votos - candidates[1].votos));
 
                 let firstUpdateChart = [];
                 for (var i = 0; i < candidates.length; i++) {
@@ -90,6 +90,8 @@ setInterval(function () {
                 }
 
                 if(firstLoad == true) {
+                    $('#gapcounter').addClass('odometer');
+
                     chart = Highcharts.chart('gapchart', {
                         chart: {
                             type: 'spline',
@@ -143,24 +145,36 @@ setInterval(function () {
                         },
                         series: firstUpdateChart
                     });
-                    for (var i = 0; i < candidates.length; i++) {
-                        votesEachCandidate.push(candidates[i].votos);
-                        chart.series[i].addPoint([Date.now(), candidates[i].votos]);
+
+                    for (var i = 0; i < data.candidatos.length; i++) {
+                        votesEachCandidate.push(data.candidatos[i].votos);
+                        chart.series[i].addPoint([Date.now(), ((data.candidatos[i].votos / data.votos.validos) * 100)]);
+                        if(i>=2) {
+                            new Odometer({
+                                el: document.getElementsByClassName(`smallOdometer`)[i-2],
+                                value: data.candidatos[i].votos
+                            });
+                        }
+                        new Odometer({
+                            el: document.getElementById(`gapcounter`),
+                            value: Math.floor(candidates[0].votos - candidates[1].votos)
+                        });
                     };
 
                 } else {
                     for (var i = 0; i < candidates.length; i++) {
+                        document.getElementsByClassName(`lowerPar`)[i].innerHTML = (`${((data.candidatos[i].votos / data.votos.validos) * 100).toLocaleString()}% of Votes`);
                         //check if the candidate has different votes than the archived in votesEachCandidate
-                        if (votesEachCandidate[i] != candidates[i].votos) {
+                        if (votesEachCandidate[i] != data.candidatos[i].votos) {
                             //if it's different, update the chart
-                            chart.series[i].addPoint([Date.now(), candidates[i].votos]);
-                            votesEachCandidate[i] = candidates[i].votos;
+                            chart.series[i].addPoint([Date.now(), ((data.candidatos[i].votos / data.votos.validos) * 100)]);
+                            votesEachCandidate[i] = data.candidatos[i].votos;
                         }
 
                         if(i >= 2) {
-                            $(`.odometer`)[i].innerHTML = candidates[i].votos;
+                            document.getElementsByClassName(`smallOdometer`)[i-2].innerHTML = data.candidatos[i].votos;
                             $(`.candidPhoto`)[i-2].src = candidates[i].foto;
-                            $('.candidName')[i-2].innerHTML = `${candidates[i].nome} - ${candidates[i].partido}`;
+                            document.getElementsByClassName(`candidName`)[i-2].innerHTML = `${candidates[i].nome} - ${candidates[i].partido}`;
                         }
                     }
                 }
