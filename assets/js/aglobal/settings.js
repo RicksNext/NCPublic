@@ -6,9 +6,9 @@ gtag('config', 'G-R34Z4R4SVB');
 
 (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-})(window, document, "clarity", "script", "d1prspqwfj");
+})(window, document, "clarity", "script", "dqmfn6cpn1");
 
 function abbreviateGivenNumber(givenNumber) {
     if(givenNumber >= 1000000000) return (givenNumber/1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
@@ -20,34 +20,6 @@ function abbreviateGivenNumber(givenNumber) {
 var maxPoints = 900;
 
 
-if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "") {
-    localStorage.setItem("theme", "white");
-} else {
-    switch(localStorage.getItem("theme")) {
-        case "dark": {
-            $('html')[0].className = 'darktheme';
-            $('body')[0].className = 'darktheme';
-            if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `dark`;
-            if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
-            break;
-        }
-        case "amoled": {
-            $('html')[0].className = 'amoledtheme';
-            $('body')[0].className = 'amoledtheme';
-            if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `amoled`;
-            if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
-            break;
-        }
-        default: {
-            $('html')[0].className = 'whitetheme';
-            $('body')[0].className = 'whitetheme';
-            if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `white`;
-            if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-dark`, ` navbar-light`);
-            break;
-        }
-    }
-}
-
 if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
     `<optgroup label="Select your theme">
             <option value="white" selected>White (Default)</option>
@@ -55,6 +27,43 @@ if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
             <option value="amoled">AMOLED Theme (NEW)</option>
         </optgroup>`
 );
+
+if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "") {
+    localStorage.setItem("theme", "white");
+} else {
+    switch(localStorage.getItem("theme")) {
+        case "dark": {
+            $('html')[0].className = 'darktheme';
+            $('body')[0].className = 'darktheme';
+            if(!window.location.pathname.includes(`/embed/`)) {
+                $('#themeSelector').val('dark');
+                if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `dark`;
+                if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+            }
+            break;
+        }
+        case "amoled": {
+            $('html')[0].className = 'amoledtheme';
+            $('body')[0].className = 'amoledtheme';
+            if(!window.location.pathname.includes(`/embed/`))  {
+                $('#themeSelector').val('amoled');
+                if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `amoled`;
+                if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+            }
+            break;
+        }
+        default: {
+            $('html')[0].className = 'whitetheme';
+            $('body')[0].className = 'whitetheme';
+            if(!window.location.pathname.includes(`/embed/`)) {
+                $('#themeSelector').val('white');
+                if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `white`;
+                if(!window.location.pathname.includes(`embed`)) $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-dark`, ` navbar-light`);
+            }
+            break;
+        }
+    }
+}
 
 if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
     if(document.getElementById('showFullscreen')) $('#showFullscreen').show();
