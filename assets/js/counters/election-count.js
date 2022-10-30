@@ -167,7 +167,7 @@ setInterval(function () {
                         //check if the candidate has different votes than the archived in votesEachCandidate
                         if (votesEachCandidate[i] != data.candidatos[i].votos) {
                             //if it's different, update the chart
-                            chart.series[i].addPoint([Date.now(), ((data.candidatos[i].votos / data.votos.validos) * 100)]);
+                            chart.series[i].addPoint([Date.now(), data.candidatos[i].votos]);
                             votesEachCandidate[i] = data.candidatos[i].votos;
                         }
 
