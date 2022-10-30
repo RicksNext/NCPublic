@@ -148,7 +148,7 @@ setInterval(function () {
 
                     for (var i = 0; i < data.candidatos.length; i++) {
                         votesEachCandidate.push(data.candidatos[i].votos);
-                        chart.series[i].addPoint([Date.now(), ((data.candidatos[i].votos / data.votos.validos) * 100)]);
+                        chart.series[i].addPoint([Date.now(), data.candidatos[i].votos]);
                         if(i>=2) {
                             new Odometer({
                                 el: document.getElementsByClassName(`smallOdometer`)[i-2],
