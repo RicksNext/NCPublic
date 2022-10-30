@@ -85,8 +85,8 @@ setInterval(function () {
                 $(`#gapcounter`).text(Math.floor(candidates[0].votos - candidates[1].votos));
 
                 let firstUpdateChart = [];
-                for (var i = 0; i < candidates.length; i++) {
-                    firstUpdateChart.push({name: candidates[i].nome, marker: { enabled: false } });
+                for (var i = 0; i < data.candidatos.length; i++) {
+                    firstUpdateChart.push({name: data.candidatos[i].nome, marker: { enabled: false } });
                 }
 
                 if(firstLoad == true) {
