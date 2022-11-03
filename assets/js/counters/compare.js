@@ -816,10 +816,12 @@ function loadUser(platform, user, number) {
                     url: `https://api-v2.nextcounts.com/api/twitter/user/${user}`,
                     type: "GET",
                     dataType: "JSON",
-                    success: function (data) {
-                        if (data.error) {
+                    success: function (dataone) {
+                        if (dataone.error) {
                             if(firstLoad[number - 1] == true) toastr["error"]("It seems like one of the users you requested doesn't exist. Please check if the @ of the user is correct. - User " + number, "Uh oh...");
                         } else {
+                            let data = dataone.users[0];
+
                             if(firstLoad[number - 1] == true) {
                                 if (data.verified == true) {
                                     updateCounts.name(`${data.username} ${socialBadges.verified}`, number);
@@ -961,8 +963,10 @@ function loadUser(platform, user, number) {
                                         url: `https://api-v2.nextcounts.com/api/twitter/user/${user}`,
                                         type: "GET",
                                         dataType: "JSON",
-                                        success: function (dataa) {
-                                            if(data.success == true) {
+                                        success: function (datatwo) {
+                                            if(datatwo.success == true) {
+                                                let dataa = datatwo.users[0];
+
                                                 currcounts[number - 1] = dataa.followers;
                                                 updateCounts.mainCount(dataa.followers, number);
                                                 updateCounts.goalCount(dataa.followers, number);
@@ -987,8 +991,6 @@ function loadUser(platform, user, number) {
                                         }, error: function () { }
                                     });
                                 }, 2000);
-                            } else {
-                                //
                             }
                         }
                     },

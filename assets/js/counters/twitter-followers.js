@@ -247,7 +247,7 @@ function loadDataFirstTime() {
                 });
                 new Odometer({
                     el: document.getElementById("likesOdo"),
-                    value: data.likes,
+                    value: data.listed,
                     format: '(,ddd).dd',
                 });
 
@@ -260,7 +260,7 @@ function loadDataFirstTime() {
                             updateCounts.mainCount(dataa.followers);
                             updateCounts.following(dataa.following);
                             updateCounts.tweets(dataa.tweets);
-                            updateCounts.likes(dataa.likes);
+                            updateCounts.likes(dataa.listed);
                             updateCounts.goalCount(dataa.followers);
 
                             $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.followers, oldFollowers, "followersToday");
