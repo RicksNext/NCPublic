@@ -530,7 +530,7 @@ function loadDataFirstTime() {
                         <td>${new Date(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
                         <td>${(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.requestsTotal[ndata.requestsTotal.length - (i + 1)][1], ndata.requestsTotal[ndata.requestsTotal.length - (i + 2)][1], false)}</td>
                         <td>${(ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.blockedTotal[ndata.blockedTotal.length - (i + 1)][1], ndata.blockedTotal[ndata.blockedTotal.length - (i + 2)][1], false)}</td>
-                        <td>${(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1], ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 2)][1], false)}</td>
+                        <td>${Number(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1]) ? (ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1]).toLocaleString() : 0} ${higherLowerOrEqual(ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 1)][1], ndata.youtubeQuota[ndata.youtubeQuota.length - (i + 2)][1], false)}</td>
                     </tr>`);
                 }
             } else {

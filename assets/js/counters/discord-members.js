@@ -181,9 +181,105 @@ function getTime(t) {
     return d + str[2] + h + str[3] + m + str[4] + s + str[5];
 }
 
-function loadStats(serverID) {
+function loadDataFirstTime() {
+    $.ajax({
+        url: `https://api-v2.nextcounts.com/api/discord/server/${user}`,
+        type: "GET",
+        dataType: "JSON",
+        success: function (data) {
+            if (data.success == false) {
+                toastr["error"](
+                    "It seems like the server you requested doesn't exist. Please check if the invite id is correct.",
+                    "Uh oh..."
+                );
+            } else {
+                $('head').find('title')[0].text = `Live Discord Members Count for ${data.guild.serverName}`;
+                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.guild.serverImg}" style="height: 50px;margin-right: 5px;" /> ${data.guild.serverName}</a>`;
+                updateCounts.name(`${data.guild.serverName}`);
+                $('#openExternalBtn')[0].href = `https://discord.com/invite/${user}`;
 
-    $.ajax(`https://api-v2.nextcounts.com/api/stats/discordserver/${serverID}`)
+                $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=discordserver&u=${user}`;
+
+                let samplePhrase = `NextCounts Live Discord Server Members Count for '${data.guild.serverName}'!`;
+                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
+                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;
+                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${samplePhrase}&summary=${samplePhrase}&source=${window.location.href}`;
+                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=${samplePhrase}`;
+                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=${samplePhrase} ${window.location.href}`;
+                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=${samplePhrase}`;
+                $('#mailShareBtn')[0].href = `mailto:?subject=${samplePhrase}&body=${samplePhrase} ${window.location.href}`;
+                $('#copytoClipBtn')[0].onclick = function () {
+                    navigator.clipboard.writeText(window.location.href);
+                    toastr["success"]("Copied to clipboard!", "Success!");
+                }
+
+                updateCounts.pfp(data.guild.serverImg);
+                updateCounts.banner(data.guild.serverBanner);
+
+                new Odometer({
+                    el: document.getElementById("mainOdometer"),
+                    value: data.membersCount,
+                    format: '(,ddd).dd',
+                });
+
+                new Odometer({
+                    el: document.getElementById("goalOdo"),
+                    value: data.membersCount && !isNaN(data.membersCount) ? data.membersCount / 2 : 0,
+                    format: '(,ddd).dd',
+                });
+                new Odometer({
+                    el: document.getElementById("firstSmallOdo"),
+                    value: data.onlineMembers,
+                    format: '(,ddd).dd',
+                });
+
+                setInterval(function () {
+                    $.ajax({
+                        url: `https://api-v2.nextcounts.com/api/discord/server/${user}`,
+                        type: "GET",
+                        dataType: "JSON",
+                        success: function (dataa) {
+                            updateCounts.mainCount(dataa.membersCount);
+                            updateCounts.following(dataa.onlineMembers);
+                            updateCounts.goalCount(dataa.membersCount);
+
+                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.membersCount, oldFollowers, "followersToday");
+
+                            $(`#likesToday`)[0].outerHTML = positiveOrNegative(dataa.onlineMembers, oldLikes, "likesToday");
+                            
+                            if (!firstLive[0] || !firstLive[1]) {
+                                prevCount[0] = dataa.membersCount;
+                                firstLive[0] = true;
+                                prevCount[1] = dataa.onlineMembers;
+                                firstLive[1] = true;
+                            } else {
+                                rates.add(0, dataa.membersCount - prevCount[0]);
+                                rates.add(1, dataa.onlineMembers - prevCount[1]);
+                                prevCount[0] = dataa.membersCount;
+                                prevCount[1] = dataa.onlineMembers;
+
+                                var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2;
+
+                                var final11 = Math.round(avgRate1 * 60).toLocaleString();
+                                var final12 = Math.round(avgRate1 * 3600).toLocaleString();
+                                var final13 = Math.round(avgRate1 * 86400).toLocaleString();
+
+                                var final21 = Math.round(avgRate2 * 60).toLocaleString();
+                                var final22 = Math.round(avgRate2 * 3600).toLocaleString();
+                                var final23 = Math.round(avgRate2 * 86400).toLocaleString();
+
+                                updateCounts.avgs1(final11, final12, final13);
+                                updateCounts.avgs2(final21, final22, final23);
+                            }
+                        }, error: function () { }
+                    });
+                }, 2000);
+            }
+        },
+        error: function () { },
+    });
+
+    $.ajax(`https://api-v2.nextcounts.com/api/stats/discordserver/${user}`)
         .done(function (ndata) {
             //try { JSON.parse(stats); } catch { toastr["info"](stats); };
             //var ndata = JSON.parse(stats);
@@ -385,106 +481,7 @@ function loadStats(serverID) {
             setTimeout(function () {
                 $('#userstatsTable').DataTable();
             }, 250);
-        });}
-
-function loadDataFirstTime() {
-    $.ajax({
-        url: `https://api-v2.nextcounts.com/api/discord/server/${user}`,
-        type: "GET",
-        dataType: "JSON",
-        success: function (data) {
-            if (data.success == false) {
-                toastr["error"](
-                    "It seems like the server you requested doesn't exist. Please check if the invite id is correct.",
-                    "Uh oh..."
-                );
-            } else {
-				loadStats(data.guild.serverID);
-                $('head').find('title')[0].text = `Live Discord Members Count for ${data.guild.serverName}`;
-                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.guild.serverImg}" style="height: 50px;margin-right: 5px;" /> ${data.guild.serverName}</a>`;
-                updateCounts.name(`${data.guild.serverName}`);
-                $('#openExternalBtn')[0].href = `https://discord.com/invite/${user}`;
-
-                $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=discordserver&u=${user}`;
-
-                let samplePhrase = `NextCounts Live Discord Server Members Count for '${data.guild.serverName}'!`;
-                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
-                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;
-                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${samplePhrase}&summary=${samplePhrase}&source=${window.location.href}`;
-                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=${samplePhrase}`;
-                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=${samplePhrase} ${window.location.href}`;
-                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=${samplePhrase}`;
-                $('#mailShareBtn')[0].href = `mailto:?subject=${samplePhrase}&body=${samplePhrase} ${window.location.href}`;
-                $('#copytoClipBtn')[0].onclick = function () {
-                    navigator.clipboard.writeText(window.location.href);
-                    toastr["success"]("Copied to clipboard!", "Success!");
-                }
-
-                updateCounts.pfp(data.guild.serverImg);
-                updateCounts.banner(data.guild.serverBanner);
-
-                new Odometer({
-                    el: document.getElementById("mainOdometer"),
-                    value: data.membersCount,
-                    format: '(,ddd).dd',
-                });
-
-                new Odometer({
-                    el: document.getElementById("goalOdo"),
-                    value: data.membersCount && !isNaN(data.membersCount) ? data.membersCount / 2 : 0,
-                    format: '(,ddd).dd',
-                });
-                new Odometer({
-                    el: document.getElementById("firstSmallOdo"),
-                    value: data.onlineMembers,
-                    format: '(,ddd).dd',
-                });
-
-                setInterval(function () {
-                    $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/discord/server/${user}`,
-                        type: "GET",
-                        dataType: "JSON",
-                        success: function (dataa) {
-                            updateCounts.mainCount(dataa.membersCount);
-                            updateCounts.following(dataa.onlineMembers);
-                            updateCounts.goalCount(dataa.membersCount);
-
-                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.membersCount, oldFollowers, "followersToday");
-
-                            $(`#likesToday`)[0].outerHTML = positiveOrNegative(dataa.onlineMembers, oldLikes, "likesToday");
-                            
-                            if (!firstLive[0] || !firstLive[1]) {
-                                prevCount[0] = dataa.membersCount;
-                                firstLive[0] = true;
-                                prevCount[1] = dataa.onlineMembers;
-                                firstLive[1] = true;
-                            } else {
-                                rates.add(0, dataa.membersCount - prevCount[0]);
-                                rates.add(1, dataa.onlineMembers - prevCount[1]);
-                                prevCount[0] = dataa.membersCount;
-                                prevCount[1] = dataa.onlineMembers;
-
-                                var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2;
-
-                                var final11 = Math.round(avgRate1 * 60).toLocaleString();
-                                var final12 = Math.round(avgRate1 * 3600).toLocaleString();
-                                var final13 = Math.round(avgRate1 * 86400).toLocaleString();
-
-                                var final21 = Math.round(avgRate2 * 60).toLocaleString();
-                                var final22 = Math.round(avgRate2 * 3600).toLocaleString();
-                                var final23 = Math.round(avgRate2 * 86400).toLocaleString();
-
-                                updateCounts.avgs1(final11, final12, final13);
-                                updateCounts.avgs2(final21, final22, final23);
-                            }
-                        }, error: function () { }
-                    });
-                }, 2000);
-            }
-        },
-        error: function () { },
-    });
+        });
 }
 
 loadDataFirstTime();
