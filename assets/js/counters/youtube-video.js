@@ -327,11 +327,10 @@ function loadDataFirstTime() {
         error: function () { },
     });
 
-    $.ajax(`https://statsapi.nextcounts.com/youtubevideo/${user}`)
-        .done(function (stats) {
-            try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-            var ndata = JSON.parse(stats);
+    $.ajax(`https://api-v2.nextcounts.com/api/stats/youtubevideo/${user}`)
+        .done(function (ndata) {
+            //try { JSON.parse(stats); } catch { toastr["info"](stats); };
+            //var ndata = JSON.parse(stats);
 
             var viewsDiv = document.createElement('div');
             var likesDiv = document.createElement('div');
@@ -342,64 +341,6 @@ function loadDataFirstTime() {
             document.getElementById('graphContainer').appendChild(likesDiv);
             document.getElementById('graphContainer').appendChild(dislikesDiv);
             document.getElementById('graphContainer').appendChild(commentsDiv);
-            
-            /*
-            Highcharts.Point.prototype.highlight = function (event) {
-                event = this.series.chart.pointer.normalize(event);
-                this.onMouseOver(); // Show the hover marker
-                this.series.chart.tooltip.refresh(this); // Show the tooltip
-                this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
-            };
-
-            Highcharts.Pointer.prototype.reset = function () {
-                return undefined;
-            };
-
-            ['mousemove', 'touchmove', 'touchstart'].forEach(function (eventType) {
-                document.getElementById('graphContainer').addEventListener(
-                    eventType,
-                    function (e) {
-                        var chart,
-                            point,
-                            i,
-                            event;
-            
-                        for (i = 1; i < Highcharts.charts.length; i = i + 1) {
-                            chart = Highcharts.charts[i];
-                            // Find coordinates within the chart
-                            event = chart.pointer.normalize(e);
-                            // Get the hovered point
-                            point = chart.series[0].searchPoint(event, true);
-            
-                            if (point) {
-                                point.highlight(e);
-                            }
-                        }
-                    }
-                );
-            });
-
-            function syncExtremes(e) {
-                var thisChart = this.chart;
-
-                if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
-                    Highcharts.each(Highcharts.charts, function (chart) {
-                        if (chart !== thisChart) {
-                            if (chart.xAxis[0].setExtremes) { // It is null while updating
-                                chart.xAxis[0].setExtremes(
-                                    e.min,
-                                    e.max,
-                                    undefined,
-                                    false, {
-                                        trigger: 'syncExtremes'
-                                    }
-                                );
-                            }
-                        }
-                    });
-                }
-            }
-            */
 
             new Highcharts.chart(viewsDiv, {
                 chart: {
@@ -428,9 +369,6 @@ function loadDataFirstTime() {
                 xAxis: {
                     type: "datetime",
                     crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
                     labels: {
                         style: {
                             color: textBright,
@@ -461,13 +399,6 @@ function loadDataFirstTime() {
                     tickColor: lineColor,
                 },
                 tooltip: {
-                    positioner: function () {
-                        return {
-                            // right aligned
-                            x: this.chart.chartWidth - this.label.width,
-                            y: 10 // align to title
-                        };
-                    },
                     borderWidth: 0,
                     backgroundColor: 'none',
                     pointFormat: '{point.y}',
@@ -517,9 +448,6 @@ function loadDataFirstTime() {
                 xAxis: {
                     type: "datetime",
                     crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
                     labels: {
                         style: {
                             color: textBright,
@@ -550,13 +478,6 @@ function loadDataFirstTime() {
                     tickColor: lineColor,
                 },
                 tooltip: {
-                    positioner: function () {
-                        return {
-                            // right aligned
-                            x: this.chart.chartWidth - this.label.width,
-                            y: 10 // align to title
-                        };
-                    },
                     borderWidth: 0,
                     backgroundColor: 'none',
                     pointFormat: '{point.y}',
@@ -607,9 +528,6 @@ function loadDataFirstTime() {
                     xAxis: {
                         type: "datetime",
                         crosshair: true,
-                        events: {
-                            setExtremes: syncExtremes
-                        },
                         labels: {
                             style: {
                                 color: textBright,
@@ -640,13 +558,6 @@ function loadDataFirstTime() {
                         tickColor: lineColor,
                     },
                     tooltip: {
-                        positioner: function () {
-                            return {
-                                // right aligned
-                                x: this.chart.chartWidth - this.label.width,
-                                y: 10 // align to title
-                            };
-                        },
                         borderWidth: 0,
                         backgroundColor: 'none',
                         pointFormat: '{point.y}',
@@ -697,9 +608,6 @@ function loadDataFirstTime() {
                 xAxis: {
                     type: "datetime",
                     crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
                     labels: {
                         style: {
                             color: textBright,
@@ -730,13 +638,6 @@ function loadDataFirstTime() {
                     tickColor: lineColor,
                 },
                 tooltip: {
-                    positioner: function () {
-                        return {
-                            // right aligned
-                            x: this.chart.chartWidth - this.label.width,
-                            y: 10 // align to title
-                        };
-                    },
                     borderWidth: 0,
                     backgroundColor: 'none',
                     pointFormat: '{point.y}',

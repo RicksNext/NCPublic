@@ -24,7 +24,7 @@ if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
     `<optgroup label="Select your theme">
             <option value="white" selected>White (Default)</option>
             <option value="dark">Darker</option>
-            <option value="amoled">AMOLED Theme (NEW)</option>
+            <option value="amoled">AMOLED Theme</option>
         </optgroup>`
 );
 
@@ -211,14 +211,14 @@ You need to refresh the page to enable Insider exclusive features. Don't tell an
     }
 }
 
-if(localStorage.getItem("graphlimit") == null || localStorage.getItem("graphlimit") == "") {
+if(!window.location.pathname.includes(`/embed/`)) if(localStorage.getItem("graphlimit") == null || localStorage.getItem("graphlimit") == "") {
     localStorage.setItem("graphlimit", "900");
 } else {
     $('#graphTimer')[0].value = localStorage.getItem("graphlimit");
     maxPoints = Math.floor(localStorage.getItem("graphlimit"));
 }
 
-$('#graphTimer').change(function(){
+if(!window.location.pathname.includes(`/embed/`)) $('#graphTimer').change(function(){
     localStorage.setItem("graphlimit", $('#graphTimer')[0].value);
     maxPoints = Math.floor($('#graphTimer')[0].value);
     console.log($('#graphTimer').val());
@@ -230,7 +230,7 @@ $('#graphTimer').change(function(){
     }
 });
 
-if(localStorage.getItem("globalChart") == null || localStorage.getItem("globalChart") == "") {
+if(!window.location.pathname.includes(`/embed/`)) if(localStorage.getItem("globalChart") == null || localStorage.getItem("globalChart") == "") {
     localStorage.setItem("globalChart", "true");
 } else {
     switch(localStorage.getItem("globalChart")) {
@@ -255,7 +255,7 @@ if(localStorage.getItem("globalChart") == null || localStorage.getItem("globalCh
     }
 }
 
-$('#themeSelector').change(function(){
+if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').change(function(){
     switch($('#themeSelector').val()) {
         case `dark`: {
             localStorage.setItem("theme", "dark");

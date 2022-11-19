@@ -195,10 +195,10 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
-                if (data.verified == true) {
-                    updateCounts.name(`${data.username} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`);
+                if (data.users[0].verified == true) {
+                    updateCounts.name(`${data.users[0].username} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`);
                 } else {
-                    updateCounts.name(data.username);
+                    updateCounts.name(data.users[0].username);
                 }
 
                 $('#openExternalBtn')[0].href = `https://twitter.com/${user}`;
@@ -206,48 +206,48 @@ function loadDataFirstTime() {
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=twitteruser&u=${user}`;
 
 
-                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=NextCounts Live Twitter Follower Counts for ${data.username}!`;
-                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href} @nextcounts! `;
-                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!&summary=NextCounts Live Twitter Follower Counts for ${data.username}!&source=${window.location.href}`;
-                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!`;
-                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href}`;
-                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!`;
-                $('#mailShareBtn')[0].href = `mailto:?subject=NextCounts Live Twitter Follower Counts for ${data.username}!&body=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href}`;
+                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=NextCounts Live Twitter Follower Counts for ${data.users[0].username}!`;
+                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=NextCounts Live Twitter Follower Counts for ${data.users[0].username}! ${window.location.href} @nextcounts! `;
+                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!&summary=NextCounts Live Twitter Follower Counts for ${data.users[0].username}!&source=${window.location.href}`;
+                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.users[0].username}!`;
+                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=NextCounts Live Twitter Follower Counts for ${data.users[0].username}! ${window.location.href}`;
+                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.users[0].username}!`;
+                $('#mailShareBtn')[0].href = `mailto:?subject=NextCounts Live Twitter Follower Counts for ${data.username}!&body=NextCounts Live Twitter Follower Counts for ${data.users[0].username}! ${window.location.href}`;
                 $('#copytoClipBtn')[0].onclick = function () {
                     navigator.clipboard.writeText(window.location.href);
                     toastr["success"]("Copied to clipboard!", "Success!");
                 }
 
-                $('head').find('title')[0].text = `Live Twitter Follower Count for ${data.username}`;
-                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.pfp.large}" style="height: 50px;margin-right: 5px;" /> ${data.username} (@${user})</a>`
-                updateCounts.pfp(data.pfp.large);
-                updateCounts.banner(data.banner);
+                $('head').find('title')[0].text = `Live Twitter Follower Count for ${data.users[0].username}`;
+                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.pfp.large}" style="height: 50px;margin-right: 5px;" /> ${data.users[0].username} (@${user})</a>`
+                updateCounts.pfp(data.users[0].pfp.large);
+                updateCounts.banner(data.users[0].banner);
                 hasBanner = false;
 
                 new Odometer({
                     el: document.getElementById("mainOdometer"),
-                    value: data.followers,
+                    value: data.users[0].followers,
                     format: '(,ddd).dd',
                 });
 
                 new Odometer({
                     el: document.getElementById("goalOdo"),
-                    value: data.followers && !isNaN(data.followers) ? data.followers / 2 : 0,
+                    value: data.users[0].followers && !isNaN(data.users[0].followers) ? data.users[0].followers / 2 : 0,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
                     el: document.getElementById("followingOdo"),
-                    value: data.following,
+                    value: data.users[0].following,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
                     el: document.getElementById("tweetsOdo"),
-                    value: data.tweets,
+                    value: data.users[0].tweets,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
                     el: document.getElementById("likesOdo"),
-                    value: data.listed,
+                    value: data.users[0].listed,
                     format: '(,ddd).dd',
                 });
 
@@ -257,30 +257,30 @@ function loadDataFirstTime() {
                         type: "GET",
                         dataType: "JSON",
                         success: function (dataa) {
-                            updateCounts.mainCount(dataa.followers);
-                            updateCounts.following(dataa.following);
-                            updateCounts.tweets(dataa.tweets);
-                            updateCounts.likes(dataa.listed);
-                            updateCounts.goalCount(dataa.followers);
+                            updateCounts.mainCount(dataa.users[0].followers);
+                            updateCounts.following(dataa.users[0].following);
+                            updateCounts.tweets(dataa.users[0].tweets);
+                            updateCounts.likes(dataa.users[0].listed);
+                            updateCounts.goalCount(dataa.users[0].followers);
 
-                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.followers, oldFollowers, "followersToday");
+                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.users[0].followers, oldFollowers, "followersToday");
 
-                            $(`#tweetsToday`)[0].outerHTML = positiveOrNegative(dataa.tweets, oldTweets, "tweetsToday");
+                            $(`#tweetsToday`)[0].outerHTML = positiveOrNegative(dataa.users[0].tweets, oldTweets, "tweetsToday");
                             
                             if (!firstLive[0] || !firstLive[1]) {
-                                prevCount[0] = dataa.followers;
+                                prevCount[0] = dataa.users[0].followers;
                                 firstLive[0] = true;
-                                prevCount[1] = dataa.following;
+                                prevCount[1] = dataa.users[0].following;
                                 firstLive[1] = true;
-                                prevCount[2] = dataa.tweets;
+                                prevCount[2] = dataa.users[0].tweets;
                                 firstLive[2] = true;
                             } else {
-                                rates.add(0, dataa.followers - prevCount[0]);
-                                rates.add(1, dataa.following - prevCount[1]);
-                                rates.add(2, dataa.tweets - prevCount[2]);
-                                prevCount[0] = dataa.followers;
-                                prevCount[1] = dataa.following;
-                                prevCount[2] = dataa.tweets;
+                                rates.add(0, dataa.users[0].followers - prevCount[0]);
+                                rates.add(1, dataa.users[0].following - prevCount[1]);
+                                rates.add(2, dataa.users[0].tweets - prevCount[2]);
+                                prevCount[0] = dataa.users[0].followers;
+                                prevCount[1] = dataa.users[0].following;
+                                prevCount[2] = dataa.users[0].tweets;
 
                                 var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2, avgRate3 = rates.vals[2]/2;
 
@@ -308,11 +308,10 @@ function loadDataFirstTime() {
         error: function () { },
     });
 
-    $.ajax(`https://statsapi.nextcounts.com/twitteruser/${user}`)
-        .done(function (stats) {
-            try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-            var ndata = JSON.parse(stats);
+    $.ajax(`https://api-v2.nextcounts.com/api/stats/twitteruser/${user}`)
+        .done(function (ndata) {//(stats) {
+            //try { JSON.parse(stats); } catch { toastr["info"](stats); };
+            //var ndata = JSON.parse(stats);
 
             var followersDiv = document.createElement('div');
             var followingDiv = document.createElement('div');

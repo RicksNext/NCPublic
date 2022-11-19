@@ -181,6 +181,212 @@ function getTime(t) {
     return d + str[2] + h + str[3] + m + str[4] + s + str[5];
 }
 
+function loadStats(serverID) {
+
+    $.ajax(`https://api-v2.nextcounts.com/api/stats/discordserver/${serverID}`)
+        .done(function (ndata) {
+            //try { JSON.parse(stats); } catch { toastr["info"](stats); };
+            //var ndata = JSON.parse(stats);
+
+            var membersDiv = document.createElement('div');
+            var onlineDiv = document.createElement('div');
+            membersDiv.className = onlineDiv.className = 'chart';
+            document.getElementById('graphContainer').appendChild(membersDiv);
+            document.getElementById('graphContainer').appendChild(onlineDiv);
+
+            new Highcharts.chart(membersDiv, {
+                chart: {
+                    zoomType: "x",
+                    //marginLeft: 40, // Keep all charts left aligned
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: `Total Members - Historical Data`,
+                    align: 'left',
+                    style: {
+                        color: textBright,
+                    },
+                    margin: 0,
+                    //x: 30
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: "datetime",
+                    crosshair: true,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    gridLineColor: lineColor,
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                    title: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                tooltip: {
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '18px',
+                        color: textBright
+                    }
+                },
+                series: [{
+                    data: ndata.totalMembers,
+                    marker: {
+                        enabled: !1
+                    },
+                    name: `Total Members - Historical Data`,
+                    type: 'spline',
+                    color: socialColor,
+                    fillOpacity: 0.3
+                }]
+            });
+
+            new Highcharts.chart(onlineDiv, {
+                chart: {
+                    zoomType: "x",
+                    //marginLeft: 40, // Keep all charts left aligned
+                    spacingTop: 20,
+                    spacingBottom: 20,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: `Online Members - Historical Data`,
+                    align: 'left',
+                    style: {
+                        color: textBright,
+                    },
+                    margin: 0,
+                    x: 30
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: "datetime",
+                    crosshair: true,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    gridLineColor: lineColor,
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                    title: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                tooltip: {
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '18px',
+                        color: textBright
+                    }
+                },
+                series: [{
+                    data: ndata.onlineMembers,
+                    marker: {
+                        enabled: !1
+                    },
+                    name: `Online Members - Historical Data`,
+                    type: 'spline',
+                    color: socialColor,
+                    fillOpacity: 0.3
+                }]
+            });
+
+            oldFollowers = ndata.totalMembers[ndata.totalMembers.length - 1][1], oldLikes = ndata.onlineMembers[ndata.onlineMembers.length - 1][1];
+
+            if (ndata.totalMembers.length > 30) {
+                for (let i = 0; i < 30; i++) {
+                    console.log(ndata.totalMembers.length - (i + 1))
+                    $('#tableBody').append(`<tr>
+                        <td>${new Date(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                        <td>${(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1], ndata.totalMembers[ndata.totalMembers.length - (i + 2)][1], false)}</td>
+                        <td>${(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1], ndata.onlineMembers[ndata.onlineMembers.length - (i + 2)][1], false)}</td>
+                    </tr>`);
+                }
+            } else {
+                for (let i = 0; i < ndata.totalMembers.length; i++) {
+                    console.log(ndata.totalMembers.length - (i + 1))
+                    if (ndata.totalMembers.length - (i + 1) == 0) {
+                        $('#tableBody').append(`<tr>
+                            <td>${new Date(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                            <td>${(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1], ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1], ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1], false)}</td>
+                        </tr>`);
+                    } else {
+                        $('#tableBody').append(`<tr>
+                            <td>${new Date(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                            <td>${(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1], ndata.totalMembers[ndata.totalMembers.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1], ndata.onlineMembers[ndata.onlineMembers.length - (i + 2)][1], false)}</td>
+                        </tr>`);
+                    }
+                }
+            }
+
+            setTimeout(function () {
+                $('#userstatsTable').DataTable();
+            }, 250);
+        });}
+
 function loadDataFirstTime() {
     $.ajax({
         url: `https://api-v2.nextcounts.com/api/discord/server/${user}`,
@@ -193,6 +399,7 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
+				loadStats(data.guild.serverID);
                 $('head').find('title')[0].text = `Live Discord Members Count for ${data.guild.serverName}`;
                 $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.guild.serverImg}" style="height: 50px;margin-right: 5px;" /> ${data.guild.serverName}</a>`;
                 updateCounts.name(`${data.guild.serverName}`);
@@ -278,287 +485,6 @@ function loadDataFirstTime() {
         },
         error: function () { },
     });
-
-    $.ajax(`https://statsapi.nextcounts.com/discordserver/${user}`)
-        .done(function (stats) {
-            try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-            var ndata = JSON.parse(stats);
-
-            var membersDiv = document.createElement('div');
-            var onlineDiv = document.createElement('div');
-            membersDiv.className = onlineDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(membersDiv);
-            document.getElementById('graphContainer').appendChild(onlineDiv);
-            
-            Highcharts.Point.prototype.highlight = function (event) {
-                event = this.series.chart.pointer.normalize(event);
-                this.onMouseOver(); // Show the hover marker
-                this.series.chart.tooltip.refresh(this); // Show the tooltip
-                this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
-            };
-
-            Highcharts.Pointer.prototype.reset = function () {
-                return undefined;
-            };
-
-            ['mousemove', 'touchmove', 'touchstart'].forEach(function (eventType) {
-                document.getElementById('graphContainer').addEventListener(
-                    eventType,
-                    function (e) {
-                        var chart,
-                            point,
-                            i,
-                            event;
-            
-                        for (i = 1; i < Highcharts.charts.length; i = i + 1) {
-                            chart = Highcharts.charts[i];
-                            // Find coordinates within the chart
-                            event = chart.pointer.normalize(e);
-                            // Get the hovered point
-                            point = chart.series[0].searchPoint(event, true);
-            
-                            if (point) {
-                                point.highlight(e);
-                            }
-                        }
-                    }
-                );
-            });
-
-            function syncExtremes(e) {
-                var thisChart = this.chart;
-
-                if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
-                    Highcharts.each(Highcharts.charts, function (chart) {
-                        if (chart !== thisChart) {
-                            if (chart.xAxis[0].setExtremes) { // It is null while updating
-                                chart.xAxis[0].setExtremes(
-                                    e.min,
-                                    e.max,
-                                    undefined,
-                                    false, {
-                                        trigger: 'syncExtremes'
-                                    }
-                                );
-                            }
-                        }
-                    });
-                }
-            }
-
-            new Highcharts.chart(membersDiv, {
-                chart: {
-                    zoomType: "x",
-                    //marginLeft: 40, // Keep all charts left aligned
-                    spacingTop: 20,
-                    spacingBottom: 20,
-                    backgroundColor: "transparent",
-                    plotBorderColor: "transparent",
-                },
-                title: {
-                    text: `Total Members - Historical Data`,
-                    align: 'left',
-                    style: {
-                        color: textBright,
-                    },
-                    margin: 0,
-                    //x: 30
-                },
-                credits: {
-                    enabled: false
-                },
-                legend: {
-                    enabled: false
-                },
-                xAxis: {
-                    type: "datetime",
-                    crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
-                    labels: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                    gridLineColor: lineColor,
-                    lineColor: lineColor,
-                    minorGridLineColor: "#858585",
-                    tickColor: lineColor,
-                    title: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                },
-                yAxis: {
-                    title: {
-                        text: null
-                    },
-                    gridLineColor: lineColor,
-                    labels: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                    lineColor: lineColor,
-                    minorGridLineColor: "#505053",
-                    tickColor: lineColor,
-                },
-                tooltip: {
-                    positioner: function () {
-                        return {
-                            // right aligned
-                            x: this.chart.chartWidth - this.label.width,
-                            y: 10 // align to title
-                        };
-                    },
-                    borderWidth: 0,
-                    backgroundColor: 'none',
-                    pointFormat: '{point.y}',
-                    headerFormat: '',
-                    shadow: false,
-                    style: {
-                        fontSize: '18px',
-                        color: textBright
-                    }
-                },
-                series: [{
-                    data: ndata.totalMembers,
-                    marker: {
-                        enabled: !1
-                    },
-                    name: `Total Members - Historical Data`,
-                    type: 'spline',
-                    color: socialColor,
-                    fillOpacity: 0.3
-                }]
-            });
-
-            new Highcharts.chart(onlineDiv, {
-                chart: {
-                    zoomType: "x",
-                    //marginLeft: 40, // Keep all charts left aligned
-                    spacingTop: 20,
-                    spacingBottom: 20,
-                    backgroundColor: "transparent",
-                    plotBorderColor: "transparent",
-                },
-                title: {
-                    text: `Online Members - Historical Data`,
-                    align: 'left',
-                    style: {
-                        color: textBright,
-                    },
-                    margin: 0,
-                    x: 30
-                },
-                credits: {
-                    enabled: false
-                },
-                legend: {
-                    enabled: false
-                },
-                xAxis: {
-                    type: "datetime",
-                    crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
-                    labels: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                    gridLineColor: lineColor,
-                    lineColor: lineColor,
-                    minorGridLineColor: "#858585",
-                    tickColor: lineColor,
-                    title: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                },
-                yAxis: {
-                    title: {
-                        text: null
-                    },
-                    gridLineColor: lineColor,
-                    labels: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                    lineColor: lineColor,
-                    minorGridLineColor: "#505053",
-                    tickColor: lineColor,
-                },
-                tooltip: {
-                    positioner: function () {
-                        return {
-                            // right aligned
-                            x: this.chart.chartWidth - this.label.width,
-                            y: 10 // align to title
-                        };
-                    },
-                    borderWidth: 0,
-                    backgroundColor: 'none',
-                    pointFormat: '{point.y}',
-                    headerFormat: '',
-                    shadow: false,
-                    style: {
-                        fontSize: '18px',
-                        color: textBright
-                    }
-                },
-                series: [{
-                    data: ndata.onlineMembers,
-                    marker: {
-                        enabled: !1
-                    },
-                    name: `Online Members - Historical Data`,
-                    type: 'spline',
-                    color: socialColor,
-                    fillOpacity: 0.3
-                }]
-            });
-
-            oldFollowers = ndata.totalMembers[ndata.totalMembers.length - 1][1], oldLikes = ndata.onlineMembers[ndata.onlineMembers.length - 1][1];
-
-            if (ndata.totalMembers.length > 30) {
-                for (let i = 0; i < 30; i++) {
-                    console.log(ndata.totalMembers.length - (i + 1))
-                    $('#tableBody').append(`<tr>
-                        <td>${new Date(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                        <td>${(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1], ndata.totalMembers[ndata.totalMembers.length - (i + 2)][1], false)}</td>
-                        <td>${(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1], ndata.onlineMembers[ndata.onlineMembers.length - (i + 2)][1], false)}</td>
-                    </tr>`);
-                }
-            } else {
-                for (let i = 0; i < ndata.totalMembers.length; i++) {
-                    console.log(ndata.totalMembers.length - (i + 1))
-                    if (ndata.totalMembers.length - (i + 1) == 0) {
-                        $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1], ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1], ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1], false)}</td>
-                        </tr>`);
-                    } else {
-                        $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.totalMembers[ndata.totalMembers.length - (i + 1)][1], ndata.totalMembers[ndata.totalMembers.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.onlineMembers[ndata.onlineMembers.length - (i + 1)][1], ndata.onlineMembers[ndata.onlineMembers.length - (i + 2)][1], false)}</td>
-                        </tr>`);
-                    }
-                }
-            }
-
-            setTimeout(function () {
-                $('#userstatsTable').DataTable();
-            }, 250);
-        });
 }
 
 loadDataFirstTime();

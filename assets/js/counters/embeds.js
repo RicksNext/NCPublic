@@ -67,25 +67,25 @@ if(user == null && platform == null || user == "" && platform == "") {
                         if(hasLoadedBefore == false) {
                             new Odometer({
                                 el: document.getElementById("mainOdometer"),
-                                value: data.followers,
+                                value: data.users[0].followers,
                                 format: '(,ddd).dd',
                             });
                         }
                         hasLoadedBefore = true;
-                        updateCounts.pfp(data.pfp.large);
-                        updateCounts.banner(data.banner);
-                        updateCounts.count(data.followers);
-                        if (data.verified == true) {
-                            if (data.protectedAcc == true) {
-                                updateCounts.name(`${socialBadges.twitter} ${data.username} ${socialBadges.verified} ${socialBadges.lockedAcc}`);
+                        updateCounts.pfp(data.users[0].pfp.large);
+                        updateCounts.banner(data.users[0].banner);
+                        updateCounts.count(data.users[0].followers);
+                        if (data.users[0].verified == true) {
+                            if (data.users[0].protectedAcc == true) {
+                                updateCounts.name(`${socialBadges.twitter} ${data.users[0].username} ${socialBadges.verified} ${socialBadges.lockedAcc}`);
                             } else {
-                                updateCounts.name(`${socialBadges.twitter} ${data.username} ${socialBadges.verified}`);
+                                updateCounts.name(`${socialBadges.twitter} ${data.users[0].username} ${socialBadges.verified}`);
                             }
                         } else {
-                            if (data.protectedAcc == true) {
-                                updateCounts.name(`${socialBadges.twitter} ${data.username} ${socialBadges.lockedAcc}`);
+                            if (data.users[0].protectedAcc == true) {
+                                updateCounts.name(`${socialBadges.twitter} ${data.users[0].username} ${socialBadges.lockedAcc}`);
                             } else {
-                                updateCounts.name(`${socialBadges.twitter} ${data.username}`);
+                                updateCounts.name(`${socialBadges.twitter} ${data.users[0].username}`);
                             }
                         }
                     } else {
