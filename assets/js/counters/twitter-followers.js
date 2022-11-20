@@ -219,7 +219,7 @@ function loadDataFirstTime() {
                 }
 
                 $('head').find('title')[0].text = `Live Twitter Follower Count for ${data.users[0].username}`;
-                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.pfp.large}" style="height: 50px;margin-right: 5px;" /> ${data.users[0].username} (@${user})</a>`
+                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.users[0].pfp.large}" style="height: 50px;margin-right: 5px;" /> ${data.users[0].username} (@${user})</a>`
                 updateCounts.pfp(data.users[0].pfp.large);
                 updateCounts.banner(data.users[0].banner);
                 hasBanner = false;
