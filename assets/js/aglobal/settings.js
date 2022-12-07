@@ -11,6 +11,7 @@ gtag('config', 'G-R34Z4R4SVB');
 })(window, document, "clarity", "script", "dqmfn6cpn1");
 
 function abbreviateGivenNumber(givenNumber) {
+    if (givenNumber == null || givenNumber == undefined) return "More than 2";
     if(givenNumber >= 1000000000) return (givenNumber/1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
     if(givenNumber >= 1000000) return (givenNumber/1000000).toFixed(1).replace(/\.0$/, '') + 'M';
     if(givenNumber >= 1000) return (givenNumber/1000).toFixed(1).replace(/\.0$/, '') + 'K';

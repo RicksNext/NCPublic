@@ -286,7 +286,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                             });
                         }
                         hasLoadedBefore = true;
-                        updateCounts.pfp("https://nextcounts.com/assets/img/logo.jpg");
+                        updateCounts.pfp("https://nextcounts.com/assets/img/main%20icon%20teal%20black.png");
                         updateCounts.banner(null);
                         updateCounts.count(data.requests);
                         updateCounts.name(`${socialBadges.nextcounts} NextCounts API v2`);
