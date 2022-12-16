@@ -1,7 +1,7 @@
 document.getElementById(`loadingSearch`).style.display = "none";
 document.getElementById(`searchCard`).style.display = "none";
 
-var currVer = 'ncv312lesgo';
+var currVer = 'legacy';
 $('#searchPlatform').append(`<option value=${currVer} selected="">Select a Platform</option>`);
 $('#searchPlatform').append(`<option value="brimeuser">Brime.tv (User)</option>`);
 $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</option>`);
@@ -17,6 +17,9 @@ $('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>`);
 $('#searchPlatform').append(`<option value="youtubeuser">YouTube (Channel)</option>`);
 $('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video)</option>`);
+//$('#searchPlatform').append(`<option value="instagramuser">Instagram (User)</option>`);
+//$('#searchPlatform').append(`<option value="rumbleuser">Rumble (User)</option>`);
+//$('#searchPlatform').append(`<option value="parleruser">Parler (User)</option>`);
 
 toastr.options = {
     "closeButton": true,
@@ -81,434 +84,548 @@ function searchForUser(searchTerm, platform) {
             document.getElementById(`searchpfp`).style.display = 'block';
         }
         
-        switch (platform)
-        {
-            case "twitteruser":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[3]
-                } else {
-                    if (e.includes("twitch.tv")) {
-                        n = e.split("/");
-                        t = n[1]
-                    } else t = e;
-                }
+        try {
+            switch (platform)
+            {
+                case "twitteruser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("twitch.tv")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
+                    }
 
-                $.ajax(`https://api-v2.nextcounts.com/api/search/twitter/user/${t}`)
-                .done(function (data) {
-                    if(data.success == true) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitter/followers/?u=${data.userDefiner}`;
-                        if (data.verified == true) {
-                            if (data.protectedAcc == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/twitter/user/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitter/followers/?u=${data.userDefiner}`;
+                            if (data.verified == true) {
+                                if (data.protectedAcc == true) {
+                                    document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
+                                } else {
+                                    document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.twitter}`;
+                                }
                             } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.twitter}`;
+                                if (data.protectedAcc == true) {
+                                    document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
+                                } else {
+                                    document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.twitter}`;
+                                }
                             }
+                            document.getElementById(`searchpfp`).src = data.pfp;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
-                            if (data.protectedAcc == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "tiktokuser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("tiktok.com")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/tiktok/user/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            document.getElementById(`searchFollowers`).innerHTML = `@${data.userIdentifier}`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/tiktok/followers/?u=${data.userIdentifier}`;
+                            if (data.verified == true) {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.tiktok}`;
                             } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.twitter}`;
+                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.tiktok}`;
                             }
-                        }
-                        document.getElementById(`searchpfp`).src = data.pfp;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
-                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "none";
-                    }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "tiktokuser":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[3]
-                } else {
-                    if (e.includes("tiktok.com")) {
-                        n = e.split("/");
-                        t = n[1]
-                    } else t = e;
-                }
-
-                $.ajax(`https://api-v2.nextcounts.com/api/search/tiktok/user/${t}`)
-                .done(function (dataa) {
-                    var data = JSON.parse(dataa);
-                    if(data.success == true) {
-                        document.getElementById(`searchFollowers`).innerHTML = `@${data.userIdentifier}`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/tiktok/followers/?u=${data.userIdentifier}`;
-                        if (data.verified == true) {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.tiktok}`;
+                            document.getElementById(`searchpfp`).src = data.userImg;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.tiktok}`;
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
                         }
-                        document.getElementById(`searchpfp`).src = data.userImg;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "twitchuser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("twitch.tv")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
                     }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "twitchuser":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[3]
-                } else {
-                    if (e.includes("twitch.tv")) {
-                        n = e.split("/");
-                        t = n[1]
-                    } else t = e;
-                }
 
-                $.ajax(`https://api-v2.nextcounts.com/api/search/twitch/user/${t}`)
-                .done(function (dataa) {
-                    if(dataa.success == true) {
-                        data = dataa.results[0];
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/twitch/user/${t}`)
+                    .done(function (dataa) {
+                        if(dataa.success == true) {
+                            data = dataa.results[0];
 
-                        document.getElementById(`searchFollowers`).innerHTML = `${dataa.followers.toLocaleString()} Followers`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitch/followers/?u=${t}`;
+                            document.getElementById(`searchFollowers`).innerHTML = `${dataa.followers.toLocaleString()} Followers`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitch/followers/?u=${t}`;
 
-                        if (data.partner == true) {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.twitch}`;
+                            if (data.partner == true) {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.twitch}`;
+                            } else {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.twitch}`;
+                            }
+                            document.getElementById(`searchpfp`).src = dataa.avatar;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.twitch}`;
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
                         }
-                        document.getElementById(`searchpfp`).src = dataa.avatar;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "brimeuser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("brime.tv")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
                     }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "brimeuser":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[3]
-                } else {
-                    if (e.includes("brime.tv")) {
-                        n = e.split("/");
-                        t = n[1]
-                    } else t = e;
-                }
 
-                $.ajax(`https://api-v2.nextcounts.com/api/brime/user/${t}`)
-                .done(function (data) {
-                    if(data.success == true) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/brime/channel/?u=${t}`;
+                    $.ajax(`https://api-v2.nextcounts.com/api/brime/user/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/brime/channel/?u=${t}`;
 
-                        if (data.verified == true) {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified}`;
+                            if (data.verified == true) {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified}`;
+                            } else {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.username}`;
+                            }
+                            document.getElementById(`searchpfp`).src = data.avatar;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.username}`;
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
                         }
-                        document.getElementById(`searchpfp`).src = data.avatar;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "trilleruser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("triller.co")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
                     }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "trilleruser":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[3]
-                } else {
-                    if (e.includes("triller.co")) {
-                        n = e.split("/");
-                        t = n[1]
-                    } else t = e;
-                }
 
-                $.ajax(`https://api-v2.nextcounts.com/api/search/triller/user/${t}`)
-                .done(function (data) {
-                    if(data.success == true) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].followers.toLocaleString()} Followers`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/triller/followers/?u=${data.results[0].definer}`;
-                        if (data.results[0].verified == true) {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].username} ${socialBadges.verified}`;
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/triller/user/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].followers.toLocaleString()} Followers`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/triller/followers/?u=${data.results[0].definer}`;
+                            if (data.results[0].verified == true) {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].username} ${socialBadges.verified}`;
+                            } else {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].username}`;
+                            }
+                            document.getElementById(`searchpfp`).src = data.results[0].avatar;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].username}`;
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
                         }
-                        document.getElementById(`searchpfp`).src = data.results[0].avatar;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
-                    }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "discordserver":
-                $.ajax(`https://api-v2.nextcounts.com/api/discord/server/${searchTerm}`)
-                .done(function (data) {
-                    if(data.success == true) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.membersCount.toLocaleString()} Members`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/discord/server/?u=${searchTerm}`;
-                        document.getElementById(`searchUsername`).innerHTML = `${data.guild.serverName} ${socialBadges.discord}`;
-                        document.getElementById(`searchpfp`).src = data.guild.serverImg;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
+                    });
+                break;
+                case "discordserver":
+                    $.ajax(`https://api-v2.nextcounts.com/api/discord/server/${searchTerm}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            document.getElementById(`searchFollowers`).innerHTML = `${data.membersCount.toLocaleString()} Members`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/discord/server/?u=${searchTerm}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.guild.serverName} ${socialBadges.discord}`;
+                            document.getElementById(`searchpfp`).src = data.guild.serverImg;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "reddituser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[4]
+                    } else {
+                        if (e.includes("reddit.com")) {
+                            n = e.split("/");
+                            t = n[2]
+                        } else t = e;
                     }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "reddituser":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[4]
-                } else {
-                    if (e.includes("reddit.com")) {
-                        n = e.split("/");
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/reddit/u/${t}`)
+                    .done(function (data) {
+                        if(!data.error) {
+                            document.getElementById(`searchFollowers`).innerHTML = `${data.totalKarma.toLocaleString()} Total Karma`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/reddit/u/?u=${t}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.reddit}`;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "subreddit":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[4]
+                    } else {
+                        if (e.includes("reddit.com")) {
+                            n = e.split("/");
+                            t = n[2]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/reddit/r/${t}`)
+                    .done(function (data) {
+                        if(!data.error) {
+                            document.getElementById(`searchFollowers`).innerHTML = `${data.members.toLocaleString()} Members`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/reddit/r/?u=${t}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.subreddit} ${socialBadges.reddit}`;
+                            document.getElementById(`searchpfp`).src = `https://cors.nextcounts.com/raw?url=${data.subImg}`;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "storyfireuser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
                         t = n[2]
-                    } else t = e;
-                }
-
-                $.ajax(`https://api-v2.nextcounts.com/api/reddit/u/${t}`)
-                .done(function (data) {
-                    if(!data.error) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.totalKarma.toLocaleString()} Total Karma`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/reddit/u/?u=${t}`;
-                        document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.reddit}`;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
                     } else {
-                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "none";
+                        if (e.includes("storyfire.com")) {
+                            n = e.split("/");
+                            t = n[2]
+                        } else t = e;
                     }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "subreddit":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[4]
-                } else {
-                    if (e.includes("reddit.com")) {
-                        n = e.split("/");
-                        t = n[2]
-                    } else t = e;
-                }
 
-                $.ajax(`https://api-v2.nextcounts.com/api/reddit/r/${t}`)
-                .done(function (data) {
-                    if(!data.error) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.members.toLocaleString()} Members`;
-                        document.getElementById(`searchUsername`).href = `https://analytics.nextcounts.com/reddit/r/?u=${t}`;
-                        document.getElementById(`searchUsername`).innerHTML = `${data.subreddit} ${socialBadges.reddit}`;
-                        document.getElementById(`searchpfp`).src = `https://cors.nextcounts.com/raw?url=${data.subImg}`;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
-                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "none";
-                    }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "storyfireuser":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[2]
-                } else {
-                    if (e.includes("storyfire.com")) {
-                        n = e.split("/");
-                        t = n[2]
-                    } else t = e;
-                }
-
-                $.ajax(`https://api-v2.nextcounts.com/api/search/storyfire/user/${t}`)
-                .done(function (data) {
-                    if(!data.error && data.count > 0) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].followers.toLocaleString()} Subscribers`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/storyfire/user/?u=${data.results[0].channelID}`;
-                        if (data.results[0].verified == true) {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].name} ${socialBadges.verified} ${socialBadges.storyfire}`;
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/storyfire/user/${t}`)
+                    .done(function (data) {
+                        if(!data.error && data.count > 0) {
+                            document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].followers.toLocaleString()} Subscribers`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/storyfire/user/?u=${data.results[0].channelID}`;
+                            if (data.results[0].verified == true) {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].name} ${socialBadges.verified} ${socialBadges.storyfire}`;
+                            } else {
+                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].name} ${socialBadges.storyfire}`;
+                            }
+                            document.getElementById(`searchpfp`).src = data.results[0].userImg;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
-                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].name} ${socialBadges.storyfire}`;
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
                         }
-                        document.getElementById(`searchpfp`).src = data.results[0].userImg;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
-                    } else {
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
-                    }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "storyfirevideo":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[4]
-                } else {
-                    if (e.includes("storyfire.com")) {
-                        n = e.split("/");
-                        t = n[2]
-                    } else t = e;
-                }
-
-                $.ajax(`https://api-v2.nextcounts.com/api/search/storyfire/video/${t}`)
-                .done(function (data) {
-                    if(!data.error && data.count > 0) {
-                        document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].uploader} - ${data.results[0].views.toLocaleString()} Views`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/storyfire/video/?v=${data.results[0].videoID}`;
-                        document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.storyfire}`;
-                        document.getElementById(`searchpfp`).src = data.results[0].thumbnail;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
+                    });
+                break;
+                case "storyfirevideo":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[4]
                     } else {
+                        if (e.includes("storyfire.com")) {
+                            n = e.split("/");
+                            t = n[2]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/storyfire/video/${t}`)
+                    .done(function (data) {
+                        if(!data.error && data.count > 0) {
+                            document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].uploader} - ${data.results[0].views.toLocaleString()} Views`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/storyfire/video/?v=${data.results[0].videoID}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.storyfire}`;
+                            document.getElementById(`searchpfp`).src = data.results[0].thumbnail;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
-                    }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "youtubeuser":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[4]
-                } else {
-                    if (e.includes("youtube.com")) {
-                        n = e.split("/");
-                        t = n[2]
-                    } else t = e;
-                }
-
-                $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/channel/${t}`)
-                .done(function (data) {
-                    if(data.success == true) {
-                        document.getElementById(`searchFollowers`).innerHTML = `${abbreviateGivenNumber(data.results[0].subcount)} Subscribers`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/user/?u=${data.results[0].cid}`;
-                        document.getElementById(`searchUsername`).innerHTML = `${data.results[0].displayName} ${socialBadges.youtube}`;
-                        document.getElementById(`searchpfp`).src = data.results[0].pfp;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
+                    });
+                break;
+                case "youtubeuser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[4]
                     } else {
+                        if (e.includes("youtube.com")) {
+                            n = e.split("/");
+                            t = n[2]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/channel/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            document.getElementById(`searchFollowers`).innerHTML = `${abbreviateGivenNumber(data.results[0].subcount)} Subscribers`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/user/?u=${data.results[0].cid}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].displayName} ${socialBadges.youtube}`;
+                            document.getElementById(`searchpfp`).src = data.results[0].pfp;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
-                    }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                    document.getElementById(`loadingSearch`).style.display = "none";
-                    document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            case "youtubevideo":
-                var e = searchTerm.replace("@", ""), t = "";
-                if (e.includes("https://") || e.includes("http://")) {
-                    var n = e.split("/");
-                    t = n[4]
-                } else {
-                    if (e.includes("youtube.com")) {
-                        n = e.split("/");
-                        t = n[2]
-                    } else t = e;
-                }
-
-                $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/video/${t}`)
-                .done(function (data) {
-                    if(!data.error) {
-                        document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].channelName}`;
-                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/video/?v=${data.results[0].videoid}`;
-                        document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.youtube}`;
-                        document.getElementById(`searchpfp`).src = data.results[0].thumbnails.medium.url;
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "block";
+                    });
+                break;
+                case "youtubevideo":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[4]
                     } else {
+                        if (e.includes("youtube.com")) {
+                            n = e.split("/");
+                            t = n[2]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/video/${t}`)
+                    .done(function (data) {
+                        if(!data.error) {
+                            document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].channelName}`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/video/?v=${data.results[0].videoid}`;
+                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.youtube}`;
+                            document.getElementById(`searchpfp`).src = data.results[0].thumbnails.medium.url;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
                         toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                         document.getElementById(`loadingSearch`).style.display = "none";
                         document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "rumbleuser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[4]
+                    } else {
+                        if (e.includes("rumble.com")) {
+                            n = e.split("/");
+                            t = n[2]
+                        } else t = e;
                     }
-                })
-                .fail(function () {
-                    toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/rumble/user/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            let user = data.users[0];
+                            document.getElementById(`searchFollowers`).innerHTML = `${user.followersCount.toLocaleString()} Followers`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/rumble/user/?u=${user.id}`;
+
+                            document.getElementById(`searchUsername`).innerHTML = `${user.nickname}`;
+                            document.getElementById(`searchpfp`).src = data.avatar;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to search for the user. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "parleruser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("parler.com")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/parler/user/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            let user = data.users[0];
+                            document.getElementById(`searchFollowers`).innerHTML = `${user.followersCount.toLocaleString()} Followers (@${user.username})`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/parler/user/?u=${t}`;
+
+                            document.getElementById(`searchUsername`).innerHTML = `${user.nickname}`;
+                            document.getElementById(`searchpfp`).src = data.avatar;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to search for the user. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "instagramuser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("instagram.com")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/instagram/user/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            let user = data.results[0];
+                            document.getElementById(`searchFollowers`).innerHTML = `@${user.definer}`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/instagram/user/?u=${user.definer}`;
+
+                            if (user.verified == true) {
+                                document.getElementById(`searchUsername`).innerHTML = `${user.username} ${socialBadges.verified}`;
+                            } else {
+                                document.getElementById(`searchUsername`).innerHTML = `${user.username}`;
+                            }
+                            document.getElementById(`searchpfp`).src = user.avatar;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                default:
+                    toastr["warning"]("You forgot to select a valid platform!", "Oops!")
                     document.getElementById(`loadingSearch`).style.display = "none";
                     document.getElementById(`searchCard`).style.display = "none";
-                });
-            break;
-            default:
-                toastr["warning"]("You forgot to select a valid platform!", "Oops!")
-                document.getElementById(`loadingSearch`).style.display = "none";
-                document.getElementById(`searchCard`).style.display = "none";
-            break;
+                break;
+            }
+        } catch (e) {
+            toastr["error"]("We weren't able to contact our servers. Please, try searching something else or contact us so we can fix this. Our Twitter handle is @NextCounts", "Something went wrong.");
+            document.getElementById(`loadingSearch`).style.display = "none";
+            document.getElementById(`searchCard`).style.display = "none";
         }
     }
 }
