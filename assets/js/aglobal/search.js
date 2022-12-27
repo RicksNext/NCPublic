@@ -7,6 +7,8 @@ $('#searchPlatform').append(`<option value="brimeuser">Brime.tv (User)</option>`
 $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</option>`);
 //$('#searchPlatform').append(`<option value="mixernoapi">Mixerno.space (API)</option>`);
 //$('#searchPlatform').append(`<option value="nextcountsapi">NextCounts (API)</option>`);
+$('#searchPlatform').append(`<option value="parleruser">Parler (User)</option>`);
+$('#searchPlatform').append(`<option value="rumbleuser">Rumble (User)</option>`);
 //$('#searchPlatform').append(`<option value="reddituser">Reddit (User Karma)</option>`);
 //$('#searchPlatform').append(`<option value="subreddit">Subreddit</option>`);
 $('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
@@ -18,8 +20,6 @@ $('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>
 $('#searchPlatform').append(`<option value="youtubeuser">YouTube (Channel)</option>`);
 $('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video)</option>`);
 //$('#searchPlatform').append(`<option value="instagramuser">Instagram (User)</option>`);
-//$('#searchPlatform').append(`<option value="rumbleuser">Rumble (User)</option>`);
-//$('#searchPlatform').append(`<option value="parleruser">Parler (User)</option>`);
 
 toastr.options = {
     "closeButton": true,
@@ -527,7 +527,7 @@ function searchForUser(searchTerm, platform) {
                             document.getElementById(`searchUsername`).href = `https://nextcounts.com/rumble/user/?u=${user.id}`;
 
                             document.getElementById(`searchUsername`).innerHTML = `${user.nickname}`;
-                            document.getElementById(`searchpfp`).src = data.avatar;
+                            document.getElementById(`searchpfp`).src = user.avatar;
                             document.getElementById(`loadingSearch`).style.display = "none";
                             document.getElementById(`searchCard`).style.display = "block";
                         } else {
@@ -559,10 +559,10 @@ function searchForUser(searchTerm, platform) {
                         if(data.success == true) {
                             let user = data.users[0];
                             document.getElementById(`searchFollowers`).innerHTML = `${user.followersCount.toLocaleString()} Followers (@${user.username})`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/parler/user/?u=${t}`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/parler/user/?u=${user.username}`;
 
                             document.getElementById(`searchUsername`).innerHTML = `${user.nickname}`;
-                            document.getElementById(`searchpfp`).src = data.avatar;
+                            document.getElementById(`searchpfp`).src = user.avatar;
                             document.getElementById(`loadingSearch`).style.display = "none";
                             document.getElementById(`searchCard`).style.display = "block";
                         } else {

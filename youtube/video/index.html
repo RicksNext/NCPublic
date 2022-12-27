@@ -21,9 +21,13 @@
     <link rel="icon" type="image/png" sizes="494x498" href="../../assets/img/001-1.png?h=8f263479037f5126ca89f6fbd40523b4">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css">
     <link rel="manifest" href="../../manifest.json?h=fb7f49833b01a7ba986a6a18840aaf0d">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Archivo&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu&amp;display=swap">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css">
@@ -35,7 +39,7 @@
     <link rel="stylesheet" href="../../assets/css/navbar.css?h=86357661633fcd7458da996c46b2f27f">
     <link rel="stylesheet" href="../../assets/css/odometer.css?h=d2ae5baa3e34859d6f52e8fefb0d00c3">
     <link rel="stylesheet" href="../../assets/css/solo-counters.css?h=61c2b864b0916790e384a2f935e38a78">
-    <link rel="stylesheet" href="../../assets/css/styles.css?h=ac7cc05eecd44152aed5e9674b8e20ce">
+    <link rel="stylesheet" href="../../assets/css/styles.css?h=f85042c0b95a04ea9fd5ab4670d7e41f">
 </head>
 
 <body class="whitetheme" style="font-family: Poppins, sans-serif;">
@@ -241,7 +245,7 @@
         </div>
     </div>
     <div class="modal fade" role="dialog" tabindex="-1" id="settings">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Settings</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -250,6 +254,9 @@
                     <div class="form-group">
                         <form>
                             <p>Theme:</p><select class="shadow-sm custom-select" id="themeSelector"></select>
+                        </form>
+                        <form id="fontSelectorForm">
+                            <p><br>Odometer Font (Global Setting):</p><select class="shadow-sm custom-select" id="fontSelector"></select>
                         </form>
                         <form id="graphLimitSettingForm">
                             <p><br>Graph Time Limit:</p><select class="shadow-sm custom-select" id="graphTimer"></select>
@@ -316,8 +323,8 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://www.googletagmanager.com/gtag/js?id=G-R34Z4R4SVB"></script>
     <script src="../../assets/js/aglobal/odometer.js?h=91a8930826f7c6d1894f564c0c1ef5de"></script>
-    <script src="../../assets/js/aglobal/search.js?h=e3b7b57a188ad5c8c88726f13524ceb6"></script>
-    <script src="../../assets/js/aglobal/settings.js?h=82114c98b977488f7c4e46ff967ffc2b"></script>
+    <script src="../../assets/js/aglobal/search.js?h=207b26a1fafec9493300ab5e0dd88c41"></script>
+    <script src="../../assets/js/aglobal/settings.js?h=5af0da7adc1239573c741e47c2e1b4ea"></script>
     <script src="../../assets/js/counters/youtube-video.js?h=9c4912986a7764c9a35acaecf46cfde2"></script>
     <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4928242198674611"></script>
 </body>

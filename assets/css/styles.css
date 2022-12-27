@@ -203,6 +203,21 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   color: #f8f9fa;
 }
 
+.userheader-instagram {
+  background: linear-gradient(-145deg, #5B51D8, #F56040);
+  color: #f8f9fa;
+}
+
+.userheader-parler, .userheader-parler .navbar-brand {
+  background-color: #b80101;
+  color: #f8f9fa;
+}
+
+.userheader-rumble, .userheader-rumble .navbar-brand {
+  background-color: #47ad4c;
+  color: #f8f9fa;
+}
+
 .userheader-brime {
   background: linear-gradient(-145deg, #fc3537, #8439af);
   color: #f8f9fa;
@@ -221,7 +236,7 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
 }
 
 .odometer {
-  font-family: 'Lato' !important;
+  font-family: 'Lato';
 }
 
 .card-body {

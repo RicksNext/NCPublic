@@ -71,7 +71,7 @@ if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") ==
 
     if(!window.location.pathname.includes(`/embed/`)) $('#insidercomparegroup').show();
 } else {
-    //
+    //if(!window.location.pathname.includes(`/embed/`)) $('#fontSelectorForm').hide();
 }
 
 $('#graphTimer').append(

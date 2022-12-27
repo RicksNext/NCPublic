@@ -61,8 +61,7 @@ if(user == null && platform == null || user == "" && platform == "") {
         case 'twitteruser':
             setInterval(function() {
                 $.ajax(`https://api-v2.nextcounts.com/api/twitter/user/${user}`)
-                .done(function (dataa) {
-                    let data = JSON.parse(dataa);
+                .done(function (data) {
                     if(!data.error) {
                         if(hasLoadedBefore == false) {
                             new Odometer({
@@ -191,8 +190,7 @@ if(user == null && platform == null || user == "" && platform == "") {
             break;
         case 'tiktokfollowers':
             $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/${user}`)
-            .done(function (dataaa) {
-                let dataa = JSON.parse(dataaa);
+            .done(function (dataa) {
                 if(!dataa.error) {
                     if(hasLoadedBefore == false) {
                         new Odometer({
@@ -233,8 +231,7 @@ if(user == null && platform == null || user == "" && platform == "") {
             break;
         case 'tiktokhearts':
             $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/${user}`)
-            .done(function (dataaa) {
-                let dataa = JSON.parse(dataaa);
+            .done(function (dataa) {
                 if(!dataa.error) {
                     if(hasLoadedBefore == false) {
                         new Odometer({
@@ -783,48 +780,6 @@ if(user == null && platform == null || user == "" && platform == "") {
                 }
             });
         break;
-        case 'ytvideodislikes':
-            $.ajax(`https://api-v2.nextcounts.com/api/youtube/video/info/${user}`)
-            .done(function (dataaa) {
-                if(!dataaa.error) {
-                    let dataa = dataaa.results[0];
-                    updateCounts.pfp(dataa.thumbnails.medium.url);
-                    document.getElementById('userImg').className = "border rounded";
-                    document.getElementById('userImg').style.maxWidth = "135px";
-                    document.getElementById('userImg').style.width = "135px";
-                    updateCounts.banner(dataa.thumbnails.medium.url);
-
-                    updateCounts.name(`${socialBadges.youtube} ${dataa.title}`);
-
-                    setInterval(function() {
-                        $.ajax(`https://api-v2.nextcounts.com/api/youtube/video/stats/${user}`)
-                        .done(function (data) {
-                            if(!data.error) {
-                                if(hasLoadedBefore == false) {
-                                    new Odometer({
-                                        el: document.getElementById("mainOdometer"),
-                                        value: data.dislikes,
-                                        format: '(,ddd).dd',
-                                    });
-                                }
-                                hasLoadedBefore = true;
-                                updateCounts.count(data.dislikes);
-                            }
-                        })
-                        .fail(function () {
-                            if(hasLoadedBefore == false) {
-                                updateCounts.name(`${socialBadges.error} Something went wrong.`);
-                            }
-                        });
-                    }, 2500);
-                }
-            })
-            .fail(function () {
-                if(hasLoadedBefore == false) {
-                    updateCounts.name(`${socialBadges.error} Something went wrong.`);
-                }
-            });
-        break;
         case 'ytvideocomments':
             $.ajax(`https://api-v2.nextcounts.com/api/youtube/videos/info/${user}`)
             .done(function (dataaa) {
@@ -974,6 +929,66 @@ if(user == null && platform == null || user == "" && platform == "") {
                         updateCounts.banner(null);
                         updateCounts.count(data.followers);
                         updateCounts.name(data.username);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'rumbleuser':
+            setInterval(function() {
+                $.ajax(`https://api-v2.nextcounts.com/api/rumble/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        if(hasLoadedBefore == false) {
+                            new Odometer({
+                                el: document.getElementById("mainOdometer"),
+                                value: data.followersCount,
+                                format: '(,ddd).dd',
+                            });
+                        }
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.avatar);
+                        updateCounts.banner(data.banner);
+                        updateCounts.count(data.followersCount);
+                        updateCounts.name(data.nickname);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'parleruser':
+            setInterval(function() {
+                $.ajax(`https://api-v2.nextcounts.com/api/parler/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        if(hasLoadedBefore == false) {
+                            new Odometer({
+                                el: document.getElementById("mainOdometer"),
+                                value: data.followersCount,
+                                format: '(,ddd).dd',
+                            });
+                        }
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.avatar);
+                        updateCounts.banner(data.banner);
+                        updateCounts.count(data.followersCount);
+                        updateCounts.name(data.nickname);
                     } else {
                         if(hasLoadedBefore == false) {
                             updateCounts.name(`${socialBadges.error} Something went wrong.`);

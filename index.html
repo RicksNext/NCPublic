@@ -21,9 +21,13 @@
     <link rel="icon" type="image/png" sizes="494x498" href="assets/img/001-1.png?h=8f263479037f5126ca89f6fbd40523b4">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css">
     <link rel="manifest" href="manifest.json?h=fb7f49833b01a7ba986a6a18840aaf0d">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Archivo&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu&amp;display=swap">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css">
@@ -34,12 +38,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="assets/css/navbar.css?h=86357661633fcd7458da996c46b2f27f">
     <link rel="stylesheet" href="assets/css/odometer.css?h=d2ae5baa3e34859d6f52e8fefb0d00c3">
-    <link rel="stylesheet" href="assets/css/styles.css?h=ac7cc05eecd44152aed5e9674b8e20ce">
+    <link rel="stylesheet" href="assets/css/styles.css?h=f85042c0b95a04ea9fd5ab4670d7e41f">
 </head>
 
 <body class="whitetheme" style="font-family: Poppins, sans-serif;">
     <div class="modal fade" role="dialog" tabindex="-1" id="settings">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Settings</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -48,6 +52,9 @@
                     <div class="form-group">
                         <form>
                             <p>Theme:</p><select class="shadow-sm custom-select" id="themeSelector"></select>
+                        </form>
+                        <form id="fontSelectorForm">
+                            <p><br>Odometer Font (Global Setting):</p><select class="shadow-sm custom-select" id="fontSelector"></select>
                         </form>
                         <form id="graphLimitSettingForm">
                             <p><br>Graph Time Limit:</p><select class="shadow-sm custom-select" id="graphTimer"></select>
@@ -159,14 +166,13 @@
             </div>
             <div class="card-deck" style="margin: 2vw;">
                 <div class="card"><a class="btn btn-dark btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: linear-gradient(-145deg, #fc3537, #8439af);" href="brime/channel/"><img class="img-fluid" src="assets/img/brime.svg?h=7603066646317a6133b28707968600a1" width="20" height="20">&nbsp;Brime.tv Live Follower Count&nbsp;<br></a></div>
-                <div class="card" data-toggle="tooltip" data-bss-tooltip="" title="Coming Soon!"><a class="btn btn-success btn-block btn-lg disabled" role="button" style="height: 100%;width: 100%;background: rgb(5, 18, 30);" href="rumble/followers/"><img class="img-fluid" src="assets/img/rumble.png?h=139e2a495a38daca969c7f984f08138b" width="20" height="20">&nbsp;Rumble Live Follower Counts<br></a></div>
+                <div class="card" data-toggle="tooltip" data-bss-tooltip="" title="Coming Soon!"><a class="btn btn-dark btn-block btn-lg disabled" role="button" style="height: 100%;width: 100%;background: linear-gradient(-145deg, #405DE6, #F56040);" href="instagram/user/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-instagram">
+                            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
+                        </svg>&nbsp;Instagram Live Follower Count<br></a></div>
             </div>
             <div class="card-deck" style="margin: 2vw;">
-                <div class="card"><a class="btn btn-dark btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: linear-gradient(-145deg, var(--teal), #64208b);" href="election/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-people-fill">
-                            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
-                            <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"></path>
-                            <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path>
-                        </svg>&nbsp;Live Election Results&nbsp;<span class="badge badge-info">PREVIEW</span><br></a></div>
+                <div class="card"><a class="btn btn-dark btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: linear-gradient(90deg, #892e5e,#d31f3e);" href="parler/user/"><img class="img-fluid" src="assets/img/parler.png?h=4db21982e3753d81d46708c8af884da2" width="20" height="20">&nbsp;Parler Live Follower Count&nbsp;<br></a></div>
+                <div class="card" title="Coming Soon!"><a class="btn btn-success btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: rgb(5, 18, 30);" href="rumble/followers/"><img class="img-fluid" src="assets/img/rumble.png?h=139e2a495a38daca969c7f984f08138b" width="20" height="20">&nbsp;Rumble Live Follower Count<br></a></div>
             </div>
             <div class="card" style="display: none;">
                 <div class="card-header text-center">
@@ -196,8 +202,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://www.googletagmanager.com/gtag/js?id=G-R34Z4R4SVB"></script>
     <script src="assets/js/aglobal/odometer.js?h=91a8930826f7c6d1894f564c0c1ef5de"></script>
-    <script src="assets/js/aglobal/search.js?h=e3b7b57a188ad5c8c88726f13524ceb6"></script>
-    <script src="assets/js/aglobal/settings.js?h=82114c98b977488f7c4e46ff967ffc2b"></script>
+    <script src="assets/js/aglobal/search.js?h=207b26a1fafec9493300ab5e0dd88c41"></script>
+    <script src="assets/js/aglobal/settings.js?h=5af0da7adc1239573c741e47c2e1b4ea"></script>
     <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4928242198674611"></script>
 </body>
 

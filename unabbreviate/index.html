@@ -21,9 +21,13 @@
     <link rel="icon" type="image/png" sizes="494x498" href="../assets/img/001-1.png?h=8f263479037f5126ca89f6fbd40523b4">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css">
     <link rel="manifest" href="../manifest.json?h=fb7f49833b01a7ba986a6a18840aaf0d">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Archivo&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu&amp;display=swap">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css">
@@ -36,12 +40,12 @@
     <link rel="stylesheet" href="../assets/css/navbar.css?h=86357661633fcd7458da996c46b2f27f">
     <link rel="stylesheet" href="../assets/css/odometer.css?h=d2ae5baa3e34859d6f52e8fefb0d00c3">
     <link rel="stylesheet" href="../assets/css/Simple-Slider.css?h=da830b6503e0457b5735b0129f20b163">
-    <link rel="stylesheet" href="../assets/css/styles.css?h=ac7cc05eecd44152aed5e9674b8e20ce">
+    <link rel="stylesheet" href="../assets/css/styles.css?h=f85042c0b95a04ea9fd5ab4670d7e41f">
 </head>
 
 <body class="whitetheme" style="font-family: Poppins, sans-serif;">
     <div class="modal fade" role="dialog" tabindex="-1" id="settings">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Settings</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -50,6 +54,9 @@
                     <div class="form-group">
                         <form>
                             <p>Theme:</p><select class="shadow-sm custom-select" id="themeSelector"></select>
+                        </form>
+                        <form id="fontSelectorForm">
+                            <p><br>Odometer Font (Global Setting):</p><select class="shadow-sm custom-select" id="fontSelector"></select>
                         </form>
                         <form id="graphLimitSettingForm">
                             <p><br>Graph Time Limit:</p><select class="shadow-sm custom-select" id="graphTimer"></select>
@@ -114,13 +121,16 @@
     </div>
     <div style="text-align: center;margin: 5vw;">
         <h4><strong>Show your own Unabbreviated Subscriber Counts on NextCounts - Guide</strong><br></h4><a class="btn btn-primary" role="button" style="color: rgb(0,0,0);background: var(--teal);margin: 20px;" href="#howto-direct">Click here to go directly to the guide</a>
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Update.</h4><span>YouTube recently pushed an update to their backend that broke the unabbreviated subscriber count system we had. You can still invite our bot to your channel, but your subscriber count will not be visible until we're able to solve this issue. Sorry for the inconvenience.</span>
+        </div>
         <article class="text-left">
             <div class="container">
                 <div class="row">
                     <div class="col">
                         <p><br>Hey!<br><br>You probably heard the news, and yes, it is true: we are working on getting Full Subscriber Counts available for everyone again, but we can't do this alone.</p>
                         <h2 style="font-size: 36px;font-weight: 700;margin-top: 60px;margin-bottom: 30px;"><strong>Let's start</strong></h2>
-                        <p>Back in 2021 we started working on getting Subscriber Counts directly from the streams of members of the Statistics community (and a few insiders), but at the time, the code we were using was very slow due to some factors, so it would update the subscriber count every minute or so. But it's been more than a year since that test, so we rewrote everything from the ground up and we got a working system, that updates every few seconds! - You can check it out on <a href="https://nextcounts.com/youtube/user/?u=UCluz1vjFgbA3At7-NeE1yBA">YT Battles' Live SubCount</a>.</p>
+                        <p>Back in 2021 we started working on getting Subscriber Counts directly from the streams of members of the Statistics community (and a few insiders), but at the time, the code we were using was very slow due to some factors, so it would update the subscriber count every minute or so. But it's been more than a year since that test, so we rewrote everything from the ground up and we got a working system, that updates every few seconds!</p>
                         <p>This was, really, one of the biggest accomplishments NextCounts has made, at least in my opinion, but I think we need to think bigger, we need to think in the future. No one would keep hosting a 24/7/365 stream just to have their Subscriber Count displayed in NextCounts or any other live counts website. What if the stream went down? What if you removed the subscriber count from the stream? What if the streamer changed the text displayed to be another number?</p>
                         <p>Those are a few of the risks we have when getting subscriber counts from a stream, and this is why we have decided to take another step towards full counts.</p>
                         <p>And this new step is this: We are adding Full Subscriber Counts back to NextCounts, bit by bit, but this will be hard to accomplish.</p>
@@ -184,8 +194,8 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://www.googletagmanager.com/gtag/js?id=G-R34Z4R4SVB"></script>
     <script src="../assets/js/aglobal/odometer.js?h=91a8930826f7c6d1894f564c0c1ef5de"></script>
-    <script src="../assets/js/aglobal/search.js?h=e3b7b57a188ad5c8c88726f13524ceb6"></script>
-    <script src="../assets/js/aglobal/settings.js?h=82114c98b977488f7c4e46ff967ffc2b"></script>
+    <script src="../assets/js/aglobal/search.js?h=207b26a1fafec9493300ab5e0dd88c41"></script>
+    <script src="../assets/js/aglobal/settings.js?h=5af0da7adc1239573c741e47c2e1b4ea"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
     <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4928242198674611"></script>
     <script src="../assets/js/Simple-Slider.js?h=df0233e38c69d965b7833f56606b8826"></script>
