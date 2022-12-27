@@ -29,6 +29,61 @@ if(!window.location.pathname.includes(`/embed/`)) $('#themeSelector').append(
         </optgroup>`
 );
 
+if(!window.location.pathname.includes(`/embed/`)) $('#fontSelector').append(
+    `<optgroup label="Select your font">
+            <option value="Lato" selected>Lato (Default)</option>
+            <option value="Archivo">Archivo</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Open Sans">Open Sans</option>
+            <option value="Ubuntu">Ubuntu</option>
+            <option value="Nunito">Nunito</option>
+            <option value="Segoe UI">Segoe UI (Windows Only)</option>
+        </optgroup>`
+);
+
+if(!window.location.pathname.includes(`/embed/`)) $('#fontSelector').change(function(){
+    $(".odometer").css('font-family', $('#fontSelector').val());
+    localStorage.setItem("font", $('#fontSelector').val());
+});
+
+setTimeout(function() {
+    if(localStorage.getItem("font") == null || localStorage.getItem("font") == "") {
+        localStorage.setItem("font", "Lato");
+    } else {
+        if(window.location.pathname.includes(`/embed/`)) {
+            $(".odometer").css('font-family', localStorage.getItem("font"));
+        } else {
+            setTimeout(function() {
+                $(".odometer").css('font-family', localStorage.getItem("font"));
+            }, 5000);
+        }
+        
+        if($(".odometer").length >= 2) {
+            $(".odometer").css('font-family', localStorage.getItem("font"));
+            if(!window.location.pathname.includes(`/embed/`))$("#fontSelector").val(localStorage.getItem("font"));
+        } else {
+            setTimeout(function() {
+                if($(".odometer").length >= 2) {
+                    $(".odometer").css('font-family', localStorage.getItem("font"));
+                    if(!window.location.pathname.includes(`/embed/`))$("#fontSelector").val(localStorage.getItem("font"));
+                } else {
+                    setTimeout(function() {
+                        if($(".odometer").length >= 2) {
+                            $(".odometer").css('font-family', localStorage.getItem("font"));
+                            if(!window.location.pathname.includes(`/embed/`))$("#fontSelector").val(localStorage.getItem("font"));
+                        } else {
+                            setTimeout(function() {
+                                $(".odometer").css('font-family', localStorage.getItem("font"));
+                                if(!window.location.pathname.includes(`/embed/`))$("#fontSelector").val(localStorage.getItem("font"));
+                            }, 6000);
+                        }
+                    }, 3000);
+                }
+            }, 3000);
+        }
+    }
+}, 675);
+
 if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "") {
     localStorage.setItem("theme", "white");
 } else {
