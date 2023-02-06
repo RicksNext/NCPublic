@@ -10,6 +10,21 @@ gtag('config', 'G-R34Z4R4SVB');
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window, document, "clarity", "script", "dqmfn6cpn1");
 
+setTimeout(function() {
+    // detect adblocker
+    let test = new Request(
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4928242198674611",
+      // "https://static.ads-twitter.com/uwt.js",
+        { method: "HEAD", mode: "no-cors" }
+    );
+    fetch(test)
+    .then(res => {})
+    .catch(err => {
+        //make the #proBadge element visible
+        $('#proBadge').css('display', 'block');
+    });
+}, 3000);
+
 function abbreviateGivenNumber(givenNumber) {
     if (givenNumber == null || givenNumber == undefined) return "More than 2";
     if(givenNumber >= 1000000000) return (givenNumber/1000000000).toFixed(1).replace(/\.0$/, '') + 'B';

@@ -195,10 +195,17 @@ function loadDataFirstTime() {
                     "Uh oh..."
                 );
             } else {
-                if (data.users[0].verified == true) {
-                    updateCounts.name(`${data.users[0].username} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`);
+                if (data.protectedAcc == true) {
+                    updateCounts.name(`${data.username} ${socialBadges.lockedAcc}`);
                 } else {
-                    updateCounts.name(data.users[0].username);
+                    updateCounts.name(data.username);
+                }
+
+                switch (data.verifiedType) {
+                    case "Legacy": document.getElementById("username").innerHTML += ' ' + socialBadges.verifiedTwttr; break;
+                    case "Blue": document.getElementById("username").innerHTML += ' ' + socialBadges.verifiedTwttrBlue; break;
+                    case "Government": document.getElementById("username").innerHTML += ' ' + socialBadges.verifiedTwttrGovernment; break;
+                    case "Business": document.getElementById("username").innerHTML += ' ' + socialBadges.verifiedTwttrBusiness; break;
                 }
 
                 $('#openExternalBtn')[0].href = `https://twitter.com/${user}`;
@@ -206,103 +213,159 @@ function loadDataFirstTime() {
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=twitteruser&u=${user}`;
 
 
-                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=NextCounts Live Twitter Follower Counts for ${data.users[0].username}!`;
-                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=NextCounts Live Twitter Follower Counts for ${data.users[0].username}! ${window.location.href} @nextcounts! `;
-                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!&summary=NextCounts Live Twitter Follower Counts for ${data.users[0].username}!&source=${window.location.href}`;
-                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.users[0].username}!`;
-                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=NextCounts Live Twitter Follower Counts for ${data.users[0].username}! ${window.location.href}`;
-                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.users[0].username}!`;
-                $('#mailShareBtn')[0].href = `mailto:?subject=NextCounts Live Twitter Follower Counts for ${data.username}!&body=NextCounts Live Twitter Follower Counts for ${data.users[0].username}! ${window.location.href}`;
+                $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=NextCounts Live Twitter Follower Counts for ${data.username}!`;
+                $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href} @nextcounts! `;
+                $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!&summary=NextCounts Live Twitter Follower Counts for ${data.username}!&source=${window.location.href}`;
+                $('#redditShareBtn')[0].href = `https://reddit.com/submit?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!`;
+                $('#wppShareBtn')[0].href = `https://api.whatsapp.com/send?text=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href}`;
+                $('#vkShareBtn')[0].href = `https://vk.com/share.php?url=${window.location.href}&title=NextCounts Live Twitter Follower Counts for ${data.username}!`;
+                $('#mailShareBtn')[0].href = `mailto:?subject=NextCounts Live Twitter Follower Counts for ${data.username}!&body=NextCounts Live Twitter Follower Counts for ${data.username}! ${window.location.href}`;
                 $('#copytoClipBtn')[0].onclick = function () {
                     navigator.clipboard.writeText(window.location.href);
                     toastr["success"]("Copied to clipboard!", "Success!");
                 }
 
-                $('head').find('title')[0].text = `Live Twitter Follower Count for ${data.users[0].username}`;
-                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.users[0].pfp.large}" style="height: 50px;margin-right: 5px;" /> ${data.users[0].username} (@${user})</a>`
-                updateCounts.pfp(data.users[0].pfp.large);
-                updateCounts.banner(data.users[0].banner);
-                hasBanner = false;
+                $('head').find('title')[0].text = `Live Twitter Follower Count for ${data.username}`;
+                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.pfp.large}" style="height: 50px;margin-right: 5px;" /> ${data.username} (@${user})</a>`
+                updateCounts.pfp(data.pfp.large);
+                updateCounts.banner(data.banner);
+
+                hasBanner = data.banner.length >=10 ? true : false;
 
                 new Odometer({
                     el: document.getElementById("mainOdometer"),
-                    value: data.users[0].followers,
+                    value: data.followers,
                     format: '(,ddd).dd',
                 });
 
                 new Odometer({
                     el: document.getElementById("goalOdo"),
-                    value: data.users[0].followers && !isNaN(data.users[0].followers) ? data.users[0].followers / 2 : 0,
+                    value: data.followers && !isNaN(data.followers) ? data.followers / 2 : 0,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
                     el: document.getElementById("followingOdo"),
-                    value: data.users[0].following,
+                    value: data.following,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
                     el: document.getElementById("tweetsOdo"),
-                    value: data.users[0].tweets,
+                    value: data.tweets,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
                     el: document.getElementById("likesOdo"),
-                    value: data.users[0].listed,
+                    value: data.listed,
                     format: '(,ddd).dd',
                 });
 
-                setInterval(function () {
-                    $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/twitter/user/${user}`,
-                        type: "GET",
-                        dataType: "JSON",
-                        success: function (dataa) {
-                            updateCounts.mainCount(dataa.users[0].followers);
-                            updateCounts.following(dataa.users[0].following);
-                            updateCounts.tweets(dataa.users[0].tweets);
-                            updateCounts.likes(dataa.users[0].listed);
-                            updateCounts.goalCount(dataa.users[0].followers);
-
-                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.users[0].followers, oldFollowers, "followersToday");
-
-                            $(`#tweetsToday`)[0].outerHTML = positiveOrNegative(dataa.users[0].tweets, oldTweets, "tweetsToday");
-                            
-                            if (!firstLive[0] || !firstLive[1]) {
-                                prevCount[0] = dataa.users[0].followers;
-                                firstLive[0] = true;
-                                prevCount[1] = dataa.users[0].following;
-                                firstLive[1] = true;
-                                prevCount[2] = dataa.users[0].tweets;
-                                firstLive[2] = true;
-                            } else {
-                                rates.add(0, dataa.users[0].followers - prevCount[0]);
-                                rates.add(1, dataa.users[0].following - prevCount[1]);
-                                rates.add(2, dataa.users[0].tweets - prevCount[2]);
-                                prevCount[0] = dataa.users[0].followers;
-                                prevCount[1] = dataa.users[0].following;
-                                prevCount[2] = dataa.users[0].tweets;
-
-                                var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2, avgRate3 = rates.vals[2]/2;
-
-                                var final11 = Math.round(avgRate1 * 60).toLocaleString();
-                                var final12 = Math.round(avgRate1 * 3600).toLocaleString();
-                                var final13 = Math.round(avgRate1 * 86400).toLocaleString();
-
-                                var final21 = Math.round(avgRate2 * 60).toLocaleString();
-                                var final22 = Math.round(avgRate2 * 3600).toLocaleString();
-                                var final23 = Math.round(avgRate2 * 86400).toLocaleString();
+                if(data.protectedAcc == false && data.tweets >= 1) {
+                    setInterval(function () {
+                        $.ajax({
+                            url: `https://api-v2.nextcounts.com/dbg/twitter/user/${user}`,
+                            type: "GET",
+                            dataType: "JSON",
+                            success: function (dataa) {
+                                updateCounts.mainCount(dataa.followers);
+                                updateCounts.following(dataa.following);
+                                updateCounts.tweets(dataa.tweets);
+                                updateCounts.likes(dataa.listed);
+                                updateCounts.goalCount(dataa.followers);
+    
+                                $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.followers, oldFollowers, "followersToday");
+    
+                                $(`#tweetsToday`)[0].outerHTML = positiveOrNegative(dataa.tweets, oldTweets, "tweetsToday");
                                 
-                                var final31 = Math.round(avgRate3 * 60).toLocaleString();
-                                var final32 = Math.round(avgRate3 * 3600).toLocaleString();
-                                var final33 = Math.round(avgRate3 * 86400).toLocaleString();
-
-                                updateCounts.avgs1(final11, final12, final13);
-                                updateCounts.avgs2(final21, final22, final23);
-                                updateCounts.avgs3(final31, final32, final33);
-                            }
-                        }, error: function () { }
-                    });
-                }, 2000);
+                                if (!firstLive[0] || !firstLive[1]) {
+                                    prevCount[0] = dataa.followers;
+                                    firstLive[0] = true;
+                                    prevCount[1] = dataa.following;
+                                    firstLive[1] = true;
+                                    prevCount[2] = dataa.tweets;
+                                    firstLive[2] = true;
+                                } else {
+                                    rates.add(0, dataa.followers - prevCount[0]);
+                                    rates.add(1, dataa.following - prevCount[1]);
+                                    rates.add(2, dataa.tweets - prevCount[2]);
+                                    prevCount[0] = dataa.followers;
+                                    prevCount[1] = dataa.following;
+                                    prevCount[2] = dataa.tweets;
+    
+                                    var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2, avgRate3 = rates.vals[2]/2;
+    
+                                    var final11 = Math.round(avgRate1 * 60).toLocaleString();
+                                    var final12 = Math.round(avgRate1 * 3600).toLocaleString();
+                                    var final13 = Math.round(avgRate1 * 86400).toLocaleString();
+    
+                                    var final21 = Math.round(avgRate2 * 60).toLocaleString();
+                                    var final22 = Math.round(avgRate2 * 3600).toLocaleString();
+                                    var final23 = Math.round(avgRate2 * 86400).toLocaleString();
+                                    
+                                    var final31 = Math.round(avgRate3 * 60).toLocaleString();
+                                    var final32 = Math.round(avgRate3 * 3600).toLocaleString();
+                                    var final33 = Math.round(avgRate3 * 86400).toLocaleString();
+    
+                                    updateCounts.avgs1(final11, final12, final13);
+                                    updateCounts.avgs2(final21, final22, final23);
+                                    updateCounts.avgs3(final31, final32, final33);
+                                }
+                            }, error: function () { }
+                        });
+                    }, 2000);
+                } else {
+                    setInterval(function () {
+                        $.ajax({
+                            url: `https://api-v2.nextcounts.com/api/twitter/user/stats/${user}`,
+                            type: "GET",
+                            dataType: "JSON",
+                            success: function (dataa) {
+                                updateCounts.mainCount(dataa.followers);
+                                updateCounts.following(dataa.following);
+                                updateCounts.tweets(dataa.tweets);
+                                updateCounts.likes(dataa.listed);
+                                updateCounts.goalCount(dataa.followers);
+    
+                                $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.followers, oldFollowers, "followersToday");
+    
+                                $(`#tweetsToday`)[0].outerHTML = positiveOrNegative(dataa.tweets, oldTweets, "tweetsToday");
+                                
+                                if (!firstLive[0] || !firstLive[1]) {
+                                    prevCount[0] = dataa.followers;
+                                    firstLive[0] = true;
+                                    prevCount[1] = dataa.following;
+                                    firstLive[1] = true;
+                                    prevCount[2] = dataa.tweets;
+                                    firstLive[2] = true;
+                                } else {
+                                    rates.add(0, dataa.followers - prevCount[0]);
+                                    rates.add(1, dataa.following - prevCount[1]);
+                                    rates.add(2, dataa.tweets - prevCount[2]);
+                                    prevCount[0] = dataa.followers;
+                                    prevCount[1] = dataa.following;
+                                    prevCount[2] = dataa.tweets;
+    
+                                    var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2, avgRate3 = rates.vals[2]/2;
+    
+                                    var final11 = Math.round(avgRate1 * 60).toLocaleString();
+                                    var final12 = Math.round(avgRate1 * 3600).toLocaleString();
+                                    var final13 = Math.round(avgRate1 * 86400).toLocaleString();
+    
+                                    var final21 = Math.round(avgRate2 * 60).toLocaleString();
+                                    var final22 = Math.round(avgRate2 * 3600).toLocaleString();
+                                    var final23 = Math.round(avgRate2 * 86400).toLocaleString();
+                                    
+                                    var final31 = Math.round(avgRate3 * 60).toLocaleString();
+                                    var final32 = Math.round(avgRate3 * 3600).toLocaleString();
+                                    var final33 = Math.round(avgRate3 * 86400).toLocaleString();
+    
+                                    updateCounts.avgs1(final11, final12, final13);
+                                    updateCounts.avgs2(final21, final22, final23);
+                                    updateCounts.avgs3(final31, final32, final33);
+                                }
+                            }, error: function () { }
+                        });
+                    }, 2000);
+                }
             }
         },
         error: function () { },
@@ -320,62 +383,6 @@ function loadDataFirstTime() {
             document.getElementById('graphContainer').appendChild(followersDiv);
             document.getElementById('graphContainer').appendChild(followingDiv);
             document.getElementById('graphContainer').appendChild(tweetsDiv);
-            
-            Highcharts.Point.prototype.highlight = function (event) {
-                event = this.series.chart.pointer.normalize(event);
-                this.onMouseOver(); // Show the hover marker
-                this.series.chart.tooltip.refresh(this); // Show the tooltip
-                this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
-            };
-
-            Highcharts.Pointer.prototype.reset = function () {
-                return undefined;
-            };
-
-            ['mousemove', 'touchmove', 'touchstart'].forEach(function (eventType) {
-                document.getElementById('graphContainer').addEventListener(
-                    eventType,
-                    function (e) {
-                        var chart,
-                            point,
-                            i,
-                            event;
-            
-                        for (i = 1; i < Highcharts.charts.length; i = i + 1) {
-                            chart = Highcharts.charts[i];
-                            // Find coordinates within the chart
-                            event = chart.pointer.normalize(e);
-                            // Get the hovered point
-                            point = chart.series[0].searchPoint(event, true);
-            
-                            if (point) {
-                                point.highlight(e);
-                            }
-                        }
-                    }
-                );
-            });
-
-            function syncExtremes(e) {
-                var thisChart = this.chart;
-
-                if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
-                    Highcharts.each(Highcharts.charts, function (chart) {
-                        if (chart !== thisChart) {
-                            if (chart.xAxis[0].setExtremes) { // It is null while updating
-                                chart.xAxis[0].setExtremes(
-                                    e.min,
-                                    e.max,
-                                    undefined,
-                                    false, {
-                                        trigger: 'syncExtremes'
-                                    }
-                                );
-                            }
-                        }
-                    });
-                }
-            }
 
             new Highcharts.chart(followersDiv, {
                 chart: {
@@ -404,9 +411,6 @@ function loadDataFirstTime() {
                 xAxis: {
                     type: "datetime",
                     crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
                     labels: {
                         style: {
                             color: textBright,
@@ -493,9 +497,6 @@ function loadDataFirstTime() {
                 xAxis: {
                     type: "datetime",
                     crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
                     labels: {
                         style: {
                             color: textBright,
@@ -582,9 +583,6 @@ function loadDataFirstTime() {
                 xAxis: {
                     type: "datetime",
                     crosshair: true,
-                    events: {
-                        setExtremes: syncExtremes
-                    },
                     labels: {
                         style: {
                             color: textBright,
