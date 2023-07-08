@@ -259,7 +259,7 @@ function loadDataFirstTime() {
                     format: '(,ddd).dd',
                 });
 
-                if(data.protectedAcc == false && data.tweets >= 1) {
+                if(/*data.protectedAcc == false && data.tweets >= 1*/true == false) {
                     setInterval(function () {
                         $.ajax({
                             url: `https://api-v2.nextcounts.com/dbg/twitter/user/${user}`,
