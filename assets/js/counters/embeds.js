@@ -188,6 +188,40 @@ if(user == null && platform == null || user == "" && platform == "") {
                 });
             }, 2500);
             break;
+        case 'threadsuser':
+            setInterval(function() {
+                $.ajax(`https://api-v2.nextcounts.com/api/threads/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        if(hasLoadedBefore == false) {
+                            new Odometer({
+                                el: document.getElementById("mainOdometer"),
+                                value: data.followers,
+                                format: '(,ddd).dd',
+                            });
+                        }
+                        hasLoadedBefore = true;
+                        updateCounts.pfp("https://mixerno.space/cors/" + (data.avatar_hd).replace("https%3A%2F%2F", "").replaceAll("/", "%2F").replaceAll("?", "%3F").replaceAll("=", "%3D").replaceAll("&", "%26"));
+                        //updateCounts.banner(data.banner);
+                        updateCounts.count(data.followers);
+                        if (data.isVerified == true) {
+                            updateCounts.name(`${data.nickname} ${socialBadges.verified}`);
+                        } else {
+                            updateCounts.name(`${data.nickname}`);
+                        }
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+            break;
         case 'tiktokfollowers':
             $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/${user}`)
             .done(function (dataa) {

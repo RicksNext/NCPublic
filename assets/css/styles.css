@@ -218,6 +218,11 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   color: #f8f9fa;
 }
 
+.userheader-threads, .userheader-threads .navbar-brand {
+  background-color: #343a40;
+  color: #f8f9fa;
+}
+
 .userheader-brime {
   background: linear-gradient(-145deg, #fc3537, #8439af);
   color: #f8f9fa;

@@ -13,6 +13,7 @@ $('#searchPlatform').append(`<option value="rumbleuser">Rumble (User)</option>`)
 //$('#searchPlatform').append(`<option value="subreddit">Subreddit</option>`);
 $('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
 $('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</option>`);
+$('#searchPlatform').append(`<option value="threadsuser">Threads (User)</option>`);
 $('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
 $('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>`);
 //$('#searchPlatform').append(`<option value="twitchuser">Twitch (User)</option>`);
@@ -596,14 +597,53 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/instagram/user/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            let user = data.results[0];
-                            document.getElementById(`searchFollowers`).innerHTML = `@${user.definer}`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/instagram/user/?u=${user.definer}`;
+                            let user = data.users[0];
+                            document.getElementById(`searchFollowers`).innerHTML = `@${user.user_name}`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/instagram/user/?u=${user.user_name}`;
 
                             if (user.verified == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${user.username} ${socialBadges.verified}`;
+                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name} ${socialBadges.verified}`;
                             } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${user.username}`;
+                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name}`;
+                            }
+                            document.getElementById(`searchpfp`).src = user.avatar;
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "block";
+                        } else {
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        }
+                    })
+                    .fail(function () {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "threadsuser":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("instagram.com")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/instagram/user/${t}`)
+                    .done(function (data) {
+                        if(data.success == true) {
+                            let user = data.users[0];
+                            document.getElementById(`searchFollowers`).innerHTML = `@${user.user_name}`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/threads/user/?u=${user.id}`;
+
+                            if (user.verified == true) {
+                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name} ${socialBadges.verified}`;
+                            } else {
+                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name}`;
                             }
                             document.getElementById(`searchpfp`).src = user.avatar;
                             document.getElementById(`loadingSearch`).style.display = "none";
