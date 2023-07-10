@@ -107,7 +107,7 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/twitter/user/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
+                            document.getElementById(`searchFollowers`).innerHTML = `@${data.userDefiner} Followers`;
                             document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitter/followers/?u=${data.userDefiner}`;
                             if (data.verified == true) {
                                 if (data.protectedAcc == true) {
