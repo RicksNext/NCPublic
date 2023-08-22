@@ -1036,6 +1036,66 @@ if(user == null && platform == null || user == "" && platform == "") {
                 });
             }, 2500);
         break;
+        case 'bskyfollowers':
+            setInterval(function() {
+                $.ajax(`https://api-v2.nextcounts.com/api/bluesky/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        if(hasLoadedBefore == false) {
+                            new Odometer({
+                                el: document.getElementById("mainOdometer"),
+                                value: data.followers,
+                                format: '(,ddd).dd',
+                            });
+                        }
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.avatar);
+                        updateCounts.banner(data.banner);
+                        updateCounts.count(data.followers);
+                        updateCounts.name(data.username);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'bskyposts':
+            setInterval(function() {
+                $.ajax(`https://api-v2.nextcounts.com/api/bluesky/user/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        if(hasLoadedBefore == false) {
+                            new Odometer({
+                                el: document.getElementById("mainOdometer"),
+                                value: data.posts,
+                                format: '(,ddd).dd',
+                            });
+                        }
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.avatar);
+                        updateCounts.banner(data.banner);
+                        updateCounts.count(data.posts);
+                        updateCounts.name(data.username);
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
         default:
             updateCounts.name(`${socialBadges.error} This doesn't seem to be a valid platform`);
             updateCounts.count(`Refresing the page...`);

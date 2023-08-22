@@ -223,8 +223,12 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
   color: #f8f9fa;
 }
 
-.userheader-brime {
-  background: linear-gradient(-145deg, #fc3537, #8439af);
+.userheader-bsky {
+  background: linear-gradient(-145deg, #1669c2, #002b7f);
+  color: #f8f9fa;
+}
+
+#userbrand-navbar {
   color: #f8f9fa;
 }
 

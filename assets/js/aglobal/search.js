@@ -3,7 +3,7 @@ document.getElementById(`searchCard`).style.display = "none";
 
 var currVer = 'legacy';
 $('#searchPlatform').append(`<option value=${currVer} selected="">Select a Platform</option>`);
-$('#searchPlatform').append(`<option value="brimeuser">Brime.tv (User)</option>`);
+$('#searchPlatform').append(`<option value="bskyuser">BlueSky (User)</option>`);
 $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</option>`);
 //$('#searchPlatform').append(`<option value="mixernoapi">Mixerno.space (API)</option>`);
 //$('#searchPlatform').append(`<option value="nextcountsapi">NextCounts (API)</option>`);
@@ -214,23 +214,28 @@ function searchForUser(searchTerm, platform) {
                         document.getElementById(`searchCard`).style.display = "none";
                     });
                 break;
-                case "brimeuser":
+                case "bskyuser":
                     var e = searchTerm.replace("@", ""), t = "";
                     if (e.includes("https://") || e.includes("http://")) {
                         var n = e.split("/");
-                        t = n[3]
+                        t = n[4]
                     } else {
-                        if (e.includes("brime.tv")) {
+                        if (e.includes("/bsky.app")) {
                             n = e.split("/");
-                            t = n[1]
+                            t = n[2]
                         } else t = e;
                     }
 
-                    $.ajax(`https://api-v2.nextcounts.com/api/brime/user/${t}`)
-                    .done(function (data) {
-                        if(data.success == true) {
-                            document.getElementById(`searchFollowers`).innerHTML = `${data.followers.toLocaleString()} Followers`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/brime/channel/?u=${t}`;
+                    $.ajax(`https://api-v2.nextcounts.com/api/search/bluesky/user/${t}`)
+                    .done(function (dataa) {
+                        if(dataa.success == true) {
+                            //define data as the user with a matching handle to the variable t
+                            data = dataa.results.filter(function (e) {
+                                return e.handle == t
+                            })[0];
+                            console.log(data)
+                            document.getElementById(`searchFollowers`).innerHTML = `@${data.handle}`;
+                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/bluesky/user/?u=${data.handle}`;
 
                             if (data.verified == true) {
                                 document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified}`;
