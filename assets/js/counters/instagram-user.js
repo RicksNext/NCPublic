@@ -198,8 +198,8 @@ function loadDataFirstTime() {
                 }
 
                 $('head').find('title')[0].text = `Live Instagram Follower Count for ${data.nickname}`;
-                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${"https://cors-anywhere-1.ricksnext.repl.co/" + data.avatar.replace("https://", "")}" style="height: 50px;margin-right: 5px;" /> ${data.nickname}</a>`
-                updateCounts.pfp("https://cors-anywhere-1.ricksnext.repl.co/" + data.avatar.replace("https://", ""));
+                $("#userbrand-navbar")[0].innerHTML = `<a class="navbar-brand"><img class="rounded-circle img-fluid" id="userimg-header" src="${data.avatar}" style="height: 50px;margin-right: 5px;" /> ${data.nickname}</a>`
+                updateCounts.pfp(data.avatar);
                 updateCounts.banner("hide");
                 hasBanner = false;
 
