@@ -607,11 +607,11 @@ function searchForUser(searchTerm, platform) {
                             document.getElementById(`searchUsername`).href = `https://nextcounts.com/instagram/user/?u=${user.user_name}`;
 
                             if (user.verified == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name} ${socialBadges.verified}`;
+                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name} ${socialBadges.is_verified}`;
                             } else {
                                 document.getElementById(`searchUsername`).innerHTML = `${user.full_name}`;
                             }
-                            document.getElementById(`searchpfp`).src = user.avatar;
+                            document.getElementById(`searchpfp`).src = user.profile_pic;
                             document.getElementById(`loadingSearch`).style.display = "none";
                             document.getElementById(`searchCard`).style.display = "block";
                         } else {
