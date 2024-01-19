@@ -211,6 +211,7 @@ function loadDataFirstTime() {
                 $('#openExternalBtn')[0].href = `https://twitter.com/${user}`;
 
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=twitteruser&u=${user}`;
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=twitteruser&u=${user}`;
 
 
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=NextCounts Live Twitter Follower Counts for ${data.username}!`;

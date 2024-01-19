@@ -183,6 +183,8 @@ function loadDataFirstTime() {
 
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=bskyfollowers&u=${user}`;
                 $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=bskyposts&u=${user}`;
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=bskyfollowers&u=${user}`;
+                $('#largeEmbedBtn-1')[0].href = `https://nextcounts.com/embed/large/?p=bskyposts&u=${user}`;
 
                 let samplePhrase = `NextCounts Live BlueSky Follower Count for ${data.username}!`;
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;

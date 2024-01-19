@@ -210,6 +210,10 @@ function loadDataFirstTime() {
                 $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=ytsubcountmixerno&u=${user}`;
                 $('#smallEmbedBtn-2')[0].href = `https://nextcounts.com/embed/small/?p=ytviewcount&u=${user}`;
 
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=ytsubcount&u=${user}`;
+                $('#largeEmbedBtn-1')[0].href = `https://nextcounts.com/embed/large/?p=ytsubcountmixerno&u=${user}`;
+                $('#largeEmbedBtn-2')[0].href = `https://nextcounts.com/embed/large/?p=ytviewcount&u=${user}`;
+
                 let samplePhrase = `NextCounts Live YouTube Subscriber Count for ${data.username}!`;
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
                 $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;

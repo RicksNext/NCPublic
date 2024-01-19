@@ -202,6 +202,10 @@ function loadDataFirstTime() {
                 $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=ytvideolikes&u=${user}`;
                 $('#smallEmbedBtn-2')[0].href = `https://nextcounts.com/embed/small/?p=ytvideocomments&u=${user}`;
 
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=ytvideoviews&u=${user}`;
+                $('#largeEmbedBtn-1')[0].href = `https://nextcounts.com/embed/large/?p=ytvideolikes&u=${user}`;
+                $('#largeEmbedBtn-2')[0].href = `https://nextcounts.com/embed/large/?p=ytvideocomments&u=${user}`;
+
 
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=NextCounts Live YT Video View Count for ${data.results[0].title}!`;
                 $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=NextCounts Live YT Video View Count for ${data.results[0].title}! ${window.location.href} @nextcounts! `;
@@ -236,7 +240,8 @@ function loadDataFirstTime() {
 
                 new Odometer({
                     el: document.getElementById("mainOdometer"),
-                    value: estViewCount,
+                    //if estViewCount isn't NaN, use it, otherwise use views
+                    value: isNaN(estViewCount) ? views : estViewCount,
                     format: '(,ddd).dd',
                 });
 

@@ -184,6 +184,9 @@ function loadDataFirstTime() {
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=rumbleuser&u=${user}`;
                 $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=rumbleuser&u=${user}`;
 
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=rumbleuser&u=${user}`;
+                $('#largeEmbedBtn-1')[0].href = `https://nextcounts.com/embed/large/?p=rumbleuser&u=${user}`;
+
                 let samplePhrase = `NextCounts Live Rumble Follower Count for ${data.nickname}!`;
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
                 $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;

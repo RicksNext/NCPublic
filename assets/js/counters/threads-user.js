@@ -205,6 +205,7 @@ function loadDataFirstTime() {
                 $('#openExternalBtn')[0].href = `https://www.threads.net/@${data.username}`;
 
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=threadsuser&u=${user}`;
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=threadsuser&u=${user}`;
 
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
                 $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;

@@ -183,6 +183,9 @@ function loadDataFirstTime() {
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=storyfirefollowers&u=${user}`;
                 $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=storyfireblaze&u=${user}`;
 
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=storyfirefollowers&u=${user}`;
+                $('#largeEmbedBtn-1')[0].href = `https://nextcounts.com/embed/large/?p=storyfireblaze&u=${user}`;
+
                 let samplePhrase = `NextCounts Live StoryFire Subscriber Count for ${data.username}!`;
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
                 $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;

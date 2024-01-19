@@ -208,6 +208,9 @@ function loadDataFirstTime() {
     
                     $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=twitchfollowers&u=${user}`;
                     $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=twitchviews&u=${user}`;
+    
+                    $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=twitchfollowers&u=${user}`;
+                    $('#largeEmbedBtn-1')[0].href = `https://nextcounts.com/embed/large/?p=twitchviews&u=${user}`;
 
                     let samplePhrase = `NextCounts Live Twitch Follower Counts for ${usdt.username}!`;
                     $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;

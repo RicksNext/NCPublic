@@ -217,6 +217,7 @@ function loadDataFirstTime() {
                 $('#openExternalBtn')[0].href = `https://triller.co/@${user}`;
 
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=trilleruser&u=${user}`;
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=trilleruser&u=${user}`;
 
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
                 $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;

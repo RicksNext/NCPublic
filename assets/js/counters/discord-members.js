@@ -199,6 +199,7 @@ function loadDataFirstTime() {
                 $('#openExternalBtn')[0].href = `https://discord.com/invite/${user}`;
 
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=discordserver&u=${user}`;
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=discordserver&u=${user}`;
 
                 let samplePhrase = `NextCounts Live Discord Server Members Count for '${data.guild.serverName}'!`;
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;

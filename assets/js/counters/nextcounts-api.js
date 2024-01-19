@@ -194,6 +194,7 @@ function loadDataFirstTime() {
                 $('#openExternalBtn')[0].href = `https://api-v2.nextcounts.com/`;
 
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=nextcounts`;
+                $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=nextcounts`;
 
                 let samplePhrase = `NextCounts Live Total API Requests Count!`;
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;

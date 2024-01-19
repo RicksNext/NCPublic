@@ -1,8 +1,10 @@
 var updateCounts = {
     name: function(name) {
+        document.getElementById("username").className = document.getElementById("username").className.replace("skeleton skeleton-text", "");
         document.getElementById('username').innerHTML = name;
     },
     pfp: function(url) {
+        document.getElementById('userImg').style.display = 'initial';
         document.getElementById('userImg').src = url;
     },
     banner: function(url) {
@@ -18,6 +20,48 @@ var updateCounts = {
     },
     count: function(count) {
         document.getElementById('mainOdometer').innerHTML = count;
+    },
+    lowerTxt: function(type) {
+        if(window.location.href.includes(`/large/`)) {
+            switch(type) {
+                case 'followers':
+                    document.getElementById('lowerTxt').innerHTML = "Followers";
+                    break;
+                case 'views':
+                    document.getElementById('lowerTxt').innerHTML = "Views";
+                    break;
+                case 'subscribers':
+                    document.getElementById('lowerTxt').innerHTML = "Subscribers";
+                    break;
+                case 'members':
+                    document.getElementById('lowerTxt').innerHTML = "Members";
+                    break;
+                case 'donated':
+                    document.getElementById('lowerTxt').innerHTML = "Donated";
+                    break;
+                case 'blaze':
+                    document.getElementById('lowerTxt').innerHTML = "Blaze";
+                    break;
+                case 'plays':
+                    document.getElementById('lowerTxt').innerHTML = "Plays";
+                    break;
+                case 'likes':
+                    document.getElementById('lowerTxt').innerHTML = "Likes";
+                    break;
+                case 'hearts':
+                    document.getElementById('lowerTxt').innerHTML = "Hearts";
+                    break;
+                case 'viewers':
+                    document.getElementById('lowerTxt').innerHTML = "Viewers";
+                    break;
+                case 'online':
+                    document.getElementById('lowerTxt').innerHTML = "Online";
+                    break;
+                default:
+                    document.getElementById('lowerTxt').innerHTML = type;
+                    break;
+            }
+        }
     }
 }
 
@@ -66,25 +110,26 @@ if(user == null && platform == null || user == "" && platform == "") {
                         if(hasLoadedBefore == false) {
                             new Odometer({
                                 el: document.getElementById("mainOdometer"),
-                                value: data.users[0].followers,
+                                value: data.followers,
                                 format: '(,ddd).dd',
                             });
                         }
                         hasLoadedBefore = true;
-                        updateCounts.pfp(data.users[0].pfp.large);
-                        updateCounts.banner(data.users[0].banner);
-                        updateCounts.count(data.users[0].followers);
-                        if (data.users[0].verified == true) {
-                            if (data.users[0].protectedAcc == true) {
-                                updateCounts.name(`${socialBadges.twitter} ${data.users[0].username} ${socialBadges.verified} ${socialBadges.lockedAcc}`);
+                        updateCounts.pfp(data.pfp.large);
+                        updateCounts.banner(data.banner);
+                        updateCounts.count(data.followers);
+                        updateCounts.lowerTxt("followers");
+                        if (data.verified == true) {
+                            if (data.protectedAcc == true) {
+                                updateCounts.name(`${socialBadges.twitter} ${data.username} ${socialBadges.verified} ${socialBadges.lockedAcc}`);
                             } else {
-                                updateCounts.name(`${socialBadges.twitter} ${data.users[0].username} ${socialBadges.verified}`);
+                                updateCounts.name(`${socialBadges.twitter} ${data.username} ${socialBadges.verified}`);
                             }
                         } else {
-                            if (data.users[0].protectedAcc == true) {
-                                updateCounts.name(`${socialBadges.twitter} ${data.users[0].username} ${socialBadges.lockedAcc}`);
+                            if (data.protectedAcc == true) {
+                                updateCounts.name(`${socialBadges.twitter} ${data.username} ${socialBadges.lockedAcc}`);
                             } else {
-                                updateCounts.name(`${socialBadges.twitter} ${data.users[0].username}`);
+                                updateCounts.name(`${socialBadges.twitter} ${data.username}`);
                             }
                         }
                     } else {
@@ -109,6 +154,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                         updateCounts.pfp(data.pfp);
                         updateCounts.banner(data.channelBanner);
                         updateCounts.count(data.followers);
+                        updateCounts.lowerTxt("followers");
                         if (data.partner == true) {
                             updateCounts.name(`${socialBadges.twitch} ${data.username} ${socialBadges.verified}`);
                         } else {
@@ -136,6 +182,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                         updateCounts.pfp(data.pfp);
                         updateCounts.banner(data.channelBanner);
                         updateCounts.count(data.views);
+                        updateCounts.lowerTxt("views");
                         if (data.partner == true) {
                             updateCounts.name(`${socialBadges.twitch} ${data.username} ${socialBadges.verified}`);
                         } else {
@@ -170,6 +217,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                         updateCounts.pfp(data.avatar);
                         updateCounts.banner(data.banner);
                         updateCounts.count(data.followers);
+                        updateCounts.lowerTxt("followers");
                         if (data.isVerified == true) {
                             updateCounts.name(`${data.username} ${socialBadges.verified}`);
                         } else {
@@ -199,10 +247,11 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.followers,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("followers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp("https://mixerno.space/cors/" + (data.avatar_hd).replace("https%3A%2F%2F", "").replaceAll("/", "%2F").replaceAll("?", "%3F").replaceAll("=", "%3D").replaceAll("&", "%26"));
-                        //updateCounts.banner(data.banner);
+                        updateCounts.banner(null);
                         updateCounts.count(data.followers);
                         if (data.isVerified == true) {
                             updateCounts.name(`${data.nickname} ${socialBadges.verified}`);
@@ -232,6 +281,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                             value: dataa.followers,
                             format: '(,ddd).dd',
                         });
+                        updateCounts.lowerTxt("followers");
                     }
                     hasLoadedBefore = true;
                     updateCounts.pfp(dataa.avatar);
@@ -273,6 +323,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                             value: dataa.hearts,
                             format: '(,ddd).dd',
                         });
+                        updateCounts.lowerTxt("hearts");
                     }
                     hasLoadedBefore = true;
                     updateCounts.pfp(dataa.avatar);
@@ -315,10 +366,11 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.requests,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("Requests");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp("https://nextcounts.com/assets/img/main%20icon%20teal%20black.png");
-                        updateCounts.banner(null);
+                        updateCounts.banner("https://nextcounts.com/assets/img/main%20banner%20black%20teal.png");
                         updateCounts.count(data.requests);
                         updateCounts.name(`${socialBadges.nextcounts} NextCounts API v2`);
                     } else {
@@ -345,10 +397,11 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.trees,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("donated");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp('https://nextcounts.com/assets/img/teamtrees.png');
-                        updateCounts.banner(null);
+                        updateCounts.banner("https://teamtrees.org/img/big-header.png");
                         updateCounts.count(data.trees);
                         updateCounts.name(`#TeamTrees`);
                     } else {
@@ -375,10 +428,11 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.donated,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("donated");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp('https://nextcounts.com/assets/img/teamseas.png');
-                        updateCounts.banner(null);
+                        updateCounts.banner("https://assets01.teamassets.net/assets/images/bg-wave.png");
                         updateCounts.count(data.donated);
                         updateCounts.name(`#TeamSeas`);
                     } else {
@@ -405,6 +459,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.membersCount,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("members");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.guild.serverImg);
@@ -435,6 +490,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.members,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("members");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.subImg);
@@ -465,6 +521,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.followers,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("followers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.userImg);
@@ -495,6 +552,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.blaze,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("blaze");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.userImg);
@@ -525,6 +583,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.onlinePlayers,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("online");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.img);
@@ -556,6 +615,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.followers,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("followers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.avatar);
@@ -586,6 +646,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.plays,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("plays");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.artwork);
@@ -617,6 +678,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.likes,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("likes");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.artwork);
@@ -648,6 +710,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.liveViewers,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("viewers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.streamPreview.medium);
@@ -682,6 +745,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     updateCounts.banner(dataa.thumbnails.medium.url);
 
                     updateCounts.name(`${socialBadges.youtube} ${dataa.title}`);
+                    updateCounts.lowerTxt("views");
 
                     setInterval(function() {
                         $.ajax(`https://api-v2.nextcounts.com/api/youtube/video/stats/${user}`)
@@ -742,6 +806,8 @@ if(user == null && platform == null || user == "" && platform == "") {
                     updateCounts.banner(dataa.thumbnails.medium.url);
 
                     updateCounts.name(`${socialBadges.youtube} ${dataa.title}`);
+                    
+                    updateCounts.lowerTxt("views");
 
                     setInterval(function() {
                         $.ajax(`https://api-v2.nextcounts.com/api/youtube/video/stats/${user}`)
@@ -784,6 +850,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     updateCounts.banner(dataa.thumbnails.medium.url);
 
                     updateCounts.name(`${socialBadges.youtube} ${dataa.title}`);
+                    updateCounts.lowerTxt("likes");
 
                     setInterval(function() {
                         $.ajax(`https://api-v2.nextcounts.com/api/youtube/video/stats/${user}`)
@@ -826,6 +893,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     updateCounts.banner(dataa.thumbnails.medium.url);
 
                     updateCounts.name(`${socialBadges.youtube} ${dataa.title}`);
+                    updateCounts.lowerTxt("comments");
 
                     setInterval(function() {
                         $.ajax(`https://api-v2.nextcounts.com/api/youtube/video/stats/${user}`)
@@ -867,6 +935,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.subcount,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("subscribers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.userImg);
@@ -897,6 +966,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.viewcount,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("views");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.userImg);
@@ -927,42 +997,13 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.estimatedSubCount,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("subscribers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.avatar);
                         updateCounts.banner(data.banner);
                         updateCounts.count(data.estimatedSubCount);
                         updateCounts.name(`${socialBadges.youtube} ${data.channelName}`);
-                    } else {
-                        if(hasLoadedBefore == false) {
-                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
-                        }
-                    }
-                })
-                .fail(function () {
-                    if(hasLoadedBefore == false) {
-                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
-                    }
-                });
-            }, 2500);
-        break;
-        case 'brimefollowers':
-            setInterval(function() {
-                $.ajax(`https://api-v2.nextcounts.com/api/brime/user/${user}`)
-                .done(function (data) {
-                    if(!data.error) {
-                        if(hasLoadedBefore == false) {
-                            new Odometer({
-                                el: document.getElementById("mainOdometer"),
-                                value: data.followers,
-                                format: '(,ddd).dd',
-                            });
-                        }
-                        hasLoadedBefore = true;
-                        updateCounts.pfp(data.avatar);
-                        updateCounts.banner(null);
-                        updateCounts.count(data.followers);
-                        updateCounts.name(data.username);
                     } else {
                         if(hasLoadedBefore == false) {
                             updateCounts.name(`${socialBadges.error} Something went wrong.`);
@@ -987,6 +1028,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.followersCount,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("followers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.avatar);
@@ -1017,6 +1059,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.followersCount,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("followers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.avatar);
@@ -1047,6 +1090,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.followers,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("followers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.avatar);
@@ -1077,6 +1121,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.posts,
                                 format: '(,ddd).dd',
                             });
+                            updateCounts.lowerTxt("posts");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.avatar);
@@ -1111,6 +1156,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     updateCounts.pfp(dataa.avatar);
                     updateCounts.banner(dataa.userBanner);
                     updateCounts.name(`${socialBadges.instagram} ${dataa.nickname}`);
+                    updateCounts.lowerTxt("followers");
 
                     setInterval(function() {
                         $.ajax(`https://api-v2.nextcounts.com/api/instagram/user/stats/${dataa.username}`)
