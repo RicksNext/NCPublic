@@ -100,7 +100,13 @@ setTimeout(function() {
 }, 675);
 
 if(localStorage.getItem("theme") == null || localStorage.getItem("theme") == "") {
-    localStorage.setItem("theme", "white");
+    if(!window.location.pathname.includes(`/embed/`) && (window.matchMedia("(prefers-color-scheme: dark)").matches == true)) {
+        localStorage.setItem("theme", "dark");
+        $('html')[0].className = 'darktheme';
+        $('body')[0].className = 'darktheme';
+        $('#app-navbar')[0].className = $('#app-navbar')[0].className.replace(` navbar-light`, ` navbar-dark`);
+        if(!window.location.pathname.includes(`embed`)) $('#themeSelector')[0].value = `dark`;
+    } else localStorage.setItem("theme", "white");
 } else {
     switch(localStorage.getItem("theme")) {
         case "dark": {
@@ -261,7 +267,7 @@ document.addEventListener('keydown', function (e) {
 
 function activateCheats() {
     if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
-        var audio = new Audio('http://nextcounts.com/assets/logoff.mp3');
+        var audio = new Audio('https://nextcounts.com/assets/logoff.mp3');
         audio.play();
 
         localStorage.setItem("insiderMode", 'false');
@@ -270,7 +276,7 @@ function activateCheats() {
 You need to refresh the page to disable Insider exclusive features. Don't tell anyone how you did this.`);
 		},20);
     } else {
-        var audio = new Audio('http://nextcounts.com/assets/logon.mp3');
+        var audio = new Audio('https://nextcounts.com/assets/logon.mp3');
         audio.play();
 
         localStorage.setItem("insiderMode", 'true');

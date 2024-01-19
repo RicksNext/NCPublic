@@ -182,7 +182,6 @@ function loadDataFirstTime() {
                 $('#openExternalBtn')[0].href = `https://www.instagram.com/${user}/`;
 
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=instagramuser&u=${user}`;
-                $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=instagramuser&u=${user}`;
 
                 let samplePhrase = `NextCounts Live Instagram Follower Count for ${data.nickname}!`;
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;

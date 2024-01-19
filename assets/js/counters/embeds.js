@@ -1096,9 +1096,53 @@ if(user == null && platform == null || user == "" && platform == "") {
                 });
             }, 2500);
         break;
+        case 'instagramuser':
+            $.ajax(`https://api-v2.nextcounts.com/api/instagram/user/${user}`)
+            .done(function (dataa) {
+                if(!dataa.error) {
+                    if(hasLoadedBefore == false) {
+                        new Odometer({
+                            el: document.getElementById("mainOdometer"),
+                            value: dataa.followers,
+                            format: '(,ddd).dd',
+                        });
+                    }
+                    hasLoadedBefore = true;
+                    updateCounts.pfp(dataa.avatar);
+                    updateCounts.banner(dataa.userBanner);
+                    updateCounts.name(`${socialBadges.instagram} ${dataa.nickname}`);
+
+                    setInterval(function() {
+                        $.ajax(`https://api-v2.nextcounts.com/api/instagram/user/stats/${dataa.username}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                updateCounts.count(data.followers);
+                            }
+                        })
+                        .fail(function () {
+                            if(hasLoadedBefore == false) {
+                                updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                            }
+                        });
+                    }, 3500);
+                } else {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                }
+            })
+            .fail(function () {
+                if(hasLoadedBefore == false) {
+                    updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                }
+            });
+        break;
         default:
             updateCounts.name(`${socialBadges.error} This doesn't seem to be a valid platform`);
             updateCounts.count(`Refresing the page...`);
+            setTimeout(function() {
+                location.reload();
+            }, 10000);
             break;
     }
 }

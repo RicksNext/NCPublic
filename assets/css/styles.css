@@ -299,5 +299,10 @@ button:active {
   mask-position: inherit;
   mask-size: inherit;
   mask-repeat: space;
+  -webkit-mask-image: radial-gradient(circle closest-side, white, transparent);
+  -webkit-mask-origin: border-box;
+  -webkit-mask-position: inherit;
+  -webkit-mask-size: inherit;
+  -webkit-mask-repeat: space;
 }
 

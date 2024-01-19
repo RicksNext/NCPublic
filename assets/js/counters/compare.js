@@ -207,7 +207,7 @@ var rates = {
     vals: [0, 0],
     divisor: [0, 0],
     add: function (i, a) {
-        if(!isNaN(a)) {
+        if(!isNaN(Number(a))) {
             a = Number(a);
             rates.vals[i] *= rates.counts[i].length;
             rates.counts[i].push(a);
@@ -3228,34 +3228,6 @@ function loadUser(platform, user, number) {
 
         var ratecolorone, ratecolortwo = customColors[Math.round(customColors.length * Math.random())];
 
-        ratesChart = new Highcharts.chart({
-            chart: {
-                renderTo: "ratesChart"
-            },
-            title: {
-                text: `Per minute gain rate - Chart Graph`,
-                align: 'left',
-                style: {
-                    color: textBright,
-                },
-            },
-            series: [
-                {
-                    showInLegend: false,
-                    name: `${$('#username-1')[0].innerHTML} - Gain Rate`,
-                    marker: { enabled: false },
-                    color: ratecolorone,
-                    lineColor: ratecolorone,
-                },
-                {
-                    showInLegend: false,
-                    name: `${$('#username-2')[0].innerHTML} - Gain Rate`,
-                    marker: { enabled: false },
-                    color: ratecolortwo,
-                    lineColor: ratecolortwo,
-                },
-            ],
-        });
         setInterval(function() {
             document.getElementById(`gapcounter`).innerHTML = currcounts[0] - currcounts[1];
     
@@ -3275,13 +3247,6 @@ function loadUser(platform, user, number) {
                     chart.series[0].data[0].remove();
                 }
                 chart.series[0].addPoint([calcTime(), currcounts[0] - currcounts[1]]);
-                
-                if (ratesChart.series[0].points.length >= maxPoints || ratesChart.series[1].points.length >= maxPoints) {
-                    ratesChart.series[0].data[0].remove();
-                    ratesChart.series[1].data[0].remove();
-                }
-                ratesChart.series[0].addPoint([calcTime(), Math.floor($('#11min')[0].innerHTML)]);
-                ratesChart.series[1].addPoint([calcTime(), Math.floor($('#21min')[0].innerHTML)]);
             }
         }, 2000);
     }, 5000);
@@ -3290,9 +3255,7 @@ function loadUser(platform, user, number) {
 var searchUser1 = "", searchUser2 = "", searchPlat1 = "", searchPlat2 = "";
 
 function searchForUser(user, platform, num) {
-
     if(user == "") return toastr["warning"]("You need to provide an username for the search to work!", "Oops!");
-
     switch (platform) {
         case "twitteruser":
             var e = user.replace("@", ""), t = "";
@@ -3340,11 +3303,21 @@ function searchForUser(user, platform, num) {
 }
 
 $(document).ready(function () {
-    $('#searchSelect-1').append(`<option value=3 selected="">Select a Platform</option>`);
-    $('#searchSelect-1').append(`<option value="twitteruser">Twitter (User)</option>`);
-
-    $('#searchSelect-2').append(`<option value=3 selected="">Select a Platform</option>`);
-    $('#searchSelect-2').append(`<option value="twitteruser">Twitter (User)</option>`);
+    $(`<option value=3 selected="">Select a Platform</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="discordserver">Discord Server (Total Members)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="rumbleuser">Rumble (User Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="storyfirefollowers">StoryFire (User Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="storyfireblaze">StoryFire (User Blaze)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="trilleruser">Triller (Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="twitteruser">Twitter (User - Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="tiktokfollowers">TikTok (User - Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="tiktokhearts">TikTok (User - Hearts)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="twitchuser">Twitch (Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="youtubeuserest">YouTube (Channel - Est. Subscribers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="youtubeuser">YouTube (Channel - Abbr. Subscribers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="ytvideoviews">YouTube (Video - Views)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="ytvideolikes">YouTube (Video - Likes)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="ytvideocomments">YouTube (Video - Comments)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
 
     loadUser(plat1, user1, 1);
     loadUser(plat2, user2, 2);
