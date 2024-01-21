@@ -19,7 +19,7 @@ $('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>
 //$('#searchPlatform').append(`<option value="twitchuser">Twitch (User)</option>`);
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>`);
 $('#searchPlatform').append(`<option value="youtubeuser">YouTube (Channel)</option>`);
-$('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video)</option>`);
+$('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video or Livestream)</option>`);
 //$('#searchPlatform').append(`<option value="instagramuser">Instagram (User)</option>`);
 
 toastr.options = {
@@ -485,37 +485,75 @@ function searchForUser(searchTerm, platform) {
                     });
                 break;
                 case "youtubevideo":
+                    let isID = false;
                     var e = searchTerm.replace("@", ""), t = "";
                     if (e.includes("https://") || e.includes("http://")) {
-                        var n = e.split("/");
-                        t = n[4]
+                        if(e.includes("youtu.be")) {
+                            var n = e.split("/");
+                            t = n[3];
+                            isID = true;
+                        } else {
+                            var n = e.split("/");
+                            t = n[3].split('=')[1]
+                            console.log(n, t)
+                            isID = true;
+                        }
                     } else {
                         if (e.includes("youtube.com")) {
                             n = e.split("/");
                             t = n[2]
+                            console.log(n, t)
+                            isID = true;
                         } else t = e;
                     }
 
-                    $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/video/${t}`)
-                    .done(function (data) {
-                        if(!data.error) {
-                            document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].channelName}`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/video/?v=${data.results[0].videoid}`;
-                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.youtube}`;
-                            document.getElementById(`searchpfp`).src = data.results[0].thumbnails.medium.url;
-                            document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
-                        } else {
+                    if(isID == false) {
+                        $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/video/${t}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].channelName}`;
+                                document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/video/?v=${data.results[0].videoid}`;
+                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.youtube}`;
+                                document.getElementById(`searchpfp`).src = data.results[0].thumbnails.medium.url;
+                                document.getElementById(`loadingSearch`).style.display = "none";
+                                document.getElementById(`searchCard`).style.display = "block";
+                            } else {
+                                toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                                document.getElementById(`loadingSearch`).style.display = "none";
+                                document.getElementById(`searchCard`).style.display = "none";
+                            }
+                        })
+                        .fail(function () {
                             toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
                             document.getElementById(`searchCard`).style.display = "none";
-                        }
-                    })
-                    .fail(function () {
-                        toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
-                        document.getElementById(`loadingSearch`).style.display = "none";
-                        document.getElementById(`searchCard`).style.display = "none";
-                    });
+                        });
+                    } else {
+                        $.ajax(`https://api-v2.nextcounts.com/api/youtube/videos/info/${t}`)
+                        .done(function (data) {
+                            if(!data.error) {
+                                if(data.results[0].isLive == true) {
+                                    document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].channelTitle} - ${Number(data.results[0].liveViewers).toLocaleString()} Watching`;
+                                } else {
+                                    document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].channelTitle} - ${Number(data.results[0].views).toLocaleString()} Views`;
+                                }
+                                document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/video/?v=${data.results[0].videoid}`;
+                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.youtube}`;
+                                document.getElementById(`searchpfp`).src = data.results[0].thumbnails.medium.url;
+                                document.getElementById(`loadingSearch`).style.display = "none";
+                                document.getElementById(`searchCard`).style.display = "block";
+                            } else {
+                                toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                                document.getElementById(`loadingSearch`).style.display = "none";
+                                document.getElementById(`searchCard`).style.display = "none";
+                            }
+                        })
+                        .fail(function () {
+                            toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            document.getElementById(`loadingSearch`).style.display = "none";
+                            document.getElementById(`searchCard`).style.display = "none";
+                        });
+                    }
                 break;
                 case "rumbleuser":
                     var e = searchTerm.replace("@", ""), t = "";
