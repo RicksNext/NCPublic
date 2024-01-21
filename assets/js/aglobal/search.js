@@ -105,8 +105,9 @@ function searchForUser(searchTerm, platform) {
                     }
 
                     $.ajax(`https://api-v2.nextcounts.com/api/search/twitter/user/${t}`)
-                    .done(function (data) {
-                        if(data.success == true) {
+                    .done(function (dataa) {
+                        if(dataa.success == true) {
+                            let data = dataa.users[0];
                             document.getElementById(`searchFollowers`).innerHTML = `@${data.userDefiner}`;
                             document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitter/followers/?u=${data.userDefiner}`;
                             if (data.verified == true) {
@@ -688,7 +689,7 @@ function searchForUser(searchTerm, platform) {
                             } else {
                                 document.getElementById(`searchUsername`).innerHTML = `${user.full_name}`;
                             }
-                            document.getElementById(`searchpfp`).src = user.avatar;
+                            document.getElementById(`searchpfp`).src = user.profile_pic || user.avatar;
                             document.getElementById(`loadingSearch`).style.display = "none";
                             document.getElementById(`searchCard`).style.display = "block";
                         } else {
