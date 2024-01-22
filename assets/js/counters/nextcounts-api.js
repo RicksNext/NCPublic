@@ -272,7 +272,7 @@ function loadDataFirstTime() {
         error: function () { },
     });
 
-    $.ajax(`https://api-v2.nextcounts.com/api/stats/nextcounts/api`)
+    $.ajax(`https://api-v2.nextcounts.com/api/stats/misc/nextcounts`)
         .done(function (ndata) {
             //try { JSON.parse(stats); } catch { toastr["info"](stats); };
             //var ndata = JSON.parse(stats);

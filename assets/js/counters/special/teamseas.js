@@ -268,8 +268,9 @@ function loadDataFirstTime() {
         error: function () { },
     });
 
-    $.ajax(`https://api-v2.nextcounts.com/api/stats/teamseas/donated`)
-        .done(function (ndata) {
+    $.ajax(`https://api-v2.nextcounts.com/api/stats/misc/teamseas`)
+        .done(function (sdata) {
+            var ndata = sdata.donated;
             //try { JSON.parse(stats); } catch { toastr["info"](stats); };
             //var ndata = JSON.parse(stats);
             

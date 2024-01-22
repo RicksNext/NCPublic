@@ -269,8 +269,9 @@ function loadDataFirstTime() {
         error: function () { },
     });
 
-    $.ajax(`https://api-v2.nextcounts.com/api/stats/teamtrees/donated`)
-        .done(function (ndata) {
+    $.ajax(`https://api-v2.nextcounts.com/api/stats/misc/teamtrees`)
+        .done(function (sdata) {
+            var ndata = sdata.donated
             //try { JSON.parse(stats); } catch { toastr["info"](stats); };
             //var ndata = JSON.parse(stats);
 
