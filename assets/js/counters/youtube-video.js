@@ -672,9 +672,9 @@ function loadDataFirstTime() {
                     console.log(ndata.views.length - (i + 1))
                     $('#tableBody').append(`<tr>
                         <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                        <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 2)][1], false)}</td>
-                        <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 2)][1], false)}</td>
-                        <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 2)][1], false)}</td>
+                        <td>${Number(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 2)][1], false)}</td>
+                        <td>${Number(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 2)][1], false)}</td>
+                        <td>${Number(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 2)][1], false)}</td>
                     </tr>`);
                 }
             } else {
@@ -683,16 +683,16 @@ function loadDataFirstTime() {
                     if (ndata.views.length - (i + 1) == 0) {
                         $('#tableBody').append(`<tr>
                             <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 1)][1], false)}</td>
+                            <td>${Number(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 1)][1], false)}</td>
+                            <td>${Number(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 1)][1], false)}</td>
+                            <td>${Number(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 1)][1], false)}</td>
                         </tr>`);
                     } else {
                         $('#tableBody').append(`<tr>
                             <td>${new Date(ndata.views[ndata.views.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 2)][1], false)}</td>
+                            <td>${Number(ndata.views[ndata.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.views[ndata.views.length - (i + 1)][1], ndata.views[ndata.views.length - (i + 2)][1], false)}</td>
+                            <td>${Number(ndata.likes[ndata.likes.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.likes[ndata.likes.length - (i + 1)][1], ndata.likes[ndata.likes.length - (i + 2)][1], false)}</td>
+                            <td>${Number(ndata.comments[ndata.comments.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.comments[ndata.comments.length - (i + 1)][1], ndata.comments[ndata.comments.length - (i + 2)][1], false)}</td>
                         </tr>`);
                     }
                 }
