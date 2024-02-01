@@ -126,7 +126,7 @@ const queryString = window.location.search, urlParams = new URLSearchParams(quer
 const userInURL = urlParams.get("u"), odometerInURL = urlParams.get("o");
 var user = "";
 
-!userInURL ? user = "charlidamelio" : user = userInURL;
+!userInURL ? user = "khaby.lame" : user = userInURL;
 
 //"Customize counter" Modal code
 var updateChart = true;
@@ -250,58 +250,60 @@ function loadDataFirstTime() {
                 });
                 new Odometer({
                     el: document.getElementById("thirdSmallOdo"),
-                    value: data.hearts,
+                    value: data.hearts || 0,
                     format: '(,ddd).dd',
                 });
 
                 setInterval(function () {
                     $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${data.uid}`,
+                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${user}`,
                         type: "GET",
                         dataType: "JSON",
                         success: function (dataa) {
-                            updateCounts.mainCount(dataa.followers);
-                            updateCounts.following(dataa.following);
-                            updateCounts.videos(dataa.videos);
-                            updateCounts.likes(dataa.hearts);
-                            updateCounts.goalCount(dataa.followers);
-
-                            $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.followers, oldFollowers, "followersToday");
-
-                            $(`#likesToday`)[0].outerHTML = positiveOrNegative(dataa.hearts, oldLikes, "likesToday");
-                            
-                            if (!firstLive[0] || !firstLive[1]) {
-                                prevCount[0] = dataa.followers;
-                                firstLive[0] = true;
-                                prevCount[1] = dataa.videos;
-                                firstLive[1] = true;
-                                prevCount[2] = dataa.hearts;
-                                firstLive[2] = true;
-                            } else {
-                                rates.add(0, dataa.followers - prevCount[0]);
-                                rates.add(1, dataa.videos - prevCount[1]);
-                                rates.add(2, dataa.hearts - prevCount[2]);
-                                prevCount[0] = dataa.followers;
-                                prevCount[1] = dataa.videos;
-                                prevCount[2] = dataa.hearts;
-
-                                var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2, avgRate3 = rates.vals[2]/2;
-
-                                var final11 = Math.round(avgRate1 * 60).toLocaleString();
-                                var final12 = Math.round(avgRate1 * 3600).toLocaleString();
-                                var final13 = Math.round(avgRate1 * 86400).toLocaleString();
-
-                                var final21 = Math.round(avgRate2 * 60).toLocaleString();
-                                var final22 = Math.round(avgRate2 * 3600).toLocaleString();
-                                var final23 = Math.round(avgRate2 * 86400).toLocaleString();
+                            if(!dataa.error) {
+                                updateCounts.mainCount(dataa.followers);
+                                updateCounts.following(dataa.following);
+                                updateCounts.videos(dataa.videos);
+                                updateCounts.likes(dataa.hearts);
+                                updateCounts.goalCount(dataa.followers);
+    
+                                $(`#followersToday`)[0].outerHTML = positiveOrNegative(dataa.followers, oldFollowers, "followersToday");
+    
+                                $(`#likesToday`)[0].outerHTML = positiveOrNegative(dataa.hearts, oldLikes, "likesToday");
                                 
-                                var final31 = Math.round(avgRate3 * 60).toLocaleString();
-                                var final32 = Math.round(avgRate3 * 3600).toLocaleString();
-                                var final33 = Math.round(avgRate3 * 86400).toLocaleString();
-
-                                updateCounts.avgs1(final11, final12, final13);
-                                updateCounts.avgs2(final21, final22, final23);
-                                updateCounts.avgs3(final31, final32, final33);
+                                if (!firstLive[0] || !firstLive[1]) {
+                                    prevCount[0] = dataa.followers;
+                                    firstLive[0] = true;
+                                    prevCount[1] = dataa.videos;
+                                    firstLive[1] = true;
+                                    prevCount[2] = dataa.hearts;
+                                    firstLive[2] = true;
+                                } else {
+                                    rates.add(0, dataa.followers - prevCount[0]);
+                                    rates.add(1, dataa.videos - prevCount[1]);
+                                    rates.add(2, dataa.hearts - prevCount[2]);
+                                    prevCount[0] = dataa.followers;
+                                    prevCount[1] = dataa.videos;
+                                    prevCount[2] = dataa.hearts;
+    
+                                    var avgRate1 = rates.vals[0]/2, avgRate2 = rates.vals[1]/2, avgRate3 = rates.vals[2]/2;
+    
+                                    var final11 = Math.round(avgRate1 * 60).toLocaleString();
+                                    var final12 = Math.round(avgRate1 * 3600).toLocaleString();
+                                    var final13 = Math.round(avgRate1 * 86400).toLocaleString();
+    
+                                    var final21 = Math.round(avgRate2 * 60).toLocaleString();
+                                    var final22 = Math.round(avgRate2 * 3600).toLocaleString();
+                                    var final23 = Math.round(avgRate2 * 86400).toLocaleString();
+                                    
+                                    var final31 = Math.round(avgRate3 * 60).toLocaleString();
+                                    var final32 = Math.round(avgRate3 * 3600).toLocaleString();
+                                    var final33 = Math.round(avgRate3 * 86400).toLocaleString();
+    
+                                    updateCounts.avgs1(final11, final12, final13);
+                                    updateCounts.avgs2(final21, final22, final23);
+                                    updateCounts.avgs3(final31, final32, final33);
+                                }
                             }
                         }, error: function () { }
                     });

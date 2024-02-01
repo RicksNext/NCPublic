@@ -4,7 +4,7 @@ $.getJSON("https://api-v2.nextcounts.com/api/youtube/channels/unabbreviated/list
 
     //sort the channels by the most subscribers
     let chanList = data.items.sort(function (a, b) {
-        return b.subs - a.subscribers;
+        return b.subscribers - a.subscribers;
     });
 
     let totalSubs = 0;
