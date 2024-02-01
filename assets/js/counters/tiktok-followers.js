@@ -626,13 +626,15 @@ var updateCounts = {
         }
     },
     mainCount: function (count) {
-        document.getElementById("mainOdometer").innerHTML = count;
-
-        if (updateChart == true) {
-            if (chart.series[0].points.length >= maxPoints) {
-                chart.series[0].data[0].remove();
+        if(count != 0) {
+            document.getElementById("mainOdometer").innerHTML = count;
+    
+            if (updateChart == true) {
+                if (chart.series[0].points.length >= maxPoints) {
+                    chart.series[0].data[0].remove();
+                }
+                chart.series[0].addPoint([calcTime(), count]);
             }
-            chart.series[0].addPoint([calcTime(), count]);
         }
     },
     goalCount: function (count) {
