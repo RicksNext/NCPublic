@@ -1695,18 +1695,18 @@ function loadUser(platform, user, number) {
                                         dataType: "JSON",
                                         success: function (dataa) {
                                             if(dataa.success == true) {
-                                                currcounts[number - 1] = dataa.likes;
-                                                updateCounts.mainCount(dataa.likes, number);
-                                                updateCounts.goalCount(dataa.likes, number);
+                                                currcounts[number - 1] = Math.floor(dataa.likes);
+                                                updateCounts.mainCount(Math.floor(dataa.likes), number);
+                                                updateCounts.goalCount(Math.floor(dataa.likes), number);
                     
-                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(dataa.likes, oldcounts[number - 1], `user${number}gains`);
+                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(Math.floor(dataa.likes), oldcounts[number - 1], `user${number}gains`);
                                                 
                                                 if (!firstLive[number - 1]) {
-                                                    prevCount[number - 1] = dataa.likes;
+                                                    prevCount[number - 1] = Math.floor(dataa.likes);
                                                     firstLive[number - 1] = true;
                                                 } else {
-                                                    rates.add(number - 1, dataa.likes - prevCount[number - 1]);
-                                                    prevCount[number - 1] = dataa.likes;
+                                                    rates.add(number - 1, Math.floor(dataa.likes) - prevCount[number - 1]);
+                                                    prevCount[number - 1] = Math.floor(dataa.likes);
                     
                                                     var avgRate = rates.vals[number - 1]/2;
                     
@@ -1874,18 +1874,18 @@ function loadUser(platform, user, number) {
                                         dataType: "JSON",
                                         success: function (dataa) {
                                             if(dataa.success == true) {
-                                                currcounts[number - 1] = dataa.comments;
-                                                updateCounts.mainCount(dataa.comments, number);
-                                                updateCounts.goalCount(dataa.comments, number);
+                                                currcounts[number - 1] = Math.floor(dataa.comments);
+                                                updateCounts.mainCount(Math.floor(dataa.comments), number);
+                                                updateCounts.goalCount(Math.floor(dataa.comments), number);
                     
-                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(dataa.comments, oldcounts[number - 1], `user${number}gains`);
+                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(Math.floor(dataa.comments), oldcounts[number - 1], `user${number}gains`);
                                                 
                                                 if (!firstLive[number - 1]) {
-                                                    prevCount[number - 1] = dataa.comments;
+                                                    prevCount[number - 1] = Math.floor(dataa.comments);
                                                     firstLive[number - 1] = true;
                                                 } else {
-                                                    rates.add(number - 1, dataa.comments - prevCount[number - 1]);
-                                                    prevCount[number - 1] = dataa.comments;
+                                                    rates.add(number - 1, Math.floor(dataa.comments) - prevCount[number - 1]);
+                                                    prevCount[number - 1] = Math.floor(dataa.comments);
                     
                                                     var avgRate = rates.vals[number - 1]/2;
                     
@@ -3216,53 +3216,848 @@ function loadUser(platform, user, number) {
 
 var searchUser1 = "", searchUser2 = "", searchPlat1 = "", searchPlat2 = "";
 
+document.getElementById("searchInput-1").addEventListener("keydown", function (e) {
+    if (e.keyCode === 13) {
+        searchForUser(document.getElementById("searchInput-1").value, document.getElementById("searchSelect-1").value, 1);
+    }
+});
+
+document.getElementById("searchInput-2").addEventListener("keydown", function (e) {
+    if (e.keyCode === 13) {
+        searchForUser(document.getElementById("searchInput-2").value, document.getElementById("searchSelect-2").value, 2);
+    }
+});
+
+
 function searchForUser(user, platform, num) {
     if(user == "") return toastr["warning"]("You need to provide an username for the search to work!", "Oops!");
+    let searchTerm = user.replace(/ /g, "");
     switch (platform) {
         case "twitteruser":
-            var e = user.replace("@", ""), t = "";
+            var e = searchTerm.replace("@", ""), t = "";
             if (e.includes("https://") || e.includes("http://")) {
                 var n = e.split("/");
                 t = n[3]
             } else {
-                if (e.includes("twitter.com")) {
+                if (e.includes("twitch.tv")) {
                     n = e.split("/");
                     t = n[1]
                 } else t = e;
             }
 
             $.ajax({
-                url: `hhttps://api-v2.nextcounts.com/api/search/twitter/user/${t}`,
+                url: `https://api-v2.nextcounts.com/api/search/twitter/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.errors) {
+                        toastr["error"](`It seems like the user you entered (${user}) isn't on Twitter. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        var data = dataa.users[0];
+                        if (data.verified == true) {
+                            if (data.lockedAcc == true) {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
+                            } else {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.twitter}`;
+                            }
+                        } else {
+                            if (data.lockedAcc == true) {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
+                            } else {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.twitter}`;
+                            }
+                        }
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `@${(data.userDefiner).toLocaleString()}`;
+                        $(`#searchAvatar-${num}`).attr("src", data.pfp);
+
+                        if(num == 1) {
+                            searchUser1 = data.userDefiner;
+                            searchPlat1 = "twitteruser";
+                        } else {
+                            searchUser2 = data.userDefiner;
+                            searchPlat2 = "twitteruser";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "tiktokfollowers":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[3]
+            } else {
+                if (e.includes("tiktok.com")) {
+                    n = e.split("/");
+                    t = n[1]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/tiktok/user/${t}`,
                 type: "GET",
                 dataType: "JSON",
                 success: function (data) {
                     if (data.errors) {
-                        toastr["error"](`It seems like the user you entered (${user}) isn't on Twitter. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                        toastr["error"](`It seems like the user you entered (${user}) isn't on TikTok. Please check the spelling or replace it with a different username.`, "Uh oh...");
                     } else {
                         if (data.verified == true) {
-                            if (data.lockedAcc == true) {
-                                $(`searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.tiktok}`;
+                        } else {
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.username} ${socialBadges.tiktok}`;
+                        }
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `@${(data.userIdentifier).toLocaleString()}`;
+                        $(`#searchAvatar-${num}`).attr("src", data.userImg);
+
+                        if(num == 1) {
+                            searchUser1 = data.userIdentifier;
+                            searchPlat1 = "tiktokfollowers";
+                        } else {
+                            searchUser2 = data.userIdentifier;
+                            searchPlat2 = "tiktokfollowers";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "tiktokhearts":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[3]
+            } else {
+                if (e.includes("tiktok.com")) {
+                    n = e.split("/");
+                    t = n[1]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/tiktok/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (data) {
+                    if (data.errors) {
+                        toastr["error"](`It seems like the user you entered (${user}) isn't on TikTok. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        if (data.verified == true) {
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.tiktok}`;
+                        } else {
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.username} ${socialBadges.tiktok}`;
+                        }
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `@${(data.userIdentifier).toLocaleString()}`;
+                        $(`#searchAvatar-${num}`).attr("src", data.userImg);
+
+                        if(num == 1) {
+                            searchUser1 = data.userIdentifier;
+                            searchPlat1 = "tiktokhearts";
+                        } else {
+                            searchUser2 = data.userIdentifier;
+                            searchPlat2 = "tiktokhearts";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "bskyuser":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[3]
+            } else {
+                if (e.includes("twitch.tv")) {
+                    n = e.split("/");
+                    t = n[1]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/bluesky/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.errors) {
+                        toastr["error"](`It seems like the user you entered (${user}) isn't on BlueSky. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        var data = dataa.users[0];
+
+                        $(`#searchUsername-${num}`)[0].innerHTML = `${data.username}`;
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `@${(data.handle).toLocaleString()}`;
+                        $(`#searchAvatar-${num}`).attr("src", data.avatar);
+
+                        if(num == 1) {
+                            searchUser1 = data.handle;
+                            searchPlat1 = "bskyuser";
+                        } else {
+                            searchUser2 = data.handle;
+                            searchPlat2 = "bskyuser";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "trilleruser":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[3]
+            } else {
+                if (e.includes("triller.co")) {
+                    n = e.split("/");
+                    t = n[1]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/triller/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.errors) {
+                        toastr["error"](`It seems like the user you entered (${user}) isn't on Triller. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        var data = dataa.results[0];
+                        if (data.verified == true) {
+                            if (data.private == true) {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.lockedAcc}`;
                             } else {
-                                $(`searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.twitter}`;
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.username} ${socialBadges.verified}`;
                             }
                         } else {
-                            if (data.lockedAcc == true) {
-                                $(`searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
+                            if (data.private == true) {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.username} ${socialBadges.lockedAcc}`;
                             } else {
-                                $(`searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.twitter}`;
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.username}`;
                             }
                         }
 
-                        $(`searchSubtitle-${num}`)[0].innerHTML = `${(data.followers).toLocaleString()} Followers`;
-                        searchUser1 = data.userDefiner;
-                        searchPlat1 = "twitteruser";
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `${data.followers.toLocaleString()} Followers`;
+                        $(`#searchAvatar-${num}`).attr("src", data.avatar);
+
+                        if(num == 1) {
+                            searchUser1 = data.definer;
+                            searchPlat1 = "trilleruser";
+                        } else {
+                            searchUser2 = data.definer;
+                            searchPlat2 = "trilleruser";
+                        }
                     }
                 },
-                error: function () { },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
             });
-            break;     
+            break;
+        case "discordserver":
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/discord/server/${searchTerm}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.errors) {
+                        toastr["error"](`It seems like the invite ID you entered (${searchTerm}) isn't valid. Please check the spelling or replace it with a different one.`, "Uh oh...");
+                    } else {
+                        var data = dataa;
+                        $(`#searchUsername-${num}`)[0].innerHTML = `${data.guild.serverName} ${socialBadges.discord}`;
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `${data.membersCount.toLocaleString()} Members`;
+                        $(`#searchAvatar-${num}`).attr("src", data.guild.serverImg);
+
+                        if(num == 1) {
+                            searchUser1 = searchTerm;
+                            searchPlat1 = "discordserver";
+                        } else {
+                            searchUser2 = searchTerm;
+                            searchPlat2 = "discordserver";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "storyfirefollowers":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[2]
+            } else {
+                if (e.includes("storyfire.com")) {
+                    n = e.split("/");
+                    t = n[2]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/storyfire/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (!dataa.error && dataa.count > 0) {
+                        var data = dataa.results[0];
+                        if (data.verified == true) {
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.verified}`;
+                        } else {
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.name}`;
+                        }
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `${data.followers.toLocaleString()} Followers`;
+                        $(`#searchAvatar-${num}`).attr("src", data.userImg);
+
+                        if(num == 1) {
+                            searchUser1 = data.channelID;
+                            searchPlat1 = "storyfirefollowers";
+                        } else {
+                            searchUser2 = data.channelID;
+                            searchPlat2 = "storyfirefollowers";
+                        }
+                    } else {
+                        toastr["error"](`It seems like the user you entered (${t}) isn't on StoryFire. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "storyfireblaze":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[2]
+            } else {
+                if (e.includes("storyfire.com")) {
+                    n = e.split("/");
+                    t = n[2]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/storyfire/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (!dataa.error && dataa.count > 0) {
+                        var data = dataa.results[0];
+                        if (data.verified == true) {
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.name} ${socialBadges.verified}`;
+                        } else {
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.name}`;
+                        }
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `${data.followers.toLocaleString()} Followers`;
+                        $(`#searchAvatar-${num}`).attr("src", data.userImg);
+
+                        if(num == 1) {
+                            searchUser1 = data.channelID;
+                            searchPlat1 = "storyfireblaze";
+                        } else {
+                            searchUser2 = data.channelID;
+                            searchPlat2 = "storyfireblaze";
+                        }
+                    } else {
+                        toastr["error"](`It seems like the user you entered (${t}) isn't on StoryFire. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "rumbleuser":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[4]
+            } else {
+                if (e.includes("rumble.com")) {
+                    n = e.split("/");
+                    t = n[2]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/rumble/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.error) {
+                        toastr["error"](`It seems like the user you entered (${user}) isn't on Rumble. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        var data = dataa.users[0];
+                        $(`#searchUsername-${num}`)[0].innerHTML = `${data.nickname} ${socialBadges.rumble}`;
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `${(data.followersCount).toLocaleString()} Followers`;
+                        $(`#searchAvatar-${num}`).attr("src", data.avatar);
+
+                        if(num == 1) {
+                            searchUser1 = data.id;
+                            searchPlat1 = "rumbleuser";
+                        } else {
+                            searchUser2 = data.id;
+                            searchPlat2 = "rumbleuser";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "threadsuser":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[3]
+            } else {
+                if (e.includes("instagram.com") || e.includes("threads.net")) {
+                    n = e.split("/");
+                    t = n[1]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/instagram/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.errors) {
+                        toastr["error"](`It seems like the user you entered (${user}) isn't on Threads. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        var data = dataa.users[0];
+                        if (data.is_verified == true) {
+                            if (data.is_private == true) {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.full_name} ${socialBadges.verified} ${socialBadges.lockedAcc} ${socialBadges.threads}`;
+                            } else {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.full_name} ${socialBadges.verified} ${socialBadges.threads}`;
+                            }
+                        } else {
+                            if (data.is_private == true) {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.full_name} ${socialBadges.lockedAcc} ${socialBadges.threads}`;
+                            } else {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.full_name} ${socialBadges.threads}`;
+                            }
+                        }
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `@${(data.user_name).toLocaleString()}`;
+                        $(`#searchAvatar-${num}`).attr("src", data.profile_pic);
+
+                        if(num == 1) {
+                            searchUser1 = data.user_name;
+                            searchPlat1 = "threadsuser";
+                        } else {
+                            searchUser2 = data.user_name;
+                            searchPlat2 = "threadsuser";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "instagramuser":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[3]
+            } else {
+                if (e.includes("instagram.com") || e.includes("threads.net")) {
+                    n = e.split("/");
+                    t = n[1]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/instagram/user/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.errors) {
+                        toastr["error"](`It seems like the user you entered (${user}) isn't on Threads. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        var data = dataa.users[0];
+                        if (data.is_verified == true) {
+                            if (data.is_private == true) {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.full_name} ${socialBadges.verified} ${socialBadges.lockedAcc} ${socialBadges.instagram}`;
+                            } else {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.full_name} ${socialBadges.verified} ${socialBadges.instagram}`;
+                            }
+                        } else {
+                            if (data.is_private == true) {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.full_name} ${socialBadges.lockedAcc} ${socialBadges.instagram}`;
+                            } else {
+                                $(`#searchUsername-${num}`)[0].innerHTML = `${data.full_name} ${socialBadges.instagram}`;
+                            }
+                        }
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `${(data.followed_by).toLocaleString()} Followers`;
+                        $(`#searchAvatar-${num}`).attr("src", data.profile_pic);
+
+                        if(num == 1) {
+                            searchUser1 = data.user_name;
+                            searchPlat1 = "instagramuser";
+                        } else {
+                            searchUser2 = data.user_name;
+                            searchPlat2 = "instagramuser";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "youtubeuserest":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[4]
+            } else {
+                if (e.includes("youtube.com")) {
+                    n = e.split("/");
+                    t = n[2]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/youtube/channel/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.errors) {
+                        toastr["error"](`It seems like the user you entered (${t}) isn't on YouTube. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        var data = dataa.results[0];
+                        $(`#searchUsername-${num}`)[0].innerHTML = `${data.displayName} ${socialBadges.youtube}`;
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `${abbreviateGivenNumber(data.subcount)} Subscribers`;
+                        $(`#searchAvatar-${num}`).attr("src", data.pfp);
+
+                        if(num == 1) {
+                            searchUser1 = data.cid;
+                            searchPlat1 = "youtubeuserest";
+                        } else {
+                            searchUser2 = data.cid;
+                            searchPlat2 = "youtubeuserest";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "youtubeuser":
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                var n = e.split("/");
+                t = n[4]
+            } else {
+                if (e.includes("youtube.com")) {
+                    n = e.split("/");
+                    t = n[2]
+                } else t = e;
+            }
+
+            $.ajax({
+                url: `https://api-v2.nextcounts.com/api/search/youtube/channel/${t}`,
+                type: "GET",
+                dataType: "JSON",
+                success: function (dataa) {
+                    if (dataa.errors) {
+                        toastr["error"](`It seems like the user you entered (${t}) isn't on YouTube. Please check the spelling or replace it with a different username.`, "Uh oh...");
+                    } else {
+                        var data = dataa.results[0];
+                        $(`#searchUsername-${num}`)[0].innerHTML = `${data.displayName} ${socialBadges.youtube}`;
+
+                        $(`#searchSubtitle-${num}`)[0].innerHTML = `${abbreviateGivenNumber(data.subcount)} Subscribers`;
+                        $(`#searchAvatar-${num}`).attr("src", data.pfp);
+
+                        if(num == 1) {
+                            searchUser1 = data.cid;
+                            searchPlat1 = "youtubeuser";
+                        } else {
+                            searchUser2 = data.cid;
+                            searchPlat2 = "youtubeuser";
+                        }
+                    }
+                },
+                error: function () {
+                    toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                },
+            });
+            break;
+        case "ytvideoviews":
+            var isID = false;
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                if(e.includes("youtu.be")) {
+                    var n = e.split("/");
+                    t = n[3];
+                    isID = true;
+                } else {
+                    var n = e.split("/");
+                    t = n[3].split('=')[1]
+                    console.log(n, t)
+                    isID = true;
+                }
+            } else {
+                if (e.includes("youtube.com")) {
+                    n = e.split("/");
+                    t = n[2]
+                    console.log(n, t)
+                    isID = true;
+                } else t = e;
+            }
+
+            if(isID == false) {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/search/youtube/video/${t}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (dataa) {
+                        if (dataa.error) {
+                            toastr["error"](`It seems like the search term you entered (${t}) doesn't have any results on YouTube. Please check the spelling or replace it with a different term.`, "Uh oh...");
+                        } else {
+                            var data = dataa.results[0];
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.title} ${socialBadges.youtube}`;
+    
+                            $(`#searchSubtitle-${num}`)[0].innerHTML = `Uploader: ${data.channelName}`;
+                            $(`#searchAvatar-${num}`).attr("src", data.thumbnails.medium.url);
+    
+                            if(num == 1) {
+                                searchUser1 = data.videoid;
+                                searchPlat1 = "ytvideoviews";
+                            } else {
+                                searchUser2 = data.videoid;
+                                searchPlat2 = "ytvideoviews";
+                            }
+                        }
+                    },
+                    error: function () {
+                        toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                    },
+                });
+            } else {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/youtube/videos/info/${t}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (dataa) {
+                        if (dataa.error) {
+                            toastr["error"](`It seems like the video you entered (${t}) isn't on YouTube. Please check the spelling or replace it with a different URL/ID.`, "Uh oh...");
+                        } else {
+                            var data = dataa.results[0];
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.title} ${socialBadges.youtube}`;
+    
+                            $(`#searchSubtitle-${num}`)[0].innerHTML = `${Math.floor(data.views).toLocaleString()} Views`;
+                            $(`#searchAvatar-${num}`).attr("src", data.thumbnails.medium.url);
+    
+                            if(num == 1) {
+                                searchUser1 = data.videoid;
+                                searchPlat1 = "ytvideoviews";
+                            } else {
+                                searchUser2 = data.videoid;
+                                searchPlat2 = "ytvideoviews";
+                            }
+                        }
+                    },
+                    error: function () {
+                        toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                    },
+                });
+            }
+            break;
+        case "ytvideolikes":
+            var isID = false;
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                if(e.includes("youtu.be")) {
+                    var n = e.split("/");
+                    t = n[3];
+                    isID = true;
+                } else {
+                    var n = e.split("/");
+                    t = n[3].split('=')[1]
+                    console.log(n, t)
+                    isID = true;
+                }
+            } else {
+                if (e.includes("youtube.com")) {
+                    n = e.split("/");
+                    t = n[2]
+                    console.log(n, t)
+                    isID = true;
+                } else t = e;
+            }
+
+            if(isID == false) {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/search/youtube/video/${t}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (dataa) {
+                        if (dataa.error) {
+                            toastr["error"](`It seems like the search term you entered (${t}) doesn't have any results on YouTube. Please check the spelling or replace it with a different term.`, "Uh oh...");
+                        } else {
+                            var data = dataa.results[0];
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.title} ${socialBadges.youtube}`;
+    
+                            $(`#searchSubtitle-${num}`)[0].innerHTML = `Uploader: ${data.channelName}`;
+                            $(`#searchAvatar-${num}`).attr("src", data.thumbnails.medium.url);
+    
+                            if(num == 1) {
+                                searchUser1 = data.videoid;
+                                searchPlat1 = "ytvideolikes";
+                            } else {
+                                searchUser2 = data.videoid;
+                                searchPlat2 = "ytvideolikes";
+                            }
+                        }
+                    },
+                    error: function () {
+                        toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                    },
+                });
+            } else {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/youtube/videos/info/${t}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (dataa) {
+                        if (dataa.error) {
+                            toastr["error"](`It seems like the video you entered (${t}) isn't on YouTube. Please check the spelling or replace it with a different URL/ID.`, "Uh oh...");
+                        } else {
+                            var data = dataa.results[0];
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.title} ${socialBadges.youtube}`;
+    
+                            $(`#searchSubtitle-${num}`)[0].innerHTML = `${Math.floor(data.likes).toLocaleString()} Likes`;
+                            $(`#searchAvatar-${num}`).attr("src", data.thumbnails.medium.url);
+    
+                            if(num == 1) {
+                                searchUser1 = data.videoid;
+                                searchPlat1 = "ytvideolikes";
+                            } else {
+                                searchUser2 = data.videoid;
+                                searchPlat2 = "ytvideolikes";
+                            }
+                        }
+                    },
+                    error: function () {
+                        toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                    },
+                });
+            }
+            break;
+        case "ytvideoviews":
+            var isID = false;
+            var e = searchTerm.replace("@", ""), t = "";
+            if (e.includes("https://") || e.includes("http://")) {
+                if(e.includes("youtu.be")) {
+                    var n = e.split("/");
+                    t = n[3];
+                    isID = true;
+                } else {
+                    var n = e.split("/");
+                    t = n[3].split('=')[1]
+                    console.log(n, t)
+                    isID = true;
+                }
+            } else {
+                if (e.includes("youtube.com")) {
+                    n = e.split("/");
+                    t = n[2]
+                    console.log(n, t)
+                    isID = true;
+                } else t = e;
+            }
+
+            if(isID == false) {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/search/youtube/video/${t}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (dataa) {
+                        if (dataa.error) {
+                            toastr["error"](`It seems like the search term you entered (${t}) doesn't have any results on YouTube. Please check the spelling or replace it with a different term.`, "Uh oh...");
+                        } else {
+                            var data = dataa.results[0];
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.title} ${socialBadges.youtube}`;
+    
+                            $(`#searchSubtitle-${num}`)[0].innerHTML = `Uploader: ${data.channelName}`;
+                            $(`#searchAvatar-${num}`).attr("src", data.thumbnails.medium.url);
+    
+                            if(num == 1) {
+                                searchUser1 = data.videoid;
+                                searchPlat1 = "ytvideocomments";
+                            } else {
+                                searchUser2 = data.videoid;
+                                searchPlat2 = "ytvideocomments";
+                            }
+                        }
+                    },
+                    error: function () {
+                        toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                    },
+                });
+            } else {
+                $.ajax({
+                    url: `https://api-v2.nextcounts.com/api/youtube/videos/info/${t}`,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (dataa) {
+                        if (dataa.error) {
+                            toastr["error"](`It seems like the video you entered (${t}) isn't on YouTube. Please check the spelling or replace it with a different URL/ID.`, "Uh oh...");
+                        } else {
+                            var data = dataa.results[0];
+                            $(`#searchUsername-${num}`)[0].innerHTML = `${data.title} ${socialBadges.youtube}`;
+    
+                            $(`#searchSubtitle-${num}`)[0].innerHTML = `${Math.floor(data.comments).toLocaleString()} Comments`;
+                            $(`#searchAvatar-${num}`).attr("src", data.thumbnails.medium.url);
+    
+                            if(num == 1) {
+                                searchUser1 = data.videoid;
+                                searchPlat1 = "ytvideocomments";
+                            } else {
+                                searchUser2 = data.videoid;
+                                searchPlat2 = "ytvideocomments";
+                            }
+                        }
+                    },
+                    error: function () {
+                        toastr["error"](`We had a problem fetching the user from our API. Please, try again in a few moments.`, "Uh oh...");
+                    },
+                });
+            }
+            break;
+        default:
+            toastr["error"](`It seems like the platform you selected (${platform}) isn't available in the search page for NextCounts. Please check the spelling or replace it with a different platform.`, "Uh oh...");
+            break;
     }
 }
+
+//loads the searched users
+$('#searchUserss').click(function () {
+    //redirect the user to the page with the loaded users
+    window.location.href = `/compare/?p1=${searchPlat1}&u1=${searchUser1}&p2=${searchPlat2}&u2=${searchUser2}`;
+});
 
 $(document).ready(function () {
     $(`<option value=3 selected="">Select a Platform</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
@@ -3274,7 +4069,7 @@ $(document).ready(function () {
     $(`<option value="twitteruser">Twitter (User - Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="tiktokfollowers">TikTok (User - Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="tiktokhearts">TikTok (User - Hearts)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
-    $(`<option value="twitchuser">Twitch (Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    /*$(`<option value="twitchuser">Twitch (Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);*/
     $(`<option value="youtubeuserest">YouTube (Channel - Est. Subscribers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="youtubeuser">YouTube (Channel - API Subscribers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="ytvideoviews">YouTube (Video - Views)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
