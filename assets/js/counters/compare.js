@@ -169,7 +169,7 @@ odometerInURL = urlParams.get("o");
 var user1, user2, plat1, plat2 = '';
 
 if (!user1url) {
-    user1 = "UC-lHJZR3Gqxm24_Vd_AJ5Yw";
+    user1 = "UCq-Fj5jknLsUf-MWSy4_brA";
 } else {
     user1 = user1url;
 }
@@ -315,11 +315,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/tiktokuser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
-                                    
+                                .done(function (ndata) {
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
                                     chartSeries.push({
@@ -402,30 +398,32 @@ function loadUser(platform, user, number) {
             
                                 setInterval(function () {
                                     $.ajax({
-                                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${data.uid}`,
+                                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${user}`,
                                         type: "GET",
                                         dataType: "JSON",
                                         success: function (dataa) {
                                             if(data.success == true) {
-                                                currcounts[number - 1] = dataa.followers;
-                                                updateCounts.mainCount(dataa.followers, number);
-                                                updateCounts.goalCount(dataa.followers, number);
-                    
-                                                $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(dataa.followers, oldcounts[number - 1], `user${number}gains`);
-                                                
-                                                if (!firstLive[number - 1]) {
-                                                    prevCount[number - 1] = dataa.followers;
-                                                    firstLive[number - 1] = true;
-                                                } else {
-                                                    rates.add(number - 1, dataa.followers - prevCount[number - 1]);
-                                                    prevCount[number - 1] = dataa.followers;
-                    
-                                                    var avgRate = rates.vals[number - 1]/2;
-                    
-                                                    var final1 = Math.round(avgRate * 60).toLocaleString();
-                                                    var final2 = Math.round(avgRate * 3600).toLocaleString();
-                                                    var final3 = Math.round(avgRate * 86400).toLocaleString();
-                                                    updateCounts.avgs[number - 1](final1, final2, final3);
+                                                if(!dataa.error) {
+                                                    currcounts[number - 1] = dataa.followers;
+                                                    updateCounts.mainCount(dataa.followers, number);
+                                                    updateCounts.goalCount(dataa.followers, number);
+                        
+                                                    $(`#user${number}gains`)[0].innerHTML = positiveOrNegative(dataa.followers, oldcounts[number - 1], `user${number}gains`);
+                                                    
+                                                    if (!firstLive[number - 1]) {
+                                                        prevCount[number - 1] = dataa.followers;
+                                                        firstLive[number - 1] = true;
+                                                    } else {
+                                                        rates.add(number - 1, dataa.followers - prevCount[number - 1]);
+                                                        prevCount[number - 1] = dataa.followers;
+                        
+                                                        var avgRate = rates.vals[number - 1]/2;
+                        
+                                                        var final1 = Math.round(avgRate * 60).toLocaleString();
+                                                        var final2 = Math.round(avgRate * 3600).toLocaleString();
+                                                        var final3 = Math.round(avgRate * 86400).toLocaleString();
+                                                        updateCounts.avgs[number - 1](final1, final2, final3);
+                                                    }
                                                 }
                                             }
                                         }, error: function () { }
@@ -501,10 +499,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/tiktokuser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.hearts[ndata.hearts.length - 1][1];
 
@@ -588,11 +583,11 @@ function loadUser(platform, user, number) {
             
                                 setInterval(function () {
                                     $.ajax({
-                                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${data.uid}`,
+                                        url: `https://api-v2.nextcounts.com/api/tiktok/user/${user}`,
                                         type: "GET",
                                         dataType: "JSON",
                                         success: function (dataa) {
-                                            if(data.success == true) {
+                                            if(!dataa.error) {
                                                 currcounts[number - 1] = dataa.hearts;
                                                 updateCounts.mainCount(dataa.hearts, number);
                                                 updateCounts.goalCount(dataa.hearts, number);
@@ -687,10 +682,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/youtubeuser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - 1][1];
 
@@ -873,10 +865,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/youtubeuser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - 1][1];
 
@@ -1008,10 +997,10 @@ function loadUser(platform, user, number) {
                         if (dataone.error) {
                             if(firstLoad[number - 1] == true) toastr["error"]("It seems like one of the users you requested doesn't exist. Please check if the @ of the user is correct. - User " + number, "Uh oh...");
                         } else {
-                            let data = dataone.users[0];
+                            let data = dataone;//dataone.users[0];
 
                             if(firstLoad[number - 1] == true) {
-                                if (data.verified == true) {
+                                if (data.verified == true || data.verifiedBlue == true) {
                                     updateCounts.name(`${data.username} ${socialBadges.verified}`, number);
                                 } else {
                                     updateCounts.name(data.username, number);
@@ -1061,10 +1050,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/twitteruser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
@@ -1153,7 +1139,7 @@ function loadUser(platform, user, number) {
                                         dataType: "JSON",
                                         success: function (datatwo) {
                                             if(datatwo.success == true) {
-                                                let dataa = datatwo.users[0];
+                                                let dataa = datatwo;//datatwo.users[0];
 
                                                 currcounts[number - 1] = dataa.followers;
                                                 updateCounts.mainCount(dataa.followers, number);
@@ -1247,10 +1233,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/trilleruser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
@@ -1429,10 +1412,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/youtubevideo/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.views[ndata.views.length - 1][1];
 
@@ -1441,7 +1421,7 @@ function loadUser(platform, user, number) {
                                         marker: {
                                             enabled: false
                                         },
-                                        name: `${data.username} - Views Count`,
+                                        name: `${data.results[0].title} - Views Count`,
                                         type: 'spline',
                                         color: socialColors.youtube,
                                         fillOpacity: 0.3
@@ -1626,10 +1606,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/youtubevideo/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.likes[ndata.likes.length - 1][1];
 
@@ -1638,7 +1615,7 @@ function loadUser(platform, user, number) {
                                         marker: {
                                             enabled: false
                                         },
-                                        name: `${data.username} - Likes Count`,
+                                        name: `${data.results[0].title} - Likes Count`,
                                         type: 'spline',
                                         color: socialColors.youtube,
                                         fillOpacity: 0.3
@@ -1808,10 +1785,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/youtubevideo/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.comments[ndata.comments.length - 1][1];
 
@@ -1820,7 +1794,7 @@ function loadUser(platform, user, number) {
                                         marker: {
                                             enabled: false
                                         },
-                                        name: `${data.username} - Comments Count`,
+                                        name: `${data.results[0].title} - Comments Count`,
                                         type: 'spline',
                                         color: socialColors.youtube,
                                         fillOpacity: 0.3
@@ -1954,7 +1928,7 @@ function loadUser(platform, user, number) {
 
                                 updateCounts.name(data.guild.serverName, number);
     
-                                updateCounts.pfp(data.avatar, number);
+                                updateCounts.pfp(data.guild.serverImg, number);
                                 updateCounts.banner("hide", number);
                                 hasBanner = false;
                 
@@ -1990,10 +1964,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/discordserver/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.totalMembers[ndata.totalMembers.length - 1][1];
 
@@ -2002,7 +1973,7 @@ function loadUser(platform, user, number) {
                                         marker: {
                                             enabled: false
                                         },
-                                        name: `${data.username} - Total Members Count`,
+                                        name: `${data.guild.serverName} - Total Members Count`,
                                         type: 'spline',
                                         color: socialColors.discord,
                                         fillOpacity: 0.3
@@ -2358,10 +2329,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/storyfireuser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
@@ -2540,10 +2508,7 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/storyfireuser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.blaze[ndata.blaze.length - 1][1];
 
@@ -2911,11 +2876,8 @@ function loadUser(platform, user, number) {
                                 currcounts[number - 1] = data.followersCount;
 
                                 
-                                $.ajax(`https://api-v2.nextcounts.com/api/stats/trilleruser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                $.ajax(`https://api-v2.nextcounts.com/api/stats/rumbleuser/${user}`)
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
@@ -3314,7 +3276,7 @@ $(document).ready(function () {
     $(`<option value="tiktokhearts">TikTok (User - Hearts)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="twitchuser">Twitch (Followers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="youtubeuserest">YouTube (Channel - Est. Subscribers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
-    $(`<option value="youtubeuser">YouTube (Channel - Abbr. Subscribers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
+    $(`<option value="youtubeuser">YouTube (Channel - API Subscribers)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="ytvideoviews">YouTube (Video - Views)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="ytvideolikes">YouTube (Video - Likes)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
     $(`<option value="ytvideocomments">YouTube (Video - Comments)</option>`).appendTo([`#searchSelect-1`, `#searchSelect-2`]);
