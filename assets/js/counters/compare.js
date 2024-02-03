@@ -1134,7 +1134,7 @@ function loadUser(platform, user, number) {
             
                                 setInterval(function () {
                                     $.ajax({
-                                        url: `https://api-v2.nextcounts.com/api/twitter/user/${user}`,
+                                        url: `https://api-v2.nextcounts.com/api/twitter/user/stats/${user}`,
                                         type: "GET",
                                         dataType: "JSON",
                                         success: function (datatwo) {
