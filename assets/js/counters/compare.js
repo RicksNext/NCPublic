@@ -16,13 +16,15 @@ toastr.options = {
     hideMethod: "fadeOut",
 };
 
+/*
 if(localStorage.getItem("insiderMode") && localStorage.getItem("insiderMode") == 'true') {
     // TODO: CFG5788-1
 } else {
     window.location.replace('/');
 }
-//Stuff for the Chart & the actual chart
+*/
 
+//Stuff for the Chart & the actual chart
 const socialColors = {
 	twitter: "#0a83f2",
 	youtube: `#e01227`,
@@ -318,6 +320,8 @@ function loadUser(platform, user, number) {
                                 .done(function (ndata) {
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
+                                    data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
+
                                     chartSeries.push({
                                         data: ndata.followers,
                                         marker: {
@@ -328,6 +332,7 @@ function loadUser(platform, user, number) {
                                         color: socialColors.tiktok,
                                         fillOpacity: 0.3
                                     });
+
 
                                     setTimeout(function() {
                                         new Highcharts.chart(document.getElementById(`mainGraph`), {
@@ -503,6 +508,8 @@ function loadUser(platform, user, number) {
                                     
                                     oldcounts[number - 1] = ndata.hearts[ndata.hearts.length - 1][1];
 
+                                    data.hearts && data.hearts != 0 ? ndata.hearts.push([calcTime(), data.hearts]) : null;
+
                                     chartSeries.push({
                                         data: ndata.hearts,
                                         marker: {
@@ -513,6 +520,7 @@ function loadUser(platform, user, number) {
                                         color: socialColors.tiktok,
                                         fillOpacity: 0.3
                                     });
+
 
                                     setTimeout(function() {
                                         new Highcharts.chart(document.getElementById(`mainGraph`), {
@@ -685,6 +693,8 @@ function loadUser(platform, user, number) {
                                 .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - 1][1];
+
+                                    data.estimatedSubCount && data.estimatedSubCount != 0 ? ndata.mixerno.subscribers.push([calcTime(), data.estimatedSubCount]) : null;
 
                                     chartSeries.push({
                                         data: ndata.mixerno.subscribers,
@@ -868,6 +878,8 @@ function loadUser(platform, user, number) {
                                 .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - 1][1];
+                                    
+                                    data.subcount && data.subcount != 0 ? ndata.ytapi.subscribers.push([calcTime(), data.subcount]) : null;
 
                                     chartSeries.push({
                                         data: ndata.ytapi.subscribers,
@@ -1054,6 +1066,8 @@ function loadUser(platform, user, number) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
+                                    data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
+
                                     chartSeries.push({
                                         data: ndata.followers,
                                         marker: {
@@ -1236,6 +1250,8 @@ function loadUser(platform, user, number) {
                                 .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
+
+                                    data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
 
                                     chartSeries.push({
                                         data: ndata.followers,
@@ -1968,6 +1984,8 @@ function loadUser(platform, user, number) {
                                     
                                     oldcounts[number - 1] = ndata.totalMembers[ndata.totalMembers.length - 1][1];
 
+                                    data.membersCount && data.membersCount != 0 ? ndata.followers.push([calcTime(), data.membersCount]) : null;
+
                                     chartSeries.push({
                                         data: ndata.totalMembers,
                                         marker: {
@@ -2147,12 +2165,11 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/twitchuser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
+
+                                    data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
 
                                     chartSeries.push({
                                         data: ndata.followers,
@@ -2333,6 +2350,8 @@ function loadUser(platform, user, number) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
+                                    data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
+
                                     chartSeries.push({
                                         data: ndata.followers,
                                         marker: {
@@ -2511,6 +2530,8 @@ function loadUser(platform, user, number) {
                                 .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.blaze[ndata.blaze.length - 1][1];
+
+                                    data.blaze && data.blaze != 0 ? ndata.blaze.push([calcTime(), data.blaze]) : null;
 
                                     chartSeries.push({
                                         data: ndata.blaze,
@@ -2691,12 +2712,11 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/brimeuser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
+
+                                    data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
 
                                     chartSeries.push({
                                         data: ndata.followers,
@@ -2881,6 +2901,8 @@ function loadUser(platform, user, number) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
+                                    data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
+
                                     chartSeries.push({
                                         data: ndata.followers,
                                         marker: {
@@ -3056,12 +3078,11 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/parleruser/${user}`)
-                                .done(function (stats) {
-                                    try { JSON.parse(stats); } catch { toastr["info"](stats); };
-
-                                    var ndata = JSON.parse(stats);
+                                .done(function (ndata) {
                                     
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
+
+                                    data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
 
                                     chartSeries.push({
                                         data: ndata.followers,
