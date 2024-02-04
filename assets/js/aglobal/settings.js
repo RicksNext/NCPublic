@@ -215,11 +215,27 @@ if(!window.location.pathname.includes(`/embed/`)) document.getElementById("disab
 if(!window.location.pathname.includes(`/embed/`)) document.getElementById("disableThisChart").addEventListener('change', function() {
     if (this.checked) {
         chart.series[0].setData([]);
-        $('#chartCard').hide();
+        if(window.location.pathname.includes('/compare/')) {
+            $('#gapchartCol').hide();
+            $('#gapCol').removeClass('col-md-4');
+            $('#gapCol').removeClass('col-lg-3');
+            $('#gapCol').addClass('col-md-12');
+            $('#gapCol').addClass('col-lg-12');
+        } else {
+            $('#chartCard').hide();
+        }
         updateChart = false;
     } else {
         updateChart = true;
-        $('#chartCard').show();
+        if(window.location.pathname.includes('/compare/')) {
+            $('#gapchartCol').show();
+            $('#gapCol').removeClass('col-md-12');
+            $('#gapCol').removeClass('col-lg-12');
+            $('#gapCol').addClass('col-md-4');
+            $('#gapCol').addClass('col-lg-3');
+        } else {
+            $('#chartCard').show();
+        }
     }
 });
 
@@ -227,11 +243,13 @@ if(!window.location.pathname.includes(`/embed/`)) document.getElementById("disab
     if (this.checked) {
         charts[0].series[0].setData([]);
         charts[1].series[0].setData([]);
-        $('#chartCard').hide();
         updateUsersChart = false;
+        $('#userchart-1').hide();
+        $('#userchart-2').hide();
     } else {
         updateUsersChart = true;
-        $('#chartCard').show();
+        $('#userchart-1').show();
+        $('#userchart-2').show();
     }
 });
 
