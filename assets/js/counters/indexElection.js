@@ -1,6 +1,6 @@
 $.getJSON("https://api-v2.nextcounts.com/api/election/", function (data) {
-    for (let i = 0; i < (data.availableElections).length; i++) {
-        $('#electionSelection').append(`<option value="${data.availableElections[i]}">${data.electionName[i]}</option>`);
+    for (let i = 0; i < (data.elections).length; i++) {
+        $('#electionSelection').append(`<option value="${data.elections[i][0]}-${data.elections[i][1]}">${data.elections[i][2]}</option>`);
     }
 });
 

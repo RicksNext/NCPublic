@@ -10,179 +10,223 @@ function calcTime() {
     return newDate;
 };
 
-const textBright = "#858585", lineColor = "#858585", socialColor = "#f35d06";
+const textBright = "#858585", lineColor = "#858585";
 
-var chart;
+var chart, countryChart;
 
 var country = urlParams.get("country"), year = urlParams.get("year");
-!country ? country = "brazil" : country = country;
-!year ? year = "2022" : year = year;
+!country ? country = "us" : country = country;
+!year ? year = "2024" : year = year;
 
 var firstLoad = true;
 var votesEachCandidate = [];
 
 setInterval(function () {
     $.getJSON(`https://api-v2.nextcounts.com/api/election/${country}/${year}`, function (data) {
-        if(firstLoad == true) $('#topheading').text(data.fullStr);
+        if(firstLoad == true) $('#topheading').text(data.election.title);
 
-        switch (country) {
-            case "brazil":
-                if(firstLoad == true) $('#countryFlag').attr('src', 'https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg');
-                let totalCards = 0, cardsAdded = 0;
+        if(firstLoad == true) $('#countryFlag').attr('src', data.election.flag);
+        let totalCards = 0, cardsAdded = 0;
 
-                //change string in progress bar
-                $('#totalVotesCheckedPB').text(`Election in Progress: ${data.apuracao.andamentoPorcentagem}%`);
-                $('#totalVotesCheckedPB').attr('aria-valuenow', data.apuracao.andamentoPorcentagem.replace(',', '.'));
-                $('#totalVotesCheckedPB').css('width', `${data.apuracao.andamentoPorcentagem.replace(',', '.')}%`);
-                //add class "bg-success" if progress bar is 100%
-                if (data.apuracao.definido == true) {
-                    $('#totalVotesCheckedPB').addClass('bg-success');
-                }
+        //change string in progress bar
+        if(data.election.progress) {
+            $('#totalVotesCheckedPB').attr('aria-valuenow', data.election.progress);
+            $('#totalVotesCheckedPB').css('width', `${data.election.progress}%`);
+            $('#totalVotesCheckedPB').text(`Election in Progress: ${data.election.progress}%`);
 
-                //sort candidates by votes
-                let candidates = data.candidatos.sort(function(a, b) {
-                    return b.votos - a.votos;
-                });
-
-                $('#userImg-1').attr('src', candidates[0].foto);
-                data.apuracao.definido == true && ((candidates[0].votos / data.votos.validos) * 100) > 50 ? document.getElementById(`username-1`).innerHTML = (`${candidates[0].nome} ${socialBadges.verified} - ${candidates[0].partido}`) : document.getElementById(`username-1`).innerHTML = (`${candidates[0].nome} - ${candidates[0].partido}`);
-                $('#username-1').removeClass('skeleton skeleton-text');
-                $('#mainOdometer-1').text(candidates[0].votos);
-
-                $('#userImg-2').attr('src', candidates[1].foto);
-                $('#username-2').text(`${candidates[1].nome} - ${candidates[1].partido}`);
-                $('#username-2').removeClass('skeleton skeleton-text');
-                $('#mainOdometer-2').text(candidates[1].votos);
-
-                if(firstLoad == true) for (var i = 0; i < candidates.length - 2; i++) {
-                    let candidate = candidates[i + 2];
-
-                    //create a card element for each candidate
-                    let card = document.createElement("div");
-                    card.className = "card";
-                    card.innerHTML = `
-                    <div class="card-header d-lg-flex justify-content-lg-start align-items-lg-center"><img
-                        class="rounded-circle candidPhoto" style="width: 40px;height: 40px;margin-right: 5px;"
-                        src=${candidate.foto}><p class="candidName">${candidate.nome} - ${candidate.partido}</p>
-                    </div>
-                    <div class="card-body">
-                    <div class="card-title smallOdometer odometer">${Math.floor(candidate.votos)}</div>
-                        <!-- <h3 class="card-title smallOdometer odometer">${Math.floor(candidate.votos)}</h3> -->
-                        <p class="card-text lowerPar">${((candidate.votos / data.votos.validos) * 100).toLocaleString()}% of Votes</p>
-                    </div>`;
-
-                    document.getElementsByClassName("card-columns")[$('.card-columns').length - 1].appendChild(card);
-
-                    if (cardsAdded < 2) {
-                        cardsAdded++;
-                    } else {
-                        cardsAdded = 0;
-                        totalCards++;
-                        $('#iushndaiuhdusa').append(`<div class="card-columns"></div>`.toString());
-                    }
-                }
-
-                $(`#gapcounter`).text(Math.floor(candidates[0].votos - candidates[1].votos));
-
-                let firstUpdateChart = [];
-                for (var i = 0; i < data.candidatos.length; i++) {
-                    firstUpdateChart.push({name: data.candidatos[i].nome, marker: { enabled: false } });
-                }
-
-                if(firstLoad == true) {
-                    $('#gapcounter').addClass('odometer');
-
-                    chart = Highcharts.chart('gapchart', {
-                        chart: {
-                            type: 'spline',
-                            backgroundColor: "transparent",
-                            plotBorderColor: "transparent",
-                            zoomType: "x",
-                        },
-                        title: {
-                            text: 'Total Votes each candidate received'
-                        },
-                        credits: {
-                            enabled: true,
-                            text: "NextCounts - This chart only updates when the votes of a candidate changes",
-                            href: "https://nextcounts.com"
-                        },
-                        xAxis: {
-                            type: "datetime",
-                            gridLineColor: lineColor,
-                            labels: {
-                                style: {
-                                    color: textBright,
-                                },
-                            },
-                            lineColor: lineColor,
-                            minorGridLineColor: "#858585",
-                            tickColor: lineColor,
-                        },
-                        yAxis: {
-                            title: {
-                                enabled: false
-                            },
-                            gridLineColor: lineColor,
-                            labels: {
-                                style: {
-                                    color: textBright,
-                                },
-                            },
-                            lineColor: lineColor,
-                            minorGridLineColor: "#505053",
-                            tickColor: lineColor,
-                        },
-                        plotOptions: {
-                            area: {
-                                marker: {
-                                    enabled: false
-                                }
-                            }
-                        },
-                        tooltip: {
-                            shared: true
-                        },
-                        series: firstUpdateChart
-                    });
-
-                    for (var i = 0; i < data.candidatos.length; i++) {
-                        votesEachCandidate.push(data.candidatos[i].votos);
-                        chart.series[i].addPoint([Date.now(), data.candidatos[i].votos]);
-                        if(i>=2) {
-                            new Odometer({
-                                el: document.getElementsByClassName(`smallOdometer`)[i-2],
-                                value: data.candidatos[i].votos
-                            });
-                        }
-                        new Odometer({
-                            el: document.getElementById(`gapcounter`),
-                            value: Math.floor(candidates[0].votos - candidates[1].votos)
-                        });
-                    };
-
-                } else {
-                    for (var i = 0; i < candidates.length; i++) {
-                        document.getElementsByClassName(`lowerPar`)[i].innerHTML = (`${((data.candidatos[i].votos / data.votos.validos) * 100).toLocaleString()}% of Votes`);
-                        //check if the candidate has different votes than the archived in votesEachCandidate
-                        if (votesEachCandidate[i] != data.candidatos[i].votos) {
-                            //if it's different, update the chart
-                            chart.series[i].addPoint([Date.now(), data.candidatos[i].votos]);
-                            votesEachCandidate[i] = data.candidatos[i].votos;
-                        }
-
-                        if(i >= 2) {
-                            document.getElementsByClassName(`smallOdometer`)[i-2].innerHTML = data.candidatos[i].votos;
-                            $(`.candidPhoto`)[i-2].src = candidates[i].foto;
-                            document.getElementsByClassName(`candidName`)[i-2].innerHTML = `${candidates[i].nome} - ${candidates[i].partido}`;
-                        }
-                    }
-                }
-                return firstLoad = false;
-                break;
-            default:
-                alert("The country you have selected is not available. The counter is not going to load.");
-                break;
+            if(data.election.hasWinner == true) {
+                $('#totalVotesCheckedPB').text(`Election has a Winner`);
+                $('#totalVotesCheckedPB').addClass('bg-success');
+            }
         }
+
+        //sort candidates by votes
+        let candidates = data.election.candidates.sort(function(a, b) {
+            return b.totalVotes - a.totalVotes;
+        });
+
+        $('#userImg-1').attr('src', candidates[0].image);
+        data.election.hasWinner == true && data.election.candidates[0].winner == true ? document.getElementById(`username-1`).innerHTML = (`${candidates[0].name} ${socialBadges.verified} - ${candidates[0].party}`) : document.getElementById(`username-1`).innerHTML = (`${candidates[0].name} - ${candidates[0].party}`); // code only valid if election is similar to brazilian one
+        $('#username-1').removeClass('skeleton skeleton-text');
+        $('#mainOdometer-1').text(candidates[0].totalVotes);
+
+        $('#userImg-2').attr('src', candidates[1].image);
+        $('#username-2').text(`${candidates[1].name} - ${candidates[1].party}`);
+        $('#username-2').removeClass('skeleton skeleton-text');
+        $('#mainOdometer-2').text(candidates[1].totalVotes);
+
+        if(firstLoad == true) for (var i = 0; i < candidates.length - 2; i++) {
+            let candidate = candidates[i + 2];
+
+            //create a card element for each candidate
+            let card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+            <div class="card-header d-lg-flex justify-content-lg-start align-items-lg-center"><img
+                class="rounded-circle candidPhoto" style="width: 40px;height: 40px;margin-right: 5px;"
+                src=${candidate.image}><p class="candidName">${candidate.name} - ${candidate.party}</p>
+            </div>
+            <div class="card-body">
+            <div class="card-title smallOdometer odometer">${Math.floor(candidate.totalVotes)}</div>
+                <!-- <h3 class="card-title smallOdometer odometer">${Math.floor(candidate.totalVotes)}</h3> -->
+                <p class="card-text lowerPar">${((candidate.totalVotes / data?.election?.validVotes) * 100).toLocaleString()}% of Votes</p>
+            </div>`;
+
+            document.getElementsByClassName("card-columns")[$('.card-columns').length - 1].appendChild(card);
+
+            if (cardsAdded < 2) {
+                cardsAdded++;
+            } else {
+                cardsAdded = 0;
+                totalCards++;
+                $('#iushndaiuhdusa').append(`<div class="card-columns"></div>`.toString());
+            }
+        }
+
+        $(`#gapcounter`).text(Math.floor(candidates[0].totalVotes - candidates[1].totalVotes));
+
+        let firstUpdateChart = [];
+        for (var i = 0; i < data.election.candidates.length; i++) {
+            firstUpdateChart.push({name: data.election.candidates[i].name, marker: { enabled: false } });
+        }
+
+        let countryChartData = [];
+
+        $.getJSON(data.election.map, function (mapdata) {
+            data.election.states.forEach(element => {
+                countryChartData.push(Highcharts.extend({
+                    'hc-key': `${country.toLowerCase()}-${element.abbreviation.toLowerCase()}`,
+                    value: element.electoralVotes,
+                    name: element.name,
+                    color: element.winner.toLowerCase() == data.election.candidates[0].party.toLowerCase() ? data.election.candidates[0].color : data.election.candidates[1].color
+                }));
+                
+
+                console.log(countryChartData);
+            });
+
+            countryChart = Highcharts.mapChart('countryChart', {
+                chart: {
+                    map: mapdata,
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                },
+                title: {
+                    text: data.election.title
+                },
+                credits: {
+                    enabled: true,
+                    text: `Data Source: ${data.election.source} - NextCounts`,
+                    href: "https://nextcounts.com"
+                },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+                series: [{
+                    data: countryChartData,
+                    mapData: mapdata,
+                    joinBy: 'hc-key',
+                    name: 'Total Votes',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.properties.hc-a2}'
+                    }
+                }]
+            });
+        });
+
+        if(firstLoad == true) {
+            $('#gapcounter').addClass('odometer');
+
+            chart = Highcharts.chart('gapchart', {
+                chart: {
+                    type: 'spline',
+                    backgroundColor: "transparent",
+                    plotBorderColor: "transparent",
+                    zoomType: "x",
+                },
+                title: {
+                    text: 'Total Votes each candidate received'
+                },
+                credits: {
+                    enabled: true,
+                    text: `NextCounts - Data Source: ${data.election.source}`,
+                    href: "https://nextcounts.com"
+                },
+                xAxis: {
+                    type: "datetime",
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#858585",
+                    tickColor: lineColor,
+                },
+                yAxis: {
+                    title: {
+                        enabled: false
+                    },
+                    gridLineColor: lineColor,
+                    labels: {
+                        style: {
+                            color: textBright,
+                        },
+                    },
+                    lineColor: lineColor,
+                    minorGridLineColor: "#505053",
+                    tickColor: lineColor,
+                },
+                plotOptions: {
+                    area: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    shared: true
+                },
+                series: firstUpdateChart
+            });
+
+            for (var i = 0; i < data.election.candidates.length; i++) {
+                votesEachCandidate.push(data.election.candidates[i].totalVotes);
+                chart.series[i].addPoint([Date.now(), data.election.candidates[i].totalVotes]);
+                if(i>=2) {
+                    new Odometer({
+                        el: document.getElementsByClassName(`smallOdometer`)[i-2],
+                        value: data.election.candidates[i].totalVotes
+                    });
+                }
+                new Odometer({
+                    el: document.getElementById(`gapcounter`),
+                    value: Math.floor(data.election.candidates[0].totalVotes - data.election.candidates[1].totalVotes)
+                });
+            };
+
+        } else {
+            for (var i = 0; i < candidates.length; i++) {
+                data.election.validVotes ? document.getElementsByClassName(`lowerPar`)[i].innerHTML = (`${((data.election.candidates[i].totalVotes / data.election.validVotes) * 100).toLocaleString()}% of Votes`) : document.getElementsByClassName(`lowerPar`)[i].innerHTML = (`Votes`);
+                //check if the candidate has different votes than the archived in votesEachCandidate
+                if (votesEachCandidate[i] != data.election.candidates[i].totalVotes) {
+                    //if it's different, update the chart
+                    chart.series[i].addPoint([Date.now(), data.election.candidates[i].totalVotes]);
+                    votesEachCandidate[i] = data.election.candidates[i].totalVotes;
+                }
+
+                if(i >= 2) {
+                    document.getElementsByClassName(`smallOdometer`)[i-2].innerHTML = data.election.candidates[i].totalVotes;
+                    $(`.candidPhoto`)[i-2].src = data.election.candidates[i].image;
+                    document.getElementsByClassName(`candidName`)[i-2].innerHTML = `${candidates[i].nome} - ${candidates[i].partido}`;
+                }
+            }
+        }
+        return firstLoad = false;
     });
 }, 2000);
