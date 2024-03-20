@@ -126,7 +126,7 @@ const queryString = window.location.search, urlParams = new URLSearchParams(quer
 const userInURL = urlParams.get("u"), odometerInURL = urlParams.get("o");
 var user = "";
 
-!userInURL ? user = "25025320" : user = userInURL;
+!userInURL ? user = "mrbeast" : user = userInURL;
 
 //"Customize counter" Modal code
 var updateChart = true;
