@@ -20,7 +20,7 @@ $('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>`);
 $('#searchPlatform').append(`<option value="youtubeuser">YouTube (Channel)</option>`);
 $('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video or Livestream)</option>`);
-//$('#searchPlatform').append(`<option value="instagramuser">Instagram (User)</option>`);
+$('#searchPlatform').append(`<option value="instagramuser">Instagram (User)</option>`);
 
 toastr.options = {
     "closeButton": true,
