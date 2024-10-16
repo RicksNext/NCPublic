@@ -610,7 +610,7 @@ function searchForUser(searchTerm, platform) {
                     .done(function (data) {
                         if(data.success == true) {
                             let user = data.users[0];
-                            document.getElementById(`searchFollowers`).innerHTML = `${user.followersCount.toLocaleString()} Followers (@${user.username})`;
+                            document.getElementById(`searchFollowers`).innerHTML = `@${user.username}`;
                             document.getElementById(`searchUsername`).href = `https://nextcounts.com/parler/user/?u=${user.username}`;
 
                             document.getElementById(`searchUsername`).innerHTML = `${user.nickname}`;

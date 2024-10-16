@@ -39,7 +39,7 @@ const socialColors = {
     instagram: "#F56040",
     parler: "#b80101",
     rumble: "#47ad4c",
-    brime: "#fc3537"
+    brime: "#fc3537" // rip
 };
 
 const textBright = "#858585", lineColor = "#858585", socialColor = socialColors.nextcounts;
