@@ -14,7 +14,7 @@ $('#searchPlatform').append(`<option value="rumbleuser">Rumble (User)</option>`)
 $('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
 $('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</option>`);
 $('#searchPlatform').append(`<option value="threadsuser">Threads (User)</option>`);
-$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
+//$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
 $('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>`);
 //$('#searchPlatform').append(`<option value="twitchuser">Twitch (User)</option>`);
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>`);
@@ -101,7 +101,7 @@ function searchForUser(searchTerm, platform) {
                         var n = e.split("/");
                         t = n[3]
                     } else {
-                        if (e.includes("twitch.tv")) {
+                        if (e.includes("x.com")) {
                             n = e.split("/");
                             t = n[1]
                         } else t = e;
@@ -110,25 +110,26 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/twitter/user/${t}`)
                     .done(function (dataa) {
                         if(dataa.success == true) {
-                            let data = dataa.users[0];
-                            document.getElementById(`searchFollowers`).innerHTML = `@${data.userDefiner}`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitter/followers/?u=${data.userDefiner}`;
-                            if (data.verified == true) {
-                                if (data.protectedAcc == true) {
-                                    document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
-                                } else {
-                                    document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.verified} ${socialBadges.twitter}`;
-                                }
-                            } else {
-                                if (data.protectedAcc == true) {
-                                    document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.lockedAcc} ${socialBadges.twitter}`;
-                                } else {
-                                    document.getElementById(`searchUsername`).innerHTML = `${data.name} ${socialBadges.twitter}`;
-                                }
-                            }
-                            document.getElementById(`searchpfp`).src = data.pfp;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
+
+                            dataa.users.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/twitter/followers/?u=${user.userDefiner}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.pfp}" /></div>
+                                        <div>
+                                            <h4>${user.name} ${user.verified == true ? socialBadges.verified : ""}</h4>
+                                            <h6 class="text-muted mb-2">@${user.userDefiner}</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -224,7 +225,7 @@ function searchForUser(searchTerm, platform) {
                         var n = e.split("/");
                         t = n[4]
                     } else {
-                        if (e.includes("/bsky.app")) {
+                        if (e.includes("bsky.app")) {
                             n = e.split("/");
                             t = n[2]
                         } else t = e;
@@ -233,22 +234,26 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/bluesky/user/${t}`)
                     .done(function (dataa) {
                         if(dataa.success == true) {
-                            //define data as the user with a matching handle to the variable t
-                            data = dataa.results.filter(function (e) {
-                                return e.handle == t
-                            })[0];
-                            console.log(data)
-                            document.getElementById(`searchFollowers`).innerHTML = `@${data.handle}`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/bluesky/user/?u=${data.handle}`;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
 
-                            if (data.verified == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified}`;
-                            } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.username}`;
-                            }
-                            document.getElementById(`searchpfp`).src = data.avatar;
-                            document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
+                            dataa.results.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/bluesky/user/?u=${user.handle}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.avatar}" /></div>
+                                        <div>
+                                            <h4>${user.username}</h4>
+                                            <h6 class="text-muted mb-2">@${user.handle}</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                                document.getElementById(`loadingSearch`).style.display = "none";
+                            });
+
+                            $('.results').slick();
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -276,16 +281,26 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/triller/user/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].followers.toLocaleString()} Followers`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/triller/followers/?u=${data.results[0].definer}`;
-                            if (data.results[0].verified == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].username} ${socialBadges.verified}`;
-                            } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].username}`;
-                            }
-                            document.getElementById(`searchpfp`).src = data.results[0].avatar;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
+
+                            data.results.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/triller/followers/?u=${user.definer}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.avatar}" /></div>
+                                        <div>
+                                            <h4>${!user.username ? user.definer : user.username } ${user.verified == true ? socialBadges.verified : ""}</h4>
+                                            <h6 class="text-muted mb-2">${user.followers.toLocaleString()} Followers - @${user.definer}</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
+                            $('.results').slick();
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -399,17 +414,27 @@ function searchForUser(searchTerm, platform) {
 
                     $.ajax(`https://api-v2.nextcounts.com/api/search/storyfire/user/${t}`)
                     .done(function (data) {
-                        if(!data.error && data.count > 0) {
-                            document.getElementById(`searchFollowers`).innerHTML = `${data.results[0].followers.toLocaleString()} Subscribers`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/storyfire/user/?u=${data.results[0].channelID}`;
-                            if (data.results[0].verified == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].name} ${socialBadges.verified} ${socialBadges.storyfire}`;
-                            } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].name} ${socialBadges.storyfire}`;
-                            }
-                            document.getElementById(`searchpfp`).src = data.results[0].userImg;
+                        if(data.success == true) {
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
+
+                            data.results.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/storyfire/user/?u=${user.userDefiner}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.userImg}" /></div>
+                                        <div>
+                                            <h4>${user.name} ${user.verified == true ? socialBadges.verified : ""}</h4>
+                                            <h6 class="text-muted mb-2">${user.followers.toLocaleString()} Followers</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -436,15 +461,29 @@ function searchForUser(searchTerm, platform) {
 
                     $.ajax(`https://api-v2.nextcounts.com/api/search/storyfire/video/${t}`)
                     .done(function (data) {
-                        if(!data.error && data.count > 0) {
-                            document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].uploader} - ${data.results[0].views.toLocaleString()} Views`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/storyfire/video/?v=${data.results[0].videoID}`;
-                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.storyfire}`;
-                            document.getElementById(`searchpfp`).src = data.results[0].thumbnail;
+                        if(data.success == true) {
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
+
+                            data.results.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/storyfire/video/?v=${user.videoID}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.thumbnail}" /></div>
+                                        <div>
+                                            <h4>${user.title}</h4>
+                                            <h6 class="text-muted mb-2">${user.views.toLocaleString()} Views</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
-                            toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                            toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
                             document.getElementById(`searchCard`).style.display = "none";
                         }
@@ -470,12 +509,26 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/channel/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            document.getElementById(`searchFollowers`).innerHTML = `${abbreviateGivenNumber(data.results[0].subcount)} Subscribers`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/user/?u=${data.results[0].cid}`;
-                            document.getElementById(`searchUsername`).innerHTML = `${data.results[0].displayName} ${socialBadges.youtube}`;
-                            document.getElementById(`searchpfp`).src = data.results[0].pfp;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
+
+                            data.results.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/youtube/user/?u=${user.cid}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.pfp}" /></div>
+                                        <div>
+                                            <h4>${user.displayName}</h4>
+                                            <h6 class="text-muted mb-2">${abbreviateGivenNumber(user.followers)} Subscribers</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -515,12 +568,26 @@ function searchForUser(searchTerm, platform) {
                         $.ajax(`https://api-v2.nextcounts.com/api/search/youtube/video/${t}`)
                         .done(function (data) {
                             if(!data.error) {
-                                document.getElementById(`searchFollowers`).innerHTML = `Uploader: ${data.results[0].channelName}`;
-                                document.getElementById(`searchUsername`).href = `https://nextcounts.com/youtube/video/?v=${data.results[0].videoid}`;
-                                document.getElementById(`searchUsername`).innerHTML = `${data.results[0].title} ${socialBadges.youtube}`;
-                                document.getElementById(`searchpfp`).src = data.results[0].thumbnails.medium.url;
+                                $(".results")[0].innerHTML = '';
+                                document.querySelector('.results').className = 'results';
+    
+                                data.results.forEach(user => {
+                                    console.log(user);
+                                    var div = `<div onclick="location.href='https://nextcounts.com/youtube/video/?v=${user.videoid}';" style="cursor:pointer;">
+                                        <div class="d-flex justify-content-start">
+                                            <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.thumbnails.medium.url}" /></div>
+                                            <div>
+                                                <h4>${user.title}</h4>
+                                                <h6 class="text-muted mb-2">Uploader: ${user.channelName}</h6>
+                                            </div>
+                                        </div>
+                                    </div>`;
+    
+                                    $(".results").append(div);
+                                });
+    
+                                $('.results').slick();
                                 document.getElementById(`loadingSearch`).style.display = "none";
-                                document.getElementById(`searchCard`).style.display = "block";
                             } else {
                                 toastr["error"]("We weren't able to get the video. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                                 document.getElementById(`loadingSearch`).style.display = "none";
@@ -574,14 +641,26 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/rumble/user/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            let user = data.users[0];
-                            document.getElementById(`searchFollowers`).innerHTML = `${user.followersCount.toLocaleString()} Followers`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/rumble/user/?u=${user.id}`;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
 
-                            document.getElementById(`searchUsername`).innerHTML = `${user.nickname}`;
-                            document.getElementById(`searchpfp`).src = user.avatar;
+                            data.users.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/rumble/user/?u=${user.id}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.avatar}" /></div>
+                                        <div>
+                                            <h4>${user.username}</h4>
+                                            <h6 class="text-muted mb-2">${user.followersCount.toLocaleString()} Followers</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
                             toastr["error"]("We weren't able to search for the user. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -609,14 +688,26 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/parler/user/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            let user = data.users[0];
-                            document.getElementById(`searchFollowers`).innerHTML = `@${user.username}`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/parler/user/?u=${user.username}`;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
 
-                            document.getElementById(`searchUsername`).innerHTML = `${user.nickname}`;
-                            document.getElementById(`searchpfp`).src = user.avatar;
+                            data.users.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/parler/user/?u=${user.username}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.avatar}" /></div>
+                                        <div>
+                                            <h4>${user.nickname}</h4>
+                                            <h6 class="text-muted mb-2">@${user.username}</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
                             toastr["error"]("We weren't able to search for the user. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -644,18 +735,26 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/instagram/user/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            let user = data.users[0];
-                            document.getElementById(`searchFollowers`).innerHTML = `@${user.user_name}`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/instagram/user/?u=${user.user_name}`;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
 
-                            if (user.verified == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name} ${socialBadges.is_verified}`;
-                            } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name}`;
-                            }
-                            document.getElementById(`searchpfp`).src = user.profile_pic;
+                            data.users.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/instagram/user/?u=${user.user_name}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.profile_pic}" /></div>
+                                        <div>
+                                            <h4>${user.full_name} ${user.is_verified == true ? socialBadges.verified : ""}</h4>
+                                            <h6 class="text-muted mb-2">@${user.user_name}</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -683,18 +782,26 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/instagram/user/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            let user = data.users[0];
-                            document.getElementById(`searchFollowers`).innerHTML = `@${user.user_name}`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/threads/user/?u=${user.id}`;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
 
-                            if (user.verified == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name} ${socialBadges.verified}`;
-                            } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${user.full_name}`;
-                            }
-                            document.getElementById(`searchpfp`).src = user.profile_pic || user.avatar;
+                            data.users.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/threads/user/?u=${user.user_name}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.profile_pic}" /></div>
+                                        <div>
+                                            <h4>${user.full_name} ${user.is_verified == true ? socialBadges.verified : ""}</h4>
+                                            <h6 class="text-muted mb-2">@${user.user_name}</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
