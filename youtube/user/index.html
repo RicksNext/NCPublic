@@ -230,34 +230,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" role="dialog" tabindex="-1" id="search">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Search</h4><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="modal-body"><select class="shadow-sm custom-select" id="searchPlatform"></select>
-                    <p></p>
-                    <div class="input-group shadow-sm"><input class="form-control" type="text" id="searchbar">
-                        <div class="input-group-append"><button class="btn btn-primary" id="searchBtn" type="button">Search</button></div>
-                    </div>
-                    <p></p>
-                    <div class="text-center" id="loadingSearch"><span class="spinner-grow spinner-grow-sm" role="status" style="width: 2rem;height: 2rem;"></span></div>
-                    <div class="card shadow-sm" id="searchCard">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-start"><img class="rounded-circle img-fluid" id="searchpfp" src="../../assets/img/main%20icon%20black%20teal.png?h=b7d39168026b8b8fefd1516c65c8430b" style="width: 4rem;height: 4rem;margin-right: 10px;">
-                                <div>
-                                    <h5><a id="searchUsername" href="#">Loading...</a></h5>
-                                    <h6 id="searchFollowers" class="text-muted mb-2">Loading...</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button></div>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" role="dialog" tabindex="-1" id="settings">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
@@ -365,6 +337,35 @@
         </ul>
         <p class="copyright">NexMedia © 2024</p>
     </footer>
+    <div class="modal fade" role="dialog" tabindex="-1" id="search">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Search</h4><button class="close" type="button" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body"><select class="shadow-sm custom-select" id="searchPlatform"></select>
+                    <p></p>
+                    <div class="input-group shadow-sm"><input class="form-control" type="search" id="searchbar">
+                        <div class="input-group-append"><button class="btn btn-primary" id="searchBtn" type="button">Search</button></div>
+                    </div>
+                    <p></p>
+                    <div class="text-center" id="loadingSearch"><span class="spinner-grow spinner-grow-sm" role="status" style="width: 2rem;height: 2rem;"></span></div>
+                    <div class="d-flex justify-content-start results" style="width: 100%;"></div>
+                    <div class="card shadow-sm" id="searchCard">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-start"><img class="rounded-circle img-fluid" id="searchpfp" src="../../assets/img/main%20icon%20black%20teal.png?h=b7d39168026b8b8fefd1516c65c8430b" style="width: 4rem;height: 4rem;margin-right: 10px;">
+                                <div>
+                                    <h5><a id="searchUsername" href="#">Loading...</a></h5>
+                                    <h6 id="searchFollowers" class="text-muted mb-2">Loading...</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button></div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/js/bs-init.js?h=6c032193714ec30132058d41ac50c278"></script>
