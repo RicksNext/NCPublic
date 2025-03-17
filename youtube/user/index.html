@@ -210,22 +210,48 @@
         </div>
         <div class="card counterCard" style="margin-top: 20px;">
             <div class="card-header">
-                <h4 class="d-flex d-lg-flex align-items-center align-items-lg-center"><strong>Statistics&nbsp;</strong><span class="badge badge-primary">beta</span></h4>
+                <h4 class="d-flex d-lg-flex align-items-center align-items-lg-center"><strong>Statistics&nbsp;</strong><span class="badge badge-primary">preview</span></h4>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table" id="userstatsTable">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Subscribers (Estimated)</th>
-                                <th>Subscribers (API)</th>
-                                <th>Views</th>
-                                <th>Videos</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
+                <div>
+                    <ul class="nav nav-pills" role="tablist">
+                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-toggle="pill" href="#tab-1">Table</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-toggle="pill" href="#tab-2">Subscribers (API) Graph</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-toggle="pill" href="#tab-3">Subscribers (Estimates) Graph</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-toggle="pill" href="#tab-4">Total Views Graph</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-toggle="pill" href="#tab-5">Total Videos Graph</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane" role="tabpanel" id="tab-1">
+                            <p></p>
+                            <div class="table-responsive">
+                                <table class="table" id="userstatsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Subscribers (Estimated)</th>
+                                            <th>Subscribers (API)</th>
+                                            <th>Views</th>
+                                            <th>Videos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" role="tabpanel" id="tab-2">
+                            <div id="fullsubschart" class="chart"></div>
+                        </div>
+                        <div class="tab-pane" role="tabpanel" id="tab-3">
+                            <div id="estsubchart" class="chart"></div>
+                        </div>
+                        <div class="tab-pane active" role="tabpanel" id="tab-4">
+                            <div id="allviewschart" class="chart"></div>
+                        </div>
+                        <div class="tab-pane" role="tabpanel" id="tab-5">
+                            <div id="allvideoschart" class="chart"></div>
+                        </div>
+                    </div>
                 </div>
                 <div id="graphContainer"></div>
             </div>
@@ -336,7 +362,7 @@
         <ul class="list-inline">
             <li class="list-inline-item"><a href="https://nextcounts.com">Home</a></li>
         </ul>
-        <p class="copyright">NexMedia © 2024</p>
+        <p class="copyright">NexMedia © 2025</p>
     </footer>
     <div class="modal fade" role="dialog" tabindex="-1" id="search">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -378,7 +404,7 @@
     <script src="../../assets/js/aglobal/search.js?h=b37bdd0429f80856282e79df1faca989"></script>
     <script src="../../assets/js/aglobal/settings.js?h=75affd72cea437e964a3213a57dd5ab5"></script>
     <script src="../../assets/js/aglobal/SlickTheme.js?h=efe2dc57bf7b73137e9642e586ee272b"></script>
-    <script src="../../assets/js/counters/youtube-subscribers.js?h=0a9060f95dc7d0e1882e1e104ae824dd"></script>
+    <script src="../../assets/js/counters/youtube-subscribers.js?h=fd874e815cfe4541d0b56bab0bb44016"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4928242198674611"></script>
 </body>

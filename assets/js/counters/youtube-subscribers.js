@@ -410,17 +410,7 @@ function loadDataFirstTime() {
             //try { JSON.parse(stats); } catch { toastr["info"](stats); };
             //var ndata = JSON.parse(stats);
 
-            var subscribersDiv = document.createElement('div');
-            var subscribersEstDiv = document.createElement('div');
-            var viewsDiv = document.createElement('div');
-            var videosDiv = document.createElement('div');
-            subscribersDiv.className = subscribersEstDiv.className = viewsDiv.className = videosDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(subscribersDiv);
-            document.getElementById('graphContainer').appendChild(subscribersEstDiv);
-            document.getElementById('graphContainer').appendChild(viewsDiv);
-            document.getElementById('graphContainer').appendChild(videosDiv);
-
-            new Highcharts.chart(subscribersDiv, {
+            new Highcharts.chart('fullsubschart', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -499,7 +489,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(subscribersEstDiv, {
+            new Highcharts.chart('estsubchart', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -509,7 +499,7 @@ function loadDataFirstTime() {
                     plotBorderColor: "transparent",
                 },
                 title: {
-                    text: `Subscribers (Mixerno Estimates) - Historical Data`,
+                    text: `Subscribers (Estimates) - Historical Data`,
                     align: 'left',
                     style: {
                         color: textBright,
@@ -567,18 +557,18 @@ function loadDataFirstTime() {
                     }
                 },
                 series: [{
-                    data: ndata.mixerno.subscribers,
+                    data: ndata.estimated.subscribers,
                     marker: {
                         enabled: !1
                     },
-                    name: `Subscribers (Mixerno Estimates) - Historical Data`,
+                    name: `Subscribers (Estimates) - Historical Data`,
                     type: 'spline',
                     color: socialColor,
                     fillOpacity: 0.3
                 }]
             });
 
-            new Highcharts.chart(viewsDiv, {
+            new Highcharts.chart('allviewschart', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -657,7 +647,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(videosDiv, {
+            new Highcharts.chart('allvideoschart', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -736,8 +726,8 @@ function loadDataFirstTime() {
                 }]
             });
 
-            if(ndata.ytapi.subscribers[0][1] >= 50000) {
-                oldFollowers = ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - 1][1];
+            if(ndata.ytapi.subscribers[0][1] >= 10000) {
+                oldFollowers = ndata.estimated.subscribers[ndata.estimated.subscribers.length - 1][1];
             } else {
                 oldFollowers = ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - 1][1];
             }
@@ -745,24 +735,24 @@ function loadDataFirstTime() {
             oldViews = ndata.ytapi.views[ndata.ytapi.views.length - 1][1];
 
 
-            if (ndata.ytapi.subscribers.length > 30) {
+            if (ndata.ytapi.subscribers.length > 30 && ndata.ytapi.views.length > 30) {
                 for (let i = 0; i < 30; i++) {
                     console.log(ndata.ytapi.subscribers.length - (i + 1))
                     $('#tableBody').append(`<tr>
                         <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                        <td>${(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1], ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 2)][1], false)}</td>
+                        <td>${(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 2)][1], false)}</td>
                         <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 2)][1], false)}</td>
                         <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 2)][1], false)}</td>
                         <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 2)][1], false)}</td>
                     </tr>`);
                 }
             } else {
-                for (let i = 0; i < ndata.ytapi.subscribers.length; i++) {
-                    console.log(ndata.ytapi.subscribers.length - (i + 1))
-                    if (ndata.ytapi.subscribers.length - (i + 1) == 0) {
+                for (let i = 0; i < ndata.ytapi.views.length; i++) {
+                    console.log(ndata.ytapi.views.length - (i + 1))
+                    if (ndata.ytapi.views.length - (i + 1) == 0 || ndata.ytapi.videos.length - (i + 1) == 0) {
                         $('#tableBody').append(`<tr>
                             <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1], ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], false)}</td>
                             <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], false)}</td>
                             <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], false)}</td>
                             <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], false)}</td>
@@ -770,7 +760,7 @@ function loadDataFirstTime() {
                     } else {
                         $('#tableBody').append(`<tr>
                             <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 1)][1], ndata.mixerno.subscribers[ndata.mixerno.subscribers.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 2)][1], false)}</td>
                             <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 2)][1], false)}</td>
                             <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 2)][1], false)}</td>
                             <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 2)][1], false)}</td>
