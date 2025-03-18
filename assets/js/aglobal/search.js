@@ -5,6 +5,7 @@ var currVer = 'legacy';
 $('#searchPlatform').append(`<option value=${currVer} selected="">Select a Platform</option>`);
 $('#searchPlatform').append(`<option value="bskyuser">BlueSky (User)</option>`);
 $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</option>`);
+$('#searchPlatform').append(`<option value="kickfollowers">Kick (User)</option>`);
 //$('#searchPlatform').append(`<option value="mixernoapi">Mixerno.space (API)</option>`);
 //$('#searchPlatform').append(`<option value="nextcountsapi">NextCounts (API)</option>`);
 $('#searchPlatform').append(`<option value="parleruser">Parler (User)</option>`);
@@ -16,7 +17,7 @@ $('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</o
 $('#searchPlatform').append(`<option value="threadsuser">Threads (User)</option>`);
 //$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
 $('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>`);
-//$('#searchPlatform').append(`<option value="twitchuser">Twitch (User)</option>`);
+$('#searchPlatform').append(`<option value="twitchuser">Twitch (User)</option>`);
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>`);
 $('#searchPlatform').append(`<option value="youtubeuser">YouTube (Channel)</option>`);
 $('#searchPlatform').append(`<option value="youtubevideo">YouTube (Video or Livestream)</option>`);
@@ -194,24 +195,63 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/twitch/user/${t}`)
                     .done(function (dataa) {
                         if(dataa.success == true) {
-                            data = dataa.results[0];
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
 
-                            document.getElementById(`searchFollowers`).innerHTML = `${dataa.followers.toLocaleString()} Followers`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/twitch/followers/?u=${t}`;
+                            dataa.users.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/twitch/followers/?u=${user.user}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.avatar}" /></div>
+                                        <div>
+                                            <h4>${user.username}</h4>
+                                            <h6 class="text-muted mb-2">@${user.user}</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
 
-                            if (data.partner == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.twitch}`;
-                            } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.twitch}`;
-                            }
-                            document.getElementById(`searchpfp`).src = dataa.avatar;
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
                             document.getElementById(`searchCard`).style.display = "none";
                         }
+                    })
+                    .fail(function () {
+                        toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "none";
+                    });
+                break;
+                case "kickfollowers":
+                    var e = searchTerm.replace("@", ""), t = "";
+                    if (e.includes("https://") || e.includes("http://")) {
+                        var n = e.split("/");
+                        t = n[3]
+                    } else {
+                        if (e.includes("kick.com")) {
+                            n = e.split("/");
+                            t = n[1]
+                        } else t = e;
+                    }
+
+                    $.ajax(`https://kick.com/api/v2/channels/${t}`)
+                    .done(function (data) {
+                        document.getElementById(`searchFollowers`).innerHTML = `${data.followers_count.toLocaleString()} Followers`;
+                        document.getElementById(`searchUsername`).href = `https://nextcounts.com/kick/followers/?u=${t}`;
+
+                        if (data.verified == true) {
+                            document.getElementById(`searchUsername`).innerHTML = `${data.user.username} ${socialBadges.verified}`;
+                        } else {
+                            document.getElementById(`searchUsername`).innerHTML = `${data.user.username}`;
+                        }
+                        document.getElementById(`searchpfp`).src = data.avatar;
+                        document.getElementById(`loadingSearch`).style.display = "none";
+                        document.getElementById(`searchCard`).style.display = "block";
                     })
                     .fail(function () {
                         toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");

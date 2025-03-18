@@ -118,7 +118,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                         updateCounts.pfp(data.pfp.large);
                         updateCounts.banner(data.banner);
                         updateCounts.count(data.followers);
-                        updateCounts.lowerTxt("followers");
+                        updateCounts.lowerTxt("Followers");
                         if (data.verified == true) {
                             if (data.protectedAcc == true) {
                                 updateCounts.name(`${socialBadges.twitter} ${data.username} ${socialBadges.verified} ${socialBadges.lockedAcc}`);
@@ -145,20 +145,27 @@ if(user == null && platform == null || user == "" && platform == "") {
                 });
             }, 2500);
             break;
-        case 'twitchfollowers':
+        case 'kickfollowers':
             setInterval(function() {
-                $.ajax(`https://api-v2.nextcounts.com/api/twitch/user/${user}`)
+                $.ajax(`https://kick.com/api/v2/channels/${user}`)
                 .done(function (data) {
                     if(!data.error) {
+                        if(hasLoadedBefore == false) {
+                            new Odometer({
+                                el: document.getElementById("mainOdometer"),
+                                value: data.followers_count,
+                                format: '(,ddd).dd',
+                            });
+                        }
                         hasLoadedBefore = true;
-                        updateCounts.pfp(data.pfp);
-                        updateCounts.banner(data.channelBanner);
-                        updateCounts.count(data.followers);
-                        updateCounts.lowerTxt("followers");
-                        if (data.partner == true) {
-                            updateCounts.name(`${socialBadges.twitch} ${data.username} ${socialBadges.verified}`);
+                        updateCounts.pfp(data.user.profile_pic);
+                        updateCounts.banner(data.banner_image ? data.banner_image.url : null);
+                        updateCounts.count(data.followers_count);
+                        updateCounts.lowerTxt("Followers");
+                        if (data.verified == true) {
+                            updateCounts.name(`${data.user.username} ${socialBadges.verified}`);
                         } else {
-                            updateCounts.name(`${socialBadges.twitch} ${data.username}`);
+                            updateCounts.name(`${data.user.username}`);
                         }
                     } else {
                         if(hasLoadedBefore == false) {
@@ -171,23 +178,67 @@ if(user == null && platform == null || user == "" && platform == "") {
                         updateCounts.name(`${socialBadges.error} Something went wrong.`);
                     }
                 });
-            }, 5000);
+            }, 2500);
             break;
-        case 'twitchviews':
+        case 'kickviewers':
+            setInterval(function() {
+                $.ajax(`https://kick.com/api/v2/channels/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        if(hasLoadedBefore == false) {
+                            new Odometer({
+                                el: document.getElementById("mainOdometer"),
+                                value: data.livestream != null ? data.livestream.viewer_count : 0,
+                                format: '(,ddd).dd',
+                            });
+                        }
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.user.profile_pic);
+                        updateCounts.banner(data.banner_image ? data.banner_image.url : "hide");
+                        updateCounts.count(data.livestream != null ? data.livestream.viewer_count : 0);
+                        updateCounts.lowerTxt("Followers");
+                        if (data.verified == true) {
+                            updateCounts.name(`${data.user.username} ${socialBadges.verified}`);
+                        } else {
+                            updateCounts.name(`${data.user.username}`);
+                        }
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+            break;
+        case 'twitchfollowers':
             setInterval(function() {
                 $.ajax(`https://api-v2.nextcounts.com/api/twitch/user/${user}`)
                 .done(function (data) {
-                    if(!data.error) {
-                        hasLoadedBefore = true;
-                        updateCounts.pfp(data.pfp);
-                        updateCounts.banner(data.channelBanner);
-                        updateCounts.count(data.views);
-                        updateCounts.lowerTxt("views");
-                        if (data.partner == true) {
+                    if(data.success == true) {
+                        updateCounts.pfp(data.avatar);
+                        updateCounts.banner(data.banner);
+                        updateCounts.lowerTxt("Followers");
+                        if (data.verified == true) {
                             updateCounts.name(`${socialBadges.twitch} ${data.username} ${socialBadges.verified}`);
                         } else {
                             updateCounts.name(`${socialBadges.twitch} ${data.username}`);
                         }
+
+                        $.ajax(`https://api-v2.nextcounts.com/api/twitch/user/stats/${user}`)
+                        .done(function (data) {
+                            if(hasLoadedBefore == false) {
+                                new Odometer({
+                                    el: document.getElementById("mainOdometer"),
+                                    value: data.followers,
+                                    format: '(,ddd).dd',
+                                });
+                            } else updateCounts.count(data.followers);
+                        });
                     } else {
                         if(hasLoadedBefore == false) {
                             updateCounts.name(`${socialBadges.error} Something went wrong.`);
@@ -289,7 +340,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     updateCounts.name(`${socialBadges.tiktok} ${dataa.username}`);
 
                     setInterval(function() {
-                        $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/stats/${dataa.uid}`)
+                        $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/stats/${user}`)
                         .done(function (data) {
                             if(!data.error) {
                                 updateCounts.count(data.followers);
@@ -331,7 +382,7 @@ if(user == null && platform == null || user == "" && platform == "") {
                     updateCounts.name(`${socialBadges.tiktok} ${dataa.username}`);
 
                     setInterval(function() {
-                        $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/stats/${dataa.uid}`)
+                        $.ajax(`https://api-v2.nextcounts.com/api/tiktok/user/stats/${user}`)
                         .done(function (data) {
                             if(!data.error) {
                                 updateCounts.count(data.hearts);
@@ -450,22 +501,22 @@ if(user == null && platform == null || user == "" && platform == "") {
             break;
         case 'discordserver':
             setInterval(function() {
-                $.ajax(`https://api-v2.nextcounts.com/api/discord/server/${user}`)
+                $.ajax(`https://discord.com/api/v6/invites/${user}?with_counts=true`)
                 .done(function (data) {
                     if(!data.error) {
                         if(hasLoadedBefore == false) {
                             new Odometer({
                                 el: document.getElementById("mainOdometer"),
-                                value: data.membersCount,
+                                value: data.approximate_member_count,
                                 format: '(,ddd).dd',
                             });
                             updateCounts.lowerTxt("members");
                         }
                         hasLoadedBefore = true;
-                        updateCounts.pfp(data.guild.serverImg);
-                        updateCounts.banner(data.guild.serverBanner);
-                        updateCounts.count(data.membersCount);
-                        updateCounts.name(`${socialBadges.discord} ${data.guild.serverName}`);
+                        updateCounts.pfp(`https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=4096`);
+                        updateCounts.banner(`https://cdn.discordapp.com/banners/${data.guild.id}/${data.guild.banner}.png?size=4096`);
+                        updateCounts.count(data.approximate_member_count);
+                        updateCounts.name(`${socialBadges.discord} ${data.guild.name}`);
                     } else {
                         if(hasLoadedBefore == false) {
                             updateCounts.name(`${socialBadges.error} Something went wrong.`);
@@ -698,40 +749,6 @@ if(user == null && platform == null || user == "" && platform == "") {
                     }
                 });
             }, 2500);
-        break;
-        case 'twitchviewers':
-            setInterval(function() {
-                $.ajax(`https://api-v2.nextcounts.com/api/twitch/stream/${user}`)
-                .done(function (data) {
-                    if(!data.error) {
-                        if(hasLoadedBefore == false) {
-                            new Odometer({
-                                el: document.getElementById("mainOdometer"),
-                                value: data.liveViewers,
-                                format: '(,ddd).dd',
-                            });
-                            updateCounts.lowerTxt("viewers");
-                        }
-                        hasLoadedBefore = true;
-                        updateCounts.pfp(data.streamPreview.medium);
-                        document.getElementById('userImg').className = "border rounded";
-                        document.getElementById('userImg').style.maxWidth = "135px";
-                        document.getElementById('userImg').style.width = "135px";
-                        updateCounts.banner(data.streamer.streamBanner);
-                        updateCounts.count(data.liveViewers);
-                        updateCounts.name(`${socialBadges.twitch} ${data.streamName}`);
-                    } else {
-                        if(hasLoadedBefore == false) {
-                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
-                        }
-                    }
-                })
-                .fail(function () {
-                    if(hasLoadedBefore == false) {
-                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
-                    }
-                });
-            }, 5000);
         break;
         case 'ytvideoviews':
             $.ajax(`https://api-v2.nextcounts.com/api/youtube/videos/info/${user}`)

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Twitch Live Follower Counts - NextCounts</title>
+    <title>Kick Live Follower Counts - NextCounts</title>
     <meta name="theme-color" content="#20c997">
     <link rel="canonical" href="https://nextcounts.com/kick/followers/">
     <meta property="og:url" content="https://nextcounts.com/kick/followers/">
@@ -12,12 +12,12 @@
     <meta name="purpleads-verification" content="5d5a54050aa67dd7b2ec845f">
     <meta name="twitter:description" content="Come check how many followers your friends have in your favorite platforms!">
     <meta property="og:description" content="Come check how many followers your friends have in your favorite platforms!">
-    <meta name="description" content="One of the best and most reliable Twitch Live Follower counters out there!">
+    <meta name="description" content="One of the best and most reliable Kick Live Follower counters out there!">
     <meta name="twitter:image" content="https://nextcounts.com/assets/img/main icon black teal.png">
     <meta property="og:image" content="https://nextcounts.com/assets/img/main banner teal black.png">
     <meta name="twitter:card" content="summary">
     <meta property="og:type" content="article">
-    <meta name="twitter:title" content="Live Twitch Follower Counts">
+    <meta name="twitter:title" content="Live Kick Follower Counts">
     <link rel="icon" type="image/png" sizes="494x498" href="../../assets/img/001-1.png?h=8f263479037f5126ca89f6fbd40523b4">
     <link rel="icon" type="image/png" sizes="494x498" href="../../assets/img/001.png?h=30cd64edb8eb57b815af8fde9206906f" media="(prefers-color-scheme: dark)">
     <link rel="icon" type="image/png" sizes="494x498" href="../../assets/img/001-1.png?h=8f263479037f5126ca89f6fbd40523b4">
@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="../../assets/css/navbar.css?h=86357661633fcd7458da996c46b2f27f">
     <link rel="stylesheet" href="../../assets/css/odometer.css?h=d2ae5baa3e34859d6f52e8fefb0d00c3">
     <link rel="stylesheet" href="../../assets/css/SlickTheme.css?h=0daa51d304eb1d96b9ceb16fb9075c8b">
+    <link rel="stylesheet" href="../../assets/css/solo-counters.css?h=61c2b864b0916790e384a2f935e38a78">
     <link rel="stylesheet" href="../../assets/css/styles.css?h=e8fc243741441bc1298165e774f4c17f">
 </head>
 
@@ -71,7 +72,7 @@
     </nav>
     <div><img class="img-fluid" id="userbanner-header" src="../../assets/img/main%20banner%20black%20teal.png?h=f0dbf32cf5449e2444e691cc400d31c0"></div>
     <div>
-        <nav class="navbar navbar-light navbar-expand-md userheader-twitch" id="userheader">
+        <nav class="navbar navbar-light navbar-expand-md bg-success userheader-kick" id="userheader">
             <div class="container"><a class="navbar-brand" id="userbrand-navbar"><img class="rounded-circle img-fluid" id="userimg-header" src="../../assets/img/main%20icon%20black%20teal.png?h=b7d39168026b8b8fefd1516c65c8430b" style="height: 50px;margin-right: 5px;">Loading...</a>
                 <div class="btn-group" role="group"><button class="btn btn-primary" data-toggle="modal" data-bss-tooltip="" type="button" data-target="#share-modal" title="Share"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-share-fill">
                             <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5"></path>
@@ -81,9 +82,6 @@
                         </svg></a></div>
             </div>
         </nav>
-    </div>
-    <div class="alert alert-dark" role="alert">
-        <h4 class="alert-heading">Under Maintenance</h4><span>This counter is <strong>under maintenance</strong>, which means that the counter might not be working as expected, or not work at all. We apologize for the inconvenience, but this is being done to provide you with more accurate and stable counters. Thank you for using NextCounts!</span>
     </div>
     <div style="margin: 3vw;">
         <div class="card-deck">
@@ -96,32 +94,10 @@
                     <h3 id="username" class="skeleton skeleton-text"><br></h3>
                     <div id="mainOdometer" class="mainOdometer"></div>
                     <p class="card-text">Followers</p>
-                    <div class="card-group">
-                        <div class="card counterCard">
-                            <div class="card-body">
-                                <p>Followers (Today)</p>
-                                <p class="lead" id="followersToday" style="margin: 0px;">TBD</p>
-                            </div>
-                        </div>
-                        <div class="card counterCard">
-                            <div class="card-body">
-                                <p>Views (Today)</p>
-                                <p class="lead" id="viewsToday" style="margin: 0px;">TBD</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="card align-items-stretch align-content-stretch align-self-center flex-nowrap" id="sadada">
                 <div class="card-deck" style="margin-bottom: 15px;">
-                    <div class="card counterCard">
-                        <div class="card-header">
-                            <h5>Views</h5>
-                        </div>
-                        <div class="card-body text-center">
-                            <div id="firstSmallOdo" class="smallOdometer"></div>
-                        </div>
-                    </div>
                     <div class="card counterCard">
                         <div class="card-header">
                             <h5>Live Viewers&nbsp;<span class="spinner-grow spinner-grow-sm text-danger" role="status" id="liveSpinner"></span></h5>
@@ -130,16 +106,16 @@
                             <div id="secondSmallOdo" class="smallOdometer"></div>
                         </div>
                     </div>
-                </div>
-                <div class="card-deck">
                     <div class="card counterCard">
                         <div class="card-header">
-                            <h5>Stream Game</h5>
+                            <h5>Streaming...</h5>
                         </div>
                         <div class="card-body text-center">
                             <div id="thirdSmallOdo" class="smallOdometer"></div>
                         </div>
                     </div>
+                </div>
+                <div class="card-deck">
                     <div class="card counterCard">
                         <div class="card-header">
                             <h5 id="goalHeader">Left to &lt;&gt;</h5>
@@ -147,7 +123,7 @@
                         <div class="card-body text-center">
                             <div id="goalOdo" class="smallOdometer"></div>
                             <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="progressSoFar" style="background-color: #9146FF;">50%</div>
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="progressSoFar" style="background-color: var(--green);">50%</div>
                             </div>
                         </div>
                     </div>
@@ -174,12 +150,6 @@
                                         <td id="11hour">TBD</td>
                                         <td id="124hrs">TBD</td>
                                     </tr>
-                                    <tr>
-                                        <td><strong>Views</strong></td>
-                                        <td id="21min">TBD<br></td>
-                                        <td id="21hour">TBD</td>
-                                        <td id="224hrs">TBD</td>
-                                    </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -199,25 +169,6 @@
             </div>
             <div class="card-body">
                 <div id="mainchart"></div>
-            </div>
-        </div>
-        <div class="card counterCard" style="margin-top: 20px;">
-            <div class="card-header">
-                <h4 class="d-flex d-lg-flex align-items-center align-items-lg-center"><strong>Statistics&nbsp;</strong><span class="badge badge-primary">beta</span></h4>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table" id="userstatsTable">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Followers</th>
-                                <th>Views</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>
@@ -302,7 +253,7 @@
                 <div class="modal-body">
                     <p>Here you can find the sharing options available and also generate - if available for this counter - an embed link!<br><br>Embed Live Followers Count:</p>
                     <div class="btn-group" role="group" style="width: 100%;padding: 5px;"><a class="btn btn-primary" role="button" id="smallEmbedBtn">Small Embed</a><a class="btn btn-primary" role="button" id="largeEmbedBtn">Large Embed</a></div>
-                    <p>Embed Live Channel Views Count:</p>
+                    <p>Embed Live Viewers Count:</p>
                     <div class="btn-group" role="group" style="width: 100%;padding: 5px;"><a class="btn btn-primary" role="button" id="smallEmbedBtn-1">Small Embed</a><a class="btn btn-primary" role="button" id="largeEmbedBtn-1">Large Embed</a></div>
                     <div>
                         <p><br>Share Live Counter:</p>
@@ -364,9 +315,10 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://www.googletagmanager.com/gtag/js?id=G-R34Z4R4SVB"></script>
     <script src="../../assets/js/aglobal/odometer.js?h=91a8930826f7c6d1894f564c0c1ef5de"></script>
-    <script src="../../assets/js/aglobal/search.js?h=b37bdd0429f80856282e79df1faca989"></script>
+    <script src="../../assets/js/aglobal/search.js?h=18ed730a6efeb5dda166ad64b812b016"></script>
     <script src="../../assets/js/aglobal/settings.js?h=75affd72cea437e964a3213a57dd5ab5"></script>
     <script src="../../assets/js/aglobal/SlickTheme.js?h=efe2dc57bf7b73137e9642e586ee272b"></script>
+    <script src="../../assets/js/counters/kick-followers.js?h=b90414eb06d2e4a005cfe57b569bc2e0"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4928242198674611"></script>
 </body>
