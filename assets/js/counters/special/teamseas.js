@@ -242,8 +242,6 @@ function loadDataFirstTime() {
                             updateCounts.topDonationName(dataa.topDonate.name);
                             updateCounts.topDonationTime(new Date(dataa.topDonate.time).toLocaleString());
                             updateCounts.goalCount(dataa.donated);
-
-                            $(`#donatedToday`)[0].outerHTML = positiveOrNegative(dataa.donated, oldTrees, "donatedToday");
                             
                             if (!firstLive[0]) {
                                 prevCount[0] = dataa.donated;
@@ -267,127 +265,6 @@ function loadDataFirstTime() {
         },
         error: function () { },
     });
-
-    $.ajax(`https://api-v2.nextcounts.com/api/stats/misc/teamseas`)
-        .done(function (sdata) {
-            var ndata = sdata.donated;
-            //try { JSON.parse(stats); } catch { toastr["info"](stats); };
-            //var ndata = JSON.parse(stats);
-            
-            var donationsGraph = document.createElement('div');
-            donationsGraph.className = 'chart';
-            document.getElementById('graphContainer').appendChild(donationsGraph);
-
-            new Highcharts.chart(donationsGraph, {
-                chart: {
-                    zoomType: "x",
-                    //marginLeft: 40, // Keep all charts left aligned
-                    spacingTop: 20,
-                    spacingBottom: 20,
-                    backgroundColor: "transparent",
-                    plotBorderColor: "transparent",
-                },
-                title: {
-                    text: `Donations - Historical Data`,
-                    align: 'left',
-                    style: {
-                        color: textBright,
-                    },
-                    margin: 0,
-                    //x: 30
-                },
-                credits: {
-                    enabled: false
-                },
-                legend: {
-                    enabled: false
-                },
-                xAxis: {
-                    type: "datetime",
-                    crosshair: true,
-                    labels: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                    gridLineColor: lineColor,
-                    lineColor: lineColor,
-                    minorGridLineColor: "#858585",
-                    tickColor: lineColor,
-                    title: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                },
-                yAxis: {
-                    title: {
-                        text: null
-                    },
-                    gridLineColor: lineColor,
-                    labels: {
-                        style: {
-                            color: textBright,
-                        },
-                    },
-                    lineColor: lineColor,
-                    minorGridLineColor: "#505053",
-                    tickColor: lineColor,
-                },
-                tooltip: {
-                    borderWidth: 0,
-                    backgroundColor: 'none',
-                    pointFormat: '{point.y}',
-                    headerFormat: '',
-                    shadow: false,
-                    style: {
-                        fontSize: '18px',
-                        color: textBright
-                    }
-                },
-                series: [{
-                    data: ndata,
-                    marker: {
-                        enabled: !1
-                    },
-                    name: `Donations - Historical Data`,
-                    type: 'spline',
-                    color: socialColor,
-                    fillOpacity: 0.3
-                }]
-            });
-
-            oldTrees = ndata[ndata.length - 1][1];
-
-            if (ndata.length > 30) {
-                for (let i = 0; i < 30; i++) {
-                    console.log(ndata.length - (i + 1))
-                    $('#tableBody').append(`<tr>
-                        <td>${new Date(ndata[ndata.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                        <td>${(ndata[ndata.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata[ndata.length - (i + 1)][1], ndata[ndata.length - (i + 2)][1], false)}</td>
-                    </tr>`);
-                }
-            } else {
-                for (let i = 0; i < ndata.length; i++) {
-                    console.log(ndata.length - (i + 1))
-                    if (ndata.length - (i + 1) == 0) {
-                        $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata[ndata.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata[ndata.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata[ndata.length - (i + 1)][1], ndata[ndata.length - (i + 1)][1], false)}</td>
-                        </tr>`);
-                    } else {
-                        $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata[ndata.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata[ndata.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata[ndata.length - (i + 1)][1], ndata[ndata.length - (i + 2)][1], false)}</td>
-                        </tr>`);
-                    }
-                }
-            }
-
-            setTimeout(function () {
-                $('#userstatsTable').DataTable();
-            }, 250);
-        });
 }
 
 loadDataFirstTime();
