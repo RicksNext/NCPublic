@@ -768,28 +768,6 @@ function loadDataFirstTime() {
                         </tr>`);
                     }
                 }
-                /*
-                for (let i = 0; i < ndata.ytapi.views.length; i++) {
-                    console.log(ndata.ytapi.views.length - (i + 1))
-                    if (ndata.ytapi.views.length - (i + 1) == 0 || ndata.ytapi.videos.length - (i + 1) == 0) {
-                        $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], false)}</td>
-                            <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], false)}</td>
-                        </tr>`);
-                    } else {
-                        $('#tableBody').append(`<tr>
-                            <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
-                            <td>${(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 2)][1], false)}</td>
-                            <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 2)][1], false)}</td>
-                        </tr>`);
-                    }
-                }
-                */
             }
 
             setTimeout(function () {
