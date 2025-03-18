@@ -247,7 +247,7 @@ function loadDataFirstTime() {
 
                 new Odometer({
                     el: document.getElementById("goalOdo"),
-                    value: estViewCount / 2,
+                    value: isNaN(estViewCount) ? views/2 : estViewCount /2,
                     format: '(,ddd).dd',
                 });
                 new Odometer({
@@ -333,21 +333,10 @@ function loadDataFirstTime() {
     });
 
     $.ajax(`https://api-v2.nextcounts.com/api/stats/youtubevideo/${user}`)
-        .done(function (ndata) {
-            //try { JSON.parse(stats); } catch { toastr["info"](stats); };
-            //var ndata = JSON.parse(stats);
+        .done(function (stats) {
+            let ndata = stats.ytvideos;
 
-            var viewsDiv = document.createElement('div');
-            var likesDiv = document.createElement('div');
-            var dislikesDiv = document.createElement('div');
-            var commentsDiv = document.createElement('div');
-            viewsDiv.className = likesDiv.className = dislikesDiv.className = commentsDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(viewsDiv);
-            document.getElementById('graphContainer').appendChild(likesDiv);
-            document.getElementById('graphContainer').appendChild(dislikesDiv);
-            document.getElementById('graphContainer').appendChild(commentsDiv);
-
-            new Highcharts.chart(viewsDiv, {
+            new Highcharts.chart('viewsDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -426,7 +415,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(likesDiv, {
+            new Highcharts.chart('likesDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -505,88 +494,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            if(ndata.dislikes) {
-                new Highcharts.chart(dislikesDiv, {
-                    chart: {
-                        zoomType: "x",
-                        //marginLeft: 40, // Keep all charts left aligned
-                        spacingTop: 20,
-                        spacingBottom: 20,
-                        backgroundColor: "transparent",
-                        plotBorderColor: "transparent",
-                    },
-                    title: {
-                        text: `Dislikes - Historical Data`,
-                        align: 'left',
-                        style: {
-                            color: textBright,
-                        },
-                        margin: 0,
-                        x: 30
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    legend: {
-                        enabled: false
-                    },
-                    xAxis: {
-                        type: "datetime",
-                        crosshair: true,
-                        labels: {
-                            style: {
-                                color: textBright,
-                            },
-                        },
-                        gridLineColor: lineColor,
-                        lineColor: lineColor,
-                        minorGridLineColor: "#858585",
-                        tickColor: lineColor,
-                        title: {
-                            style: {
-                                color: textBright,
-                            },
-                        },
-                    },
-                    yAxis: {
-                        title: {
-                            text: null
-                        },
-                        gridLineColor: lineColor,
-                        labels: {
-                            style: {
-                                color: textBright,
-                            },
-                        },
-                        lineColor: lineColor,
-                        minorGridLineColor: "#505053",
-                        tickColor: lineColor,
-                    },
-                    tooltip: {
-                        borderWidth: 0,
-                        backgroundColor: 'none',
-                        pointFormat: '{point.y}',
-                        headerFormat: '',
-                        shadow: false,
-                        style: {
-                            fontSize: '18px',
-                            color: textBright
-                        }
-                    },
-                    series: [{
-                        data: ndata.dislikes,
-                        marker: {
-                            enabled: !1
-                        },
-                        name: `Dislikes - Historical Data`,
-                        type: 'spline',
-                        color: socialColor,
-                        fillOpacity: 0.3
-                    }]
-                });
-            }
-
-            new Highcharts.chart(commentsDiv, {
+            new Highcharts.chart('commentsDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned

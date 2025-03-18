@@ -276,19 +276,10 @@ function loadDataFirstTime() {
     });
 
     $.ajax(`https://api-v2.nextcounts.com/api/stats/instagramuser/${user}`)
-        .done(function (ndata) {
-            //try { JSON.parse(stats); } catch { toastr["info"](stats); };
-            //var ndata = JSON.parse(stats);
+        .done(function (stats) {
+            let ndata = stats.instagram;
 
-            var subscribersDiv = document.createElement('div');
-            var subscribedDiv = document.createElement('div');
-            var blazeDiv = document.createElement('div');
-            subscribersDiv.className = subscribedDiv.className = blazeDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(subscribersDiv);
-            document.getElementById('graphContainer').appendChild(subscribedDiv);
-            document.getElementById('graphContainer').appendChild(blazeDiv);
-
-            new Highcharts.chart(subscribersDiv, {
+            new Highcharts.chart('followersDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -367,7 +358,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(subscribedDiv, {
+            new Highcharts.chart('followingDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -446,7 +437,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(blazeDiv, {
+            new Highcharts.chart('postsDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned

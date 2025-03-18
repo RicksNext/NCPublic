@@ -298,17 +298,12 @@ function loadDataFirstTime() {
     });
 
     $.ajax(`https://api-v2.nextcounts.com/api/stats/trilleruser/${user}`)
-        .done(function (ndata) {
+        .done(function (stats) {
+            let ndata = stats.triller
             //try { JSON.parse(stats); } catch { toastr["info"](stats); };
             //var ndata = JSON.parse(stats);
 
-            var followersDiv = document.createElement('div');
-            var followingDiv = document.createElement('div');
-            followersDiv.className = followingDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(followersDiv);
-            document.getElementById('graphContainer').appendChild(followingDiv);
-
-            new Highcharts.chart(followersDiv, {
+            new Highcharts.chart('followersDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -387,7 +382,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(followingDiv, {
+            new Highcharts.chart('followingDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned

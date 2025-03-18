@@ -126,7 +126,7 @@ const queryString = window.location.search, urlParams = new URLSearchParams(quer
 const userInURL = urlParams.get("u"), odometerInURL = urlParams.get("o");
 var user = "";
 
-!userInURL ? user = "nextcounts" : user = userInURL;
+!userInURL ? user = "elonmusk" : user = userInURL;
 
 //"Customize counter" Modal code
 var updateChart = true;
@@ -373,19 +373,12 @@ function loadDataFirstTime() {
     });
 
     $.ajax(`https://api-v2.nextcounts.com/api/stats/twitteruser/${user}`)
-        .done(function (ndata) {//(stats) {
+        .done(function (stats) {//(stats) {
+            let ndata = stats.twitter
             //try { JSON.parse(stats); } catch { toastr["info"](stats); };
             //var ndata = JSON.parse(stats);
 
-            var followersDiv = document.createElement('div');
-            var followingDiv = document.createElement('div');
-            var tweetsDiv = document.createElement('div');
-            followersDiv.className = followingDiv.className = tweetsDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(followersDiv);
-            document.getElementById('graphContainer').appendChild(followingDiv);
-            document.getElementById('graphContainer').appendChild(tweetsDiv);
-
-            new Highcharts.chart(followersDiv, {
+            new Highcharts.chart('followersDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -471,7 +464,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(followingDiv, {
+            new Highcharts.chart('followingDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -557,7 +550,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(tweetsDiv, {
+            new Highcharts.chart('tweetsDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned

@@ -188,21 +188,43 @@
         </div>
         <div class="card counterCard" style="margin-top: 20px;">
             <div class="card-header">
-                <h4 class="d-flex d-lg-flex align-items-center align-items-lg-center"><strong>Statistics&nbsp;</strong><span class="badge badge-primary">beta</span></h4>
+                <h4 class="d-flex d-lg-flex align-items-center align-items-lg-center"><strong>Statistics&nbsp;</strong><span class="badge badge-primary">preview</span></h4>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table" id="userstatsTable">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Followers</th>
-                                <th>Following</th>
-                                <th>Posts</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
+                <div>
+                    <ul class="nav nav-pills nav-justified" role="tablist">
+                        <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-toggle="pill" href="#tab-1">Table</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-toggle="pill" href="#tab-2">Followers Graph</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-toggle="pill" href="#tab-3">Following Graph</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-toggle="pill" href="#tab-4">Posts Graph</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" role="tabpanel" id="tab-1">
+                            <p></p>
+                            <div class="table-responsive">
+                                <table class="table" id="userstatsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Followers</th>
+                                            <th>Following</th>
+                                            <th>Posts</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" role="tabpanel" id="tab-2">
+                            <div id="followersDiv" class="chart"></div>
+                        </div>
+                        <div class="tab-pane" role="tabpanel" id="tab-3">
+                            <div id="followingDiv" class="chart"></div>
+                        </div>
+                        <div class="tab-pane" role="tabpanel" id="tab-4">
+                            <div id="postsDiv" class="chart"></div>
+                        </div>
+                    </div>
                 </div>
                 <div id="graphContainer"></div>
             </div>
@@ -352,7 +374,7 @@
     <script src="../../assets/js/aglobal/search.js?h=b37bdd0429f80856282e79df1faca989"></script>
     <script src="../../assets/js/aglobal/settings.js?h=75affd72cea437e964a3213a57dd5ab5"></script>
     <script src="../../assets/js/aglobal/SlickTheme.js?h=efe2dc57bf7b73137e9642e586ee272b"></script>
-    <script src="../../assets/js/counters/bluesky-followers.js?h=41721403630ea83e0cf42465a8c6d6b2"></script>
+    <script src="../../assets/js/counters/bluesky-followers.js?h=271cbdcd615790967f1b02a4e9672bb2"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4928242198674611"></script>
 </body>

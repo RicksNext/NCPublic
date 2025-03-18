@@ -735,7 +735,7 @@ function loadDataFirstTime() {
             oldViews = ndata.ytapi.views[ndata.ytapi.views.length - 1][1];
 
 
-            if (ndata.ytapi.subscribers.length > 30 && ndata.ytapi.views.length > 30) {
+            if (ndata.ytapi.subscribers.length > 30 && ndata.ytapi.views.length > 30 && ndata.estimated.subscribers.length > 30) {
                 for (let i = 0; i < 30; i++) {
                     console.log(ndata.ytapi.subscribers.length - (i + 1))
                     $('#tableBody').append(`<tr>
@@ -747,6 +747,28 @@ function loadDataFirstTime() {
                     </tr>`);
                 }
             } else {
+                //decide which array between ytapi.views, ytapi.videos, ytapi.subscribers and estimated.subscribers is shorter and use that
+                for (let i = 0; i < ndata.estimated.subscribers.length; i++) {
+                    console.log(ndata.estimated.subscribers.length - (i + 1))
+                    if (ndata.estimated.subscribers.length - (i + 1) == 0 || ndata.ytapi.subscribers.length - (i + 1) == 0) {
+                        $('#tableBody').append(`<tr>
+                            <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                            <td>${(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], false)}</td>
+                            <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], false)}</td>
+                        </tr>`);
+                    } else {
+                        $('#tableBody').append(`<tr>
+                            <td>${new Date(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][0]).toISOString().replace('T', ' ').split('.')[0]}</td>
+                            <td>${(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 1)][1], ndata.estimated.subscribers[ndata.estimated.subscribers.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 1)][1], ndata.ytapi.subscribers[ndata.ytapi.subscribers.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.views[ndata.ytapi.views.length - (i + 1)][1], ndata.ytapi.views[ndata.ytapi.views.length - (i + 2)][1], false)}</td>
+                            <td>${(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1]).toLocaleString()} ${higherLowerOrEqual(ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 1)][1], ndata.ytapi.videos[ndata.ytapi.videos.length - (i + 2)][1], false)}</td>
+                        </tr>`);
+                    }
+                }
+                /*
                 for (let i = 0; i < ndata.ytapi.views.length; i++) {
                     console.log(ndata.ytapi.views.length - (i + 1))
                     if (ndata.ytapi.views.length - (i + 1) == 0 || ndata.ytapi.videos.length - (i + 1) == 0) {
@@ -767,6 +789,7 @@ function loadDataFirstTime() {
                         </tr>`);
                     }
                 }
+                */
             }
 
             setTimeout(function () {
