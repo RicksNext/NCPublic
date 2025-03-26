@@ -20,7 +20,14 @@ $.getJSON("https://api-v2.nextcounts.com/api/youtube/channels/unabbreviated/list
         //create a card element for each channel
         let card = document.createElement("div");
         card.className = "card";
-        card.innerHTML = `<div class="card-body text-center"><img class="rounded-circle img-fluid" src="${channel.channelImg}" width="87vw" style="margin-right: 10px;" /><div><h4 class="card-title"><a href="https://nextcounts.com/youtube/user/?u=${channel.key}">${channel.channelName}</a></h4><h6 class="text-muted mb-2">${(channel.subscribers).toLocaleString()} Subscribers</h6></div></div>`;
+        let avatarHtml = i === 0 ? 
+            `<div style="position: relative; display: inline-block;">
+                <img class="rounded-circle flex-shrink-0 mr-3 fit-cover" src="${channel.channelImg}" width="50" height="50" />
+                <img src="https://cdn-icons-png.flaticon.com/512/6941/6941697.png" style="position: absolute; top: -8px; right: 12px; width: 20px; height: 20px; transform: rotate(20deg);" />
+            </div>` : 
+            `<img class="rounded-circle flex-shrink-0 mr-3 fit-cover" src="${channel.channelImg}" width="50" height="50" />`;
+        
+        card.innerHTML = `<div class="card-body p-4"><div class="d-flex">${avatarHtml}<div><a class="font-weight-bold mb-0" href="https://nextcounts.com/youtube/user/?u=${channel.key}">${channel.channelName}</a><p class="text-muted mb-0">${(channel.subscribers).toLocaleString()} Subscribers</p></div></div></div>`
 
         document.getElementsByClassName("card-columns")[$('.card-columns').length - 1].appendChild(card);
 
