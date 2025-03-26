@@ -314,19 +314,10 @@ function loadDataFirstTime() {
     });
 
     $.ajax(`https://api-v2.nextcounts.com/api/stats/tiktokuser/${user}`)
-        .done(function (ndata) {
-            //try { JSON.parse(stats); } catch { toastr["info"](stats); };
-            //var ndata = JSON.parse(stats);
+        .done(function (stats) {
+            let ndata = stats.tiktokuser;
 
-            var followersDiv = document.createElement('div');
-            var videosDiv = document.createElement('div');
-            var heartsDiv = document.createElement('div');
-            followersDiv.className = videosDiv.className = heartsDiv.className = 'chart';
-            document.getElementById('graphContainer').appendChild(followersDiv);
-            document.getElementById('graphContainer').appendChild(videosDiv);
-            document.getElementById('graphContainer').appendChild(heartsDiv);
-
-            new Highcharts.chart(followersDiv, {
+            new Highcharts.chart('followersDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -405,7 +396,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(videosDiv, {
+            new Highcharts.chart('videosDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
@@ -484,7 +475,7 @@ function loadDataFirstTime() {
                 }]
             });
 
-            new Highcharts.chart(heartsDiv, {
+            new Highcharts.chart('heartsDiv', {
                 chart: {
                     zoomType: "x",
                     //marginLeft: 40, // Keep all charts left aligned
