@@ -8,14 +8,14 @@ $('#searchPlatform').append(`<option value="discordserver">Discord (Server)</opt
 $('#searchPlatform').append(`<option value="kickfollowers">Kick (User)</option>`);
 //$('#searchPlatform').append(`<option value="mixernoapi">Mixerno.space (API)</option>`);
 //$('#searchPlatform').append(`<option value="nextcountsapi">NextCounts (API)</option>`);
-$('#searchPlatform').append(`<option value="parleruser">Parler (User)</option>`);
+$('#searchPlatform').append(`<option value="locouser">Loco (User)</option>`);
 $('#searchPlatform').append(`<option value="rumbleuser">Rumble (User)</option>`);
 //$('#searchPlatform').append(`<option value="reddituser">Reddit (User Karma)</option>`);
 //$('#searchPlatform').append(`<option value="subreddit">Subreddit</option>`);
 $('#searchPlatform').append(`<option value="storyfireuser">StoryFire (User)</option>`);
 $('#searchPlatform').append(`<option value="storyfirevideo">StoryFire (Video)</option>`);
 $('#searchPlatform').append(`<option value="threadsuser">Threads (User)</option>`);
-//$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
+$('#searchPlatform').append(`<option value="tiktokuser">Tiktok (User)</option>`);
 $('#searchPlatform').append(`<option value="trilleruser">Triller (User)</option>`);
 $('#searchPlatform').append(`<option value="twitchuser">Twitch (User)</option>`);
 $('#searchPlatform').append(`<option value="twitteruser">Twitter (User)</option>`);
@@ -158,16 +158,27 @@ function searchForUser(searchTerm, platform) {
                     $.ajax(`https://api-v2.nextcounts.com/api/search/tiktok/user/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
-                            document.getElementById(`searchFollowers`).innerHTML = `@${data.userIdentifier}`;
-                            document.getElementById(`searchUsername`).href = `https://nextcounts.com/tiktok/followers/?u=${data.userIdentifier}`;
-                            if (data.verified == true) {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.verified} ${socialBadges.tiktok}`;
-                            } else {
-                                document.getElementById(`searchUsername`).innerHTML = `${data.username} ${socialBadges.tiktok}`;
-                            }
-                            document.getElementById(`searchpfp`).src = data.userImg;
+                            $(".results")[0].innerHTML = '';
+                            document.querySelector('.results').className = 'results';
+
+                            data.users.forEach(user => {
+                                console.log(user);
+                                var div = `<div onclick="location.href='https://nextcounts.com/tiktok/followers/?u=${user.userIdentifier}';" style="cursor:pointer;">
+                                    <div class="d-flex justify-content-start">
+                                        <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.avatar}" /></div>
+                                        <div>
+                                            <h4>${user.username} ${user.verified == true ? socialBadges.verified : ""} ${socialBadges.tiktok}</h4>
+                                            <h6 class="text-muted mb-2">@${user.userIdentifier} - ${user.followers.toLocaleString()} Followers</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                                $(".results").append(div);
+                            });
+
+                            $('.results').slick();
                             document.getElementById(`loadingSearch`).style.display = "none";
-                            document.getElementById(`searchCard`).style.display = "block";
+                            document.getElementById(`searchCard`).style.display = "none";
                         } else {
                             toastr["error"]("We weren't able to get who the user is. If you think this is a mistake, contact us on Twitter, @NextCounts.", "Something went wrong.");
                             document.getElementById(`loadingSearch`).style.display = "none";
@@ -713,19 +724,19 @@ function searchForUser(searchTerm, platform) {
                         document.getElementById(`searchCard`).style.display = "none";
                     });
                 break;
-                case "parleruser":
+                case "locouser":
                     var e = searchTerm.replace("@", ""), t = "";
                     if (e.includes("https://") || e.includes("http://")) {
                         var n = e.split("/");
-                        t = n[3]
+                        t = n[4]
                     } else {
-                        if (e.includes("parler.com")) {
+                        if (e.includes("loco.com")) {
                             n = e.split("/");
-                            t = n[1]
+                            t = n[2]
                         } else t = e;
                     }
 
-                    $.ajax(`https://api-v2.nextcounts.com/api/search/parler/user/${t}`)
+                    $.ajax(`http://api-v2.nextcounts.com/api/search/loco/channel/${t}`)
                     .done(function (data) {
                         if(data.success == true) {
                             $(".results")[0].innerHTML = '';
@@ -733,12 +744,12 @@ function searchForUser(searchTerm, platform) {
 
                             data.users.forEach(user => {
                                 console.log(user);
-                                var div = `<div onclick="location.href='https://nextcounts.com/parler/user/?u=${user.username}';" style="cursor:pointer;">
+                                var div = `<div onclick="location.href='https://nextcounts.com/loco/user/?u=${user.nickname}';" style="cursor:pointer;">
                                     <div class="d-flex justify-content-start">
                                         <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.avatar}" /></div>
                                         <div>
-                                            <h4>${user.nickname}</h4>
-                                            <h6 class="text-muted mb-2">@${user.username}</h6>
+                                            <h4>${user.nickname} ${user.verified == true ? socialBadges.verified : ""}</h4>
+                                            <h6 class="text-muted mb-2">${user.followers.toLocaleString()} Followers & ${user.views.toLocaleString()} Views</h6>
                                         </div>
                                     </div>
                                 </div>`;

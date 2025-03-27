@@ -207,6 +207,9 @@ function loadDataFirstTime() {
                 $('#smallEmbedBtn')[0].href = `https://nextcounts.com/embed/small/?p=locofollowers&u=${user}`;
                 $('#largeEmbedBtn')[0].href = `https://nextcounts.com/embed/large/?p=locofollowers&u=${user}`;
 
+                $('#smallEmbedBtn-1')[0].href = `https://nextcounts.com/embed/small/?p=locoviewers&u=${user}`;
+                $('#largeEmbedBtn-1')[0].href = `https://nextcounts.com/embed/large/?p=locoviewers&u=${user}`;
+
                 $('#fbShareBtn')[0].href = `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${samplePhrase}`;
                 $('#twttrShareBtn')[0].href = `https://twitter.com/intent/tweet/?text=${samplePhrase} ${window.location.href} @nextcounts! `;
                 $('#linkedinShareBtn')[0].href = `https://www.linkedin.com/shareArticle?mini=true&url=${window.location.href}&title=${samplePhrase}&summary=${samplePhrase}&source=${window.location.href}`;

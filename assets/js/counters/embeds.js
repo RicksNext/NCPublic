@@ -1065,9 +1065,9 @@ if(user == null && platform == null || user == "" && platform == "") {
                 });
             }, 2500);
         break;
-        case 'parleruser':
+        case 'locofollowers':
             setInterval(function() {
-                $.ajax(`https://api-v2.nextcounts.com/api/parler/user/${user}`)
+                $.ajax(`https://api-v2.nextcounts.com/api/loco/channel/${user}`)
                 .done(function (data) {
                     if(!data.error) {
                         if(hasLoadedBefore == false) {
@@ -1076,13 +1076,52 @@ if(user == null && platform == null || user == "" && platform == "") {
                                 value: data.followersCount,
                                 format: '(,ddd).dd',
                             });
-                            updateCounts.lowerTxt("followers");
                         }
                         hasLoadedBefore = true;
                         updateCounts.pfp(data.avatar);
-                        updateCounts.banner(data.banner);
+                        updateCounts.banner("hide");
                         updateCounts.count(data.followersCount);
-                        updateCounts.name(data.nickname);
+                        updateCounts.lowerTxt("Followers");
+                        if (data.verified == true) {
+                            updateCounts.name(`${data.username} ${socialBadges.verified}`);
+                        } else {
+                            updateCounts.name(data.username);
+                        }
+                    } else {
+                        if(hasLoadedBefore == false) {
+                            updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                        }
+                    }
+                })
+                .fail(function () {
+                    if(hasLoadedBefore == false) {
+                        updateCounts.name(`${socialBadges.error} Something went wrong.`);
+                    }
+                });
+            }, 2500);
+        break;
+        case 'locoviewers':
+            setInterval(function() {
+                $.ajax(`https://api-v2.nextcounts.com/api/loco/channel/${user}`)
+                .done(function (data) {
+                    if(!data.error) {
+                        if(hasLoadedBefore == false) {
+                            new Odometer({
+                                el: document.getElementById("mainOdometer"),
+                                value: data.currentLiveViewers,
+                                format: '(,ddd).dd',
+                            });
+                        }
+                        hasLoadedBefore = true;
+                        updateCounts.pfp(data.avatar);
+                        updateCounts.banner("hide");
+                        updateCounts.count(data.currentLiveViewers);
+                        updateCounts.lowerTxt("Viewers");
+                        if (data.verified == true) {
+                            updateCounts.name(`${data.username} ${socialBadges.verified}`);
+                        } else {
+                            updateCounts.name(data.username);
+                        }
                     } else {
                         if(hasLoadedBefore == false) {
                             updateCounts.name(`${socialBadges.error} Something went wrong.`);
