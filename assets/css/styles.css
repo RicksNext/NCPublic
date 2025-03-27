@@ -209,7 +209,7 @@ html, body, nav, footer, select, .card, .odometer, .dropdown-menu, .counterBtn, 
 }
 
 .userheader-parler, .userheader-parler .navbar-brand {
-  background-color: #b80101;
+  background-color: var(--orange);
   color: #f8f9fa;
 }
 
