@@ -233,7 +233,9 @@ function loadDataFirstTime() {
                 updateCounts.banner(data.userBanner);
                 hasBanner = true;
 
-                if(data.subcount >= 50000 && data.abbreviated === true) {
+                abbreviated = data.subcount >= 50000 && data.abbreviated === true;
+
+                if(abbreviated) {
                     $.ajax({
                         url: `https://api-v2.nextcounts.com/api/youtube/channel/estimate/mixerno/${user}`,
                         type: "GET",
