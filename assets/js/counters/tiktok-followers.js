@@ -256,7 +256,7 @@ function loadDataFirstTime() {
 
                 setInterval(function () {
                     $.ajax({
-                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${user}`,
+                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${data.uid}`,
                         type: "GET",
                         dataType: "JSON",
                         success: function (dataa) {
