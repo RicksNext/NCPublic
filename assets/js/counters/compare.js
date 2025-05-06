@@ -317,7 +317,8 @@ function loadUser(platform, user, number) {
 
                                 
                                 $.ajax(`https://api-v2.nextcounts.com/api/stats/tiktokuser/${user}`)
-                                .done(function (ndata) {
+                                .done(function (statsdata) {
+                                    let ndata = statsdata.tiktokuser;
                                     oldcounts[number - 1] = ndata.followers[ndata.followers.length - 1][1];
 
                                     data.followers && data.followers != 0 ? ndata.followers.push([calcTime(), data.followers]) : null;
@@ -403,7 +404,7 @@ function loadUser(platform, user, number) {
             
                                 setInterval(function () {
                                     $.ajax({
-                                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${user}`,
+                                        url: `https://api-v2.nextcounts.com/api/tiktok/user/stats/${data.uid}`,
                                         type: "GET",
                                         dataType: "JSON",
                                         success: function (dataa) {

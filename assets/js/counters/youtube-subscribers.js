@@ -787,7 +787,7 @@ function loadDataFirstTime() {
             // Initialize DataTable immediately with sorting by date (newest first)
             $('#userstatsTable').DataTable({
                 "order": [[0, "desc"]], // Sort by first column (date) in descending order
-                "pageLength": 25,       // Show 25 entries per page
+                "pageLength": 10,       // Show 25 entries per page
                 "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
                 "language": {
                     "search": "Search records:",

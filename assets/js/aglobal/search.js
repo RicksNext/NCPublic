@@ -570,7 +570,7 @@ function searchForUser(searchTerm, platform) {
                                         <div style="width: 75px;"><img class="rounded" style="width: 60px;height: 60px;" src="${user.pfp}" /></div>
                                         <div>
                                             <h4>${user.displayName}</h4>
-                                            <h6 class="text-muted mb-2">${abbreviateGivenNumber(user.followers)} Subscribers</h6>
+                                            <h6 class="text-muted mb-2">${abbreviateGivenNumber(user.subcount)} Subscribers</h6>
                                         </div>
                                     </div>
                                 </div>`;
