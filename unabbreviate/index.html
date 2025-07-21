@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu&amp;display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
+    <link rel="stylesheet" href="../assets/css/bss-overrides.css?h=8a7b165384da181b877b88d4a89a8e28">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="../assets/css/Footer-Basic.css?h=d15dfcb68fabe0442ff06063b052477c">
     <link rel="stylesheet" href="../assets/css/gradient-navbar.css?h=4ae15b76681e1b1288bcefd94a110111">
@@ -98,7 +99,7 @@
                             <div class="d-flex justify-content-start"><img class="rounded-circle img-fluid" id="searchpfp" src="../assets/img/main%20icon%20black%20teal.png?h=b7d39168026b8b8fefd1516c65c8430b" style="width: 4rem;height: 4rem;margin-right: 10px;">
                                 <div>
                                     <h5><a id="searchUsername" href="#">Loading...</a></h5>
-                                    <h6 id="searchFollowers" class="text-muted mb-2">Loading...</h6>
+                                    <h6 class="mb-2 text-muted" id="searchFollowers">Loading...</h6>
                                 </div>
                             </div>
                         </div>
@@ -134,10 +135,10 @@
         <div class="container">
             <div class="border rounded border-dark shadow-lg d-flex flex-column justify-content-center align-items-center p-4 py-5" style="background: linear-gradient(rgba(0,0,0,0.35), rgba(0,228,208,0.2)), url(&quot;../assets/img/ncunabbr%20banner.jpg?h=7ab52c281ec782e04421fbd0fa8a7b6a&quot;) center / cover;height: 500px;">
                 <div class="row flash animated">
-                    <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center mx-auto">
                         <div>
                             <h1 class="font-weight-bold text-light mb-3">Bring Back Real Subscriber Counts</h1>
-                            <p class="text-light mb-4">Tired of YouTube's rounded numbers? <strong>So are we</strong>.<br>The "Unabbreviate Project" by NextCounts aims to make full, live subscriber counts visible again - exactly as they should be.</p><a class="btn btn-light btn-lg mr-2 py-2 px-4" role="button" href="#howto-direct" style="background-color: var(--teal);">Add Your Channel Now!</a><a class="btn btn-light btn-lg py-2 px-4" role="button" href="list/">Top List!</a>
+                            <p class="text-light mb-4">Tired of YouTube's rounded numbers? <strong>So are we</strong>.<br>The "Unabbreviate Project" by NextCounts aims to make full, live subscriber counts visible again - exactly as they should be.</p><a class="btn btn-light btn-lg mr-2 px-4 py-2" role="button" href="#howto-direct" style="background-color: var(--teal);">Add Your Channel Now!</a><a class="btn btn-light btn-lg px-4 py-2" role="button" href="list/">Top List!</a>
                         </div>
                     </div>
                 </div>
@@ -158,7 +159,7 @@
                             <div class="col-xl-3 mb-4">
                                 <div class="card">
                                     <div class="card-body p-4">
-                                        <div class="bs-icon-md bs-icon-rounded d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon" style="background-color: var(--teal);color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg">
+                                        <div class="bs-icon-md bs-icon-rounded d-flex justify-content-center align-items-center mb-3 d-inline-block bs-icon" style="background-color: var(--teal);color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-check-lg">
                                                 <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"></path>
                                             </svg></div>
                                         <h4 class="font-weight-bold card-title">Real Numbers</h4>
@@ -169,7 +170,7 @@
                             <div class="col-xl-3 mb-4">
                                 <div class="card">
                                     <div class="card-body p-4">
-                                        <div class="bs-icon-md bs-icon-rounded d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon" style="background-color: var(--teal);color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-lightning-charge-fill">
+                                        <div class="bs-icon-md bs-icon-rounded d-flex justify-content-center align-items-center mb-3 d-inline-block bs-icon" style="background-color: var(--teal);color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-lightning-charge-fill">
                                                 <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"></path>
                                             </svg></div>
                                         <h4 class="font-weight-bold card-title">Live Updates</h4>
@@ -180,7 +181,7 @@
                             <div class="col-xl-3 mb-4">
                                 <div class="card">
                                     <div class="card-body p-4">
-                                        <div class="bs-icon-md bs-icon-rounded d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon" style="background-color: var(--teal);color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-lock-fill">
+                                        <div class="bs-icon-md bs-icon-rounded d-flex justify-content-center align-items-center mb-3 d-inline-block bs-icon" style="background-color: var(--teal);color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-lock-fill">
                                                 <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"></path>
                                             </svg></div>
                                         <h4 class="font-weight-bold card-title">100% Safe</h4>
@@ -191,7 +192,7 @@
                             <div class="col-xl-3 mb-4">
                                 <div class="card">
                                     <div class="card-body p-4">
-                                        <div class="bs-icon-md bs-icon-rounded d-flex justify-content-center align-items-center d-inline-block mb-3 bs-icon" style="background-color: var(--teal);color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-globe">
+                                        <div class="bs-icon-md bs-icon-rounded d-flex justify-content-center align-items-center mb-3 d-inline-block bs-icon" style="background-color: var(--teal);color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-globe">
                                                 <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472M3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"></path>
                                             </svg></div>
                                         <h4 class="font-weight-bold card-title">Community-led</h4>
@@ -237,7 +238,7 @@
                                                                     <path d="M3 6l3 -3l3 3"></path>
                                                                     <path d="M6 21v-18"></path>
                                                                 </svg>
-                                                                <h5 class="font-weight-bold mb-0 ml-2 underline">Boost</h5>
+                                                                <h5 class="font-weight-bold ml-2 mb-0 underline">Boost</h5>
                                                             </div>
                                                             <p class="my-3">Get featured in the top-list of the Unabbreviated channels!</p>
                                                         </div>
@@ -255,7 +256,7 @@
                                                                     <path d="M19 18v2"></path>
                                                                     <path d="M14 16.518l-6.518 -6.518l-4.39 9.58a1 1 0 0 0 1.329 1.329l9.579 -4.39z"></path>
                                                                 </svg>
-                                                                <h5 class="font-weight-bold mb-0 ml-2 underline">Celebrate</h5>
+                                                                <h5 class="font-weight-bold ml-2 mb-0 underline">Celebrate</h5>
                                                             </div>
                                                             <p class="my-3">Show your audience accurate milestones again!</p>
                                                         </div>
@@ -275,7 +276,7 @@
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                                     <path d="M5 12l5 5l10 -10"></path>
                                                                 </svg>
-                                                                <h5 class="font-weight-bold mb-0 ml-2 underline">Accurate</h5>
+                                                                <h5 class="font-weight-bold ml-2 mb-0 underline">Accurate</h5>
                                                             </div>
                                                             <p class="my-3">See the real numbers for your favorite creators!</p>
                                                         </div>
@@ -286,7 +287,7 @@
                                                                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4c.267 0 .529 .026 .781 .076"></path>
                                                                     <path d="M19 16l-2 3h4l-2 3"></path>
                                                                 </svg>
-                                                                <h5 class="font-weight-bold mb-0 ml-2 underline">Moments</h5>
+                                                                <h5 class="font-weight-bold ml-2 mb-0 underline">Moments</h5>
                                                             </div>
                                                             <p class="my-3">Create exciting moments, just like the old days!</p>
                                                         </div>

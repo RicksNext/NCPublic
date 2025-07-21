@@ -67,6 +67,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu&amp;display=swap">
     <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
+    <link rel="stylesheet" href="assets/css/bss-overrides.css?h=8a7b165384da181b877b88d4a89a8e28">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="assets/css/Footer-Basic.css?h=d15dfcb68fabe0442ff06063b052477c">
     <link rel="stylesheet" href="assets/css/gradient-navbar.css?h=4ae15b76681e1b1288bcefd94a110111">
@@ -127,7 +128,7 @@
                             <div class="d-flex justify-content-start"><img class="rounded-circle img-fluid" id="searchpfp" src="assets/img/main%20icon%20black%20teal.png?h=b7d39168026b8b8fefd1516c65c8430b" style="width: 4rem;height: 4rem;margin-right: 10px;">
                                 <div>
                                     <h5><a id="searchUsername" href="#">Loading...</a></h5>
-                                    <h6 id="searchFollowers" class="text-muted mb-2">Loading...</h6>
+                                    <h6 class="mb-2 text-muted" id="searchFollowers">Loading...</h6>
                                 </div>
                             </div>
                         </div>
@@ -223,15 +224,11 @@
                         </svg>&nbsp;Instagram Live Follower Count&nbsp;<span class="badge badge-primary">Beta</span></a></div>
             </div>
             <div class="card-deck" style="margin: 2vw;">
-                <div class="card"><a class="btn btn-dark btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: var(--orange);" href="loco/channel/"><img class="img-fluid" src="assets/img/loco.png?h=6d09745480e9f94fc03d39ca3f88cb9f" width="20" height="20">&nbsp;Loco Live Follower Count&nbsp;<span class="badge badge-primary">NEW!</span></a></div>
                 <div class="card"><a class="btn btn-success btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: rgb(5, 18, 30);" href="rumble/user/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-brand-rumble">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M19.993 9.108c.383 .4 .687 .863 .893 1.368a4.195 4.195 0 0 1 .006 3.166a4.37 4.37 0 0 1 -.887 1.372a20.233 20.233 0 0 1 -2.208 2a20.615 20.615 0 0 1 -2.495 1.669a21.322 21.322 0 0 1 -5.622 2.202a4.213 4.213 0 0 1 -3.002 -.404a3.98 3.98 0 0 1 -1.163 -.967a3.796 3.796 0 0 1 -.695 -1.312c-1.199 -3.902 -1.022 -8.312 .134 -12.23c.609 -2.057 2.643 -3.349 4.737 -2.874c3.88 .88 7.52 3.147 10.302 6.01z"></path>
                             <path d="M14.044 13.034c.67 -.505 .67 -1.489 0 -2.01a14.824 14.824 0 0 0 -1.498 -1.044a15.783 15.783 0 0 0 -1.62 -.865c-.77 -.35 -1.63 .139 -1.753 .973a15.385 15.385 0 0 0 -.1 3.786a1.232 1.232 0 0 0 1.715 1.027a14.783 14.783 0 0 0 1.694 -.827a14.46 14.46 0 0 0 1.562 -1.035v-.005z"></path>
                         </svg>&nbsp;Rumble Live Follower Count<br></a></div>
-            </div>
-            <div class="card-deck" style="margin: 2vw;">
-                <div class="card"><a class="btn btn-primary btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: #20c997;border-color: #20c997;" href="nextcounts/api/"><i class="icon-graph"></i>&nbsp;NextCounts API Requests<br></a></div>
                 <div class="card"><a class="btn btn-primary btn-block btn-lg" role="button" style="height: 100%;width: 100%;background: #7289DA;border-color: #7289DA;" href="discord/server/"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-brand-discord">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M8 12a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
@@ -262,7 +259,7 @@
         <h1>Track Live Social Media Stats in Real Time – <strong>NextCounts</strong></h1>
         <p>Are you a fan of social media influencers, content creators, or viral trends? Want to see live follower counts, view stats, and engagement metrics for your favorite accounts—all in one place?</p>
         <h2>What is <strong>NextCounts</strong>?</h2>
-        <p><strong>NextCounts</strong> is the ultimate real-time analytics platform for tracking social media growth across multiple platforms, including <a href="youtube/user/"><strong>YouTube</strong></a><strong>, </strong><a href="twitter/followers/"><strong>Twitter</strong></a><strong>, </strong><a href="tiktok/followers/"><strong>TikTok</strong></a><strong>, </strong><a href="threads/user/"><strong>Threads</strong></a><strong>, </strong><a href="bluesky/user/"><strong>BlueSky</strong></a><strong>, </strong><a href="rumble/user/"><strong>Rumble</strong></a>,<strong>&nbsp;</strong><a href="loco/channel/"><strong>Loco</strong></a> and more. Whether you’re comparing accounts, analyzing trends, or just watching numbers rise, NextCounts makes it fast and easy.</p>
+        <p><strong>NextCounts</strong> is the ultimate real-time analytics platform for tracking social media growth across multiple platforms, including <a href="youtube/user/"><strong>YouTube</strong></a><strong>, </strong><a href="twitter/followers/"><strong>Twitter</strong></a><strong>, </strong><a href="tiktok/followers/"><strong>TikTok</strong></a><strong>, </strong><a href="threads/user/"><strong>Threads</strong></a><strong>, </strong><a href="bluesky/user/"><strong>BlueSky</strong></a><strong>, </strong><a href="rumble/user/"><strong>Rumble</strong></a>,<strong>&nbsp;</strong>and many more. Whether you’re comparing accounts, analyzing trends, or just watching numbers rise, NextCounts makes it fast and easy.</p>
         <h2>Why Choose <strong>NextCounts</strong>?</h2>
         <ul>
             <li><strong>Live Follower &amp; View Counts</strong> – See real-time updates for any social media account or video.</li>
