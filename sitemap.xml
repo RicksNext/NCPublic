@@ -1,78 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+    <!-- Homepage -->
     <url>
-        <loc>https://nextcounts.com/bluesky/user/</loc>
+        <loc>https://nextcounts.com/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
     </url>
-    <url>
-        <loc>https://nextcounts.com/compare/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/discord/server/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/election/counts/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/election/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/embed/large/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/embed/small/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/instagram/user/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/kick/followers/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/nextcounts/api/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/rumble/user/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/storyfire/user/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/storyfire/video/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/teamseas/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/teamtrees/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/threads/user/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/tiktok/followers/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/triller/followers/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/twitch/followers/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/twitter/followers/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/unabbreviate/list/</loc>
-    </url>
-    <url>
-        <loc>https://nextcounts.com/unabbreviate/</loc>
-    </url>
+
+    <!-- Top tier platforms — highest traffic and keyword volume -->
     <url>
         <loc>https://nextcounts.com/youtube/user/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
     </url>
     <url>
         <loc>https://nextcounts.com/youtube/video/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://nextcounts.com/</loc>
+        <loc>https://nextcounts.com/tiktok/followers/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
     </url>
+    <url>
+        <loc>https://nextcounts.com/instagram/user/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/twitter/followers/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/kick/followers/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Growing platforms -->
+    <url>
+        <loc>https://nextcounts.com/threads/user/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/twitch/followers/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/bluesky/user/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/discord/server/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/rumble/user/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/compare/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Utility pages -->
+    <url>
+        <loc>https://nextcounts.com/nextcounts/api/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/unabbreviate/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/unabbreviate/list/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Other platforms -->
+    <url>
+        <loc>https://nextcounts.com/triller/followers/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/loco/channel/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/storyfire/user/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/storyfire/video/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- Special event pages -->
+    <url>
+        <loc>https://nextcounts.com/teamseas/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/teamtrees/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/election/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.4</priority>
+    </url>
+    <url>
+        <loc>https://nextcounts.com/election/counts/</loc>
+        <lastmod>2026-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.4</priority>
+    </url>
+
 </urlset>

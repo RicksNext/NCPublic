@@ -266,6 +266,63 @@ button {
   transition-duration: 0.2s;
 }
 
+.nc-related-searches {
+  margin: 24px 3vw;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(32, 201, 151, 0.25);
+  background: rgba(32, 201, 151, 0.06);
+}
+
+.nc-related-searches h2 {
+  margin-bottom: 10px;
+  font-size: 1.35rem;
+}
+
+.nc-related-searches p {
+  margin-bottom: 12px;
+}
+
+.nc-seo-copy {
+  opacity: 0.85;
+}
+
+.nc-related-searches-list {
+  column-count: 2;
+  column-gap: 24px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.nc-related-searches-list li {
+  break-inside: avoid;
+  margin-bottom: 6px;
+}
+
+.nc-seo-faq {
+  margin-top: 18px;
+}
+
+.nc-seo-faq h3 {
+  margin-bottom: 12px;
+  font-size: 1.15rem;
+}
+
+.nc-seo-faq-item {
+  margin-bottom: 12px;
+}
+
+.nc-seo-faq-item p {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .nc-related-searches-list {
+    column-count: 1;
+  }
+}
+
 button:hover {
   background-color: hsla(240, 0%, 100%, 0.1);
 }
